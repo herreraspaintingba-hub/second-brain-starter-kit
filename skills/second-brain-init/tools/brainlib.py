@@ -88,7 +88,7 @@ def read_text(full):
         return fh.read()
 
 
-_KEY_RE = re.compile(r"^([A-Za-z0-9_][A-Za-z0-9_\-\. ]*?)\s*:(?:\s+(.*)|\s*)$")
+_KEY_RE = re.compile(r"^(\w[\w\-\. ]*?)\s*:(?:\s+(.*)|\s*)$")  # \w includes accents (título, descripción)
 _LIST_ITEM_RE = re.compile(r"^\s*-\s*(.*)$")
 
 
@@ -208,6 +208,8 @@ def parse_frontmatter(text):
             j += 1
         if extra:
             val = val + " " + " ".join(extra)
+        if val[:1] not in ("'", '"') and " #" in val:
+            val = val.split(" #", 1)[0].rstrip()  # YAML comment after an unquoted value
         data[key] = unquote(val)
         i = j
     return data, body
@@ -272,7 +274,12 @@ def derive_title(data, body, stem):
 
 
 _WIKILINK_RE = re.compile(r"(!?)\[\[([^\]\n]+?)\]\]")
-_CODE_RE = re.compile(r"```.*?```|`[^`\n]*`", re.S)
+_CODE_RE = re.compile(r"```.*?```|~~~.*?~~~|`[^`\n]*`", re.S)
+# Link targets with these endings are attachments, not notes. Anything else with a dot
+# ("Dr. Smith", "v1.2 plan") is a note name.
+ATTACHMENT_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".bmp", ".heic", ".pdf",
+                  ".canvas", ".base", ".excalidraw", ".mp3", ".m4a", ".wav", ".ogg", ".mp4",
+                  ".mov", ".webm", ".csv", ".xlsx", ".docx", ".pptx", ".zip", ".txt", ".json"}
 
 
 def wikilinks(body):
@@ -284,7 +291,7 @@ def wikilinks(body):
         if not target:
             continue
         ext = os.path.splitext(target)[1].lower()
-        if ext and ext != ".md":
+        if ext in ATTACHMENT_EXT:
             continue  # images, PDFs, canvases: not notes
         out.append(nfc(target))
     return out
@@ -299,3 +306,21 @@ def note_key(name):
 
 
 FORBIDDEN_NAME_CHARS = set('#^[]|:')
+
+
+def safe_date(value):
+    """A YYYY-MM-DD string as a date, or None if it is missing or impossible (2026-02-30)."""
+    import datetime as _dt
+    m = re.search(r"\d{4}-\d{2}-\d{2}", str(value or ""))
+    if not m:
+        return None
+    try:
+        return _dt.date.fromisoformat(m.group(0))
+    except ValueError:
+        return None
+
+
+def is_backup_name(name):
+    """note.md.bak, note.bak, note.bak.md, .bak-2026: yes. J.Baker.md: no."""
+    return re.search(r"\.bak(\.|-|$)", name, re.I) is not None or name.lower().startswith(".bak")
+

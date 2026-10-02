@@ -105,7 +105,7 @@ def like_filters(column, value):
     vals = [v.strip() for v in value.split(",") if v.strip()]
     if not vals:
         return "", []
-    clause = " OR ".join("lower(%s) LIKE ?" % column for _ in vals)
+    clause = " OR ".join("pylower(%s) LIKE ?" % column for _ in vals)
     return "(%s)" % clause, ["%" + nfc(v).lower() + "%" for v in vals]
 
 
@@ -124,7 +124,7 @@ def build_where(args, match_expr):
     if args.not_folder:
         for v in args.not_folder.split(","):
             if v.strip():
-                where.append("lower(folder) NOT LIKE ?")
+                where.append("pylower(folder) NOT LIKE ?")
                 params.append("%" + nfc(v.strip()).lower() + "%")
     if args.since:
         where.append("substr(COALESCE(NULLIF(date, ''), mtime), 1, 10) >= ?")
@@ -152,7 +152,10 @@ def run_search(con, query, args, joiner=" "):
     else:
         fq = fts_query(query, prefix=args.prefix, joiner=joiner)
     extra = column_constraints(args)
-    match_expr = " ".join([fq] + extra).strip() if (fq or extra) else ""
+    if fq and extra:
+        match_expr = "(%s) AND %s" % (fq, " AND ".join(extra))  # keep --title/--tag binding to the whole query
+    else:
+        match_expr = (fq or " ".join(extra)).strip()
     where, params = build_where(args, match_expr)
     weights = ", ".join(str(WEIGHTS[c]) for c in COLUMNS)
     order = "score" if args.sort == "rank" else "COALESCE(NULLIF(date, ''), mtime) DESC, score"
@@ -173,7 +176,7 @@ def run_search(con, query, args, joiner=" "):
     else:
         # 1) notes with the exact phrase, ordered by the phrase bm25
         phrase = '"%s"' % " ".join(terms).replace('"', '""')
-        pwhere, pparams = build_where(args, " ".join([phrase] + extra))
+        pwhere, pparams = build_where(args, " AND ".join([phrase] + extra))
         psql = sql.replace(where, pwhere, 1)
         prows = con.execute(psql, pparams + [max(args.limit, 400)]).fetchall()
         seen = {r[0] for r in prows}
@@ -245,6 +248,8 @@ def main(argv=None):
     if not os.path.exists(db):
         sys.exit("No index yet at %s. Run: python3 brain_index.py" % db)
     con = sqlite3.connect("file:%s?mode=ro" % db, uri=True)
+    # SQLite lower() only knows A to Z; Python lowercases accented capitals too (Órdenes).
+    con.create_function("pylower", 1, lambda s: s.lower() if isinstance(s, str) else s)
     query = " ".join(args.query).strip()
     if not query and not any([args.project, args.type, args.folder, args.status,
                               args.since, args.until, args.title, args.tag]):

@@ -19,7 +19,13 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VAULT="${BRAIN_VAULT:-$(cd "$HERE/../.." && pwd)}"
+if [ -n "${BRAIN_VAULT:-}" ]; then
+  VAULT="$BRAIN_VAULT"
+elif [ "$(basename "$(dirname "$HERE")")" = ".brain" ]; then
+  VAULT="$(cd "$HERE/../.." && pwd)"
+else
+  echo "Run this from the copy inside your vault (<vault>/.brain/tools/), or set BRAIN_VAULT."; exit 1
+fi
 PY="$(command -v python3 || true)"
 LOG="$VAULT/.brain/health.log"
 LABEL="com.secondbrain.health"
@@ -29,7 +35,8 @@ CRON_TAG="# second-brain-health"
 [ -n "$PY" ] || { echo "python3 is not installed, so the health check cannot be scheduled."; exit 1; }
 [ -f "$HERE/brain_health.py" ] || { echo "brain_health.py not found next to this script."; exit 1; }
 
-cmd_line() { printf '"%s" "%s/brain_health.py" --vault "%s" --write --reindex >> "%s" 2>&1' "$PY" "$HERE" "$VAULT" "$LOG"; }
+sq() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }   # single-quote for cron's shell
+cmd_line() { printf '%s %s --vault %s --write --reindex >> %s 2>&1' "$(sq "$PY")" "$(sq "$HERE/brain_health.py")" "$(sq "$VAULT")" "$(sq "$LOG")"; }
 
 xml_escape() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
 

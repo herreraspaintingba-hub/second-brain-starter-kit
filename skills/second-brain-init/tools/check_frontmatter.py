@@ -35,6 +35,28 @@ TIME_RE = re.compile(r"^\d{1,2}:\d{2}(\s*[A-Za-z]{2,5})?$")
 TAG_RE = re.compile(r"^[a-z0-9][a-z0-9/_\-]*$")
 
 
+def hash_tags(text):
+    """True if a tag starts with # in the raw frontmatter. In YAML that is a comment,
+    so Obsidian sees no tag at all, even though a tolerant reader would accept it."""
+    if not text.lstrip("\ufeff").startswith("---"):
+        return False
+    block = text.lstrip("\ufeff").split("\n")[1:]
+    in_tags = False
+    for line in block:
+        if line.strip() in ("---", "..."):
+            break
+        if re.match(r"^tags\s*:", line):
+            in_tags = True
+            if re.match(r"^tags\s*:\s*#", line) or re.search(r"[\[,]\s*#", line):
+                return True
+            continue
+        if in_tags and re.match(r"^\s*-\s*#", line):
+            return True
+        if line[:1] not in (" ", "\t", "-"):
+            in_tags = False
+    return False
+
+
 def validate(name, data, vocab):
     """Return a list of human-readable problems for one note."""
     errors = []
@@ -108,8 +130,11 @@ def main(argv=None):
     total = failed = 0
     for full, rel in targets(args.paths, vault, args.all):
         total += 1
-        data, _ = bl.parse_frontmatter(bl.read_text(full))
+        text = bl.read_text(full)
+        data, _ = bl.parse_frontmatter(text)
         errs = validate(bl.nfc(os.path.basename(full))[:-3], data, vocab)
+        if hash_tags(text):
+            errs.append("a tag starts with # (in the properties that hides it; write it without #)")
         if errs:
             failed += 1
             if not args.summary:

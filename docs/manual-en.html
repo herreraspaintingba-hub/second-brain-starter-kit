@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Brain Starter Kit v2.0, User Manual</title>
+<style>
+:root{
+  --bg:#ffffff; --card:#ffffff; --ink:#1c2733; --muted:#5f6b7a; --border:#e3e7ec;
+  --blue:#1e6fd9; --blue-soft:#e8f1fd; --orange:#d97a1e; --orange-soft:#fdf1e3;
+  --green:#1f9d55; --green-soft:#e6f6ec; --red:#c43d3d; --red-soft:#fbeaea;
+  --purple:#7a4fd9; --purple-soft:#f1ebfc; --code:#0f1722;
+}
+@page{ size:letter; margin:0;
+  @bottom-center{ content: counter(page) " / " counter(pages); font-size:8pt; color:#5f6b7a; font-family:"DejaVu Sans",sans-serif; } }
+@page:first{ @bottom-center{ content:none; } }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DejaVu Sans",-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:10pt}
+.sheet{page-break-after:always;padding:0.55in 0.6in 0.6in}
+.sheet:last-child{page-break-after:avoid}
+h1{font-size:25pt;line-height:1.15;margin-bottom:10px}
+h2{font-size:16pt;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 6px;border-radius:8px;background:var(--blue);color:#fff;font-size:11pt}
+h3{font-size:11.5pt;margin:16px 0 6px}
+h4{font-size:10pt;margin-bottom:4px}
+p{margin:0 0 8px}
+.sub{color:var(--muted);font-size:10pt;margin-bottom:14px}
+.chapter-eyebrow{font-size:8pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.hero{background:linear-gradient(135deg,#10243e 0%,#1e3a5f 60%,#1e6fd9 100%);color:#fff;border-radius:16px;padding:40px 36px;margin-bottom:22px}
+.hero p{color:#cfe0f5;max-width:560px;font-size:11pt}
+.hero .kicker{font-size:9pt;letter-spacing:.12em;text-transform:uppercase;color:#9fc3f0;margin-bottom:10px}
+.badges{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:3px 11px;border-radius:999px;font-size:8.5pt;color:#fff}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.piece{border-top:4px solid var(--blue)}
+.card p{color:var(--muted);font-size:9.2pt;margin:0}
+.card h4{font-size:10.5pt;margin-bottom:5px}
+.tag{display:inline-block;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:7px;letter-spacing:.04em}
+.t-blue{background:var(--blue-soft);color:var(--blue)} .t-orange{background:var(--orange-soft);color:#8a4d10}
+.t-green{background:var(--green-soft);color:#14613a} .t-purple{background:var(--purple-soft);color:#4a2d8c}
+.t-red{background:var(--red-soft);color:var(--red)}
+.callout{border-left:4px solid var(--green);background:var(--green-soft);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:9.4pt}
+.callout b:first-child{display:block;margin-bottom:2px}
+.callout.warn{border-color:var(--red);background:var(--red-soft)}
+.callout.info{border-color:var(--blue);background:var(--blue-soft)}
+.callout.gold{border-color:var(--orange);background:var(--orange-soft)}
+.say{border:1.5px solid var(--blue);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:11pt;font-weight:700;color:#15497e;background:var(--blue-soft)}
+.say span{display:block;font-size:8pt;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+table{border-collapse:collapse;width:100%;font-size:9pt}
+th{text-align:left;padding:7px 10px;background:var(--blue-soft);color:#15497e;font-weight:700}
+td{padding:7px 10px;border-top:1px solid var(--border);vertical-align:top}
+.tablecard{padding:0;overflow:hidden;margin:8px 0 10px}
+code{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:8.3pt;background:#eef1f5;color:#15497e;padding:1px 5px;border-radius:4px}
+pre{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:8pt;background:var(--code);color:#cfe3ff;padding:10px 12px;border-radius:8px;margin:8px 0 10px;white-space:pre-wrap;line-height:1.45}
+.tree{font-family:"DejaVu Sans Mono",monospace;font-size:8.3pt;background:#f6f7f9;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:12px 14px;white-space:pre;line-height:1.5;margin:8px 0}
+.flowline{display:flex;gap:0;margin:10px 0}
+.step{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px;margin-right:20px;position:relative;background:#fff}
+.step::after{content:"→";position:absolute;right:-16px;top:40%;font-size:12pt;color:var(--muted)}
+.step:last-child{margin-right:0}
+.step:last-child::after{content:none}
+.step .n{font-size:7pt;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
+.step h4{font-size:9pt;margin:2px 0 3px}
+.step p{font-size:8pt;color:var(--muted);margin:0}
+ul.clean{list-style:none}
+ul.clean li{padding:6px 0 6px 22px;position:relative;border-bottom:1px solid var(--border);font-size:9.2pt}
+ul.clean li:last-child{border-bottom:none}
+ul.clean li::before{content:"✓";position:absolute;left:2px;color:var(--green);font-weight:700}
+ul.clean.no li::before{content:"✕";color:var(--red)}
+ol.steps{padding-left:20px;font-size:9.4pt} ol.steps li{margin-bottom:5px}
+ul.dots{padding-left:18px;font-size:9.4pt} ul.dots li{margin-bottom:4px}
+.recap{border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-top:12px;background:#fafbfc}
+.recap h4{color:var(--blue);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.diagram{border:1px solid var(--border);border-radius:14px;padding:14px;margin:10px 0;text-align:center}
+.toc td{font-size:10pt;padding:8px 10px}
+.toc td.pg{text-align:right;color:var(--muted);width:60px}
+.two-col{columns:2;column-gap:22px}
+.two-col .card{break-inside:avoid;margin-bottom:10px}
+.gloss .card{padding:6px 10px;margin-bottom:6px;border-radius:8px}
+.gloss .card h4{font-size:9pt;margin-bottom:1px}
+.gloss .card p{font-size:8.4pt}
+.mock{border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:8.6pt;background:#fbfcfd}
+.mock h5{font-size:9pt;margin:6px 0 2px;color:#15497e}
+.mock .fm{font-family:"DejaVu Sans Mono",monospace;font-size:7.6pt;color:var(--muted);border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:4px;white-space:pre}
+.light{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:middle;margin-right:5px}
+.small{font-size:8.6pt;color:var(--muted)}
+footer.end{margin-top:26px;text-align:center;color:var(--muted);font-size:8.5pt}
+.ref td:first-child{font-weight:700;color:#15497e;width:42%}
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE 1: COVER ===== -->
+<div class="sheet">
+  <div class="hero" style="padding:56px 40px 48px;margin-top:40px">
+    <div class="kicker">User Manual · Version 2.0</div>
+    <h1 style="font-size:32pt">Second Brain<br>Starter Kit</h1>
+    <p>Turn your AI assistant into a second brain that remembers what you learn, finds it again before asking you, keeps every project's state on one page, and checks its own health every month. In plain language. No technical background needed.</p>
+    <div class="badges"><span class="badge">9 skills</span><span class="badge">English + Español</span><span class="badge">Obsidian vault</span><span class="badge">Free, MIT license</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card piece"><span class="tag t-blue">CAPTURE</span><h4>It remembers</h4><p>End any conversation with "save to my brain". The lasting parts get filed, linked and kept.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">RECALL</span><h4>It looks first</h4><p>Before asking you something, the AI searches your notes. Your brain answers, not your memory.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">CARE</span><h4>It stays healthy</h4><p>Once a month it checks itself and tells you the one thing worth fixing.</p></div>
+  </div>
+  <div class="callout info" style="margin-top:26px"><b>What is new in version 2.0</b>Five new skills (search, project Doors, checkpoints, closing a session, monthly health), rules that keep the vault from rotting, and an upgrade path for v1 brains that moves nothing. Chapter 1 shows how to upgrade.</div>
+  <p class="small" style="margin-top:40px;text-align:center">github.com/herreraspaintingba-hub/second-brain-starter-kit</p>
+</div>
+
+<!-- ===== PAGE 2: CONTENTS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Contents</div>
+  <h2>What is inside</h2>
+  <p class="sub">Read it in order the first time. After that, jump to what you need.</p>
+  <div class="card tablecard"><table class="toc">
+    <tr><th>Chapter</th><th>What you will learn</th></tr>
+    <tr><td><b>Welcome</b></td><td>What a second brain is, and what this kit gives you</td></tr>
+    <tr><td><b>1. Setup and install</b></td><td>One command, seven questions, ten minutes. And how to upgrade from v1</td></tr>
+    <tr><td><b>2. Meet your brain</b></td><td>The ten drawers of your vault, and how the AI reads it</td></tr>
+    <tr><td><b>3. Saving knowledge</b></td><td>The capture habit, and the rules that keep every note clean</td></tr>
+    <tr><td><b>4. Finding things again</b></td><td>Search before asking: how the brain finds what you already know</td></tr>
+    <tr><td><b>5. Working on projects</b></td><td>Doors, checkpoints, and closing a session without losing anything</td></tr>
+    <tr><td><b>6. Deciding what to build</b></td><td>The idea filter: four scores, one honest verdict</td></tr>
+    <tr><td><b>7. Power moves</b></td><td>Templates, canvases, bases and clean notes on request</td></tr>
+    <tr><td><b>8. Keeping it healthy</b></td><td>The monthly checkup, the traffic light, and how to fix what it finds</td></tr>
+    <tr><td><b>9. Troubleshooting and FAQ</b></td><td>The fixes for the few things that go wrong</td></tr>
+    <tr><td><b>10. Growing your brain</b></td><td>Where to take it next, a glossary, and a one-page reference card</td></tr>
+  </table></div>
+  <h3>How to read this manual</h3>
+  <ul class="dots">
+    <li><b>Phrases in blue boxes</b> are things you say to your AI, exactly or in your own words.</li>
+    <li><b>Green boxes</b> are tips, <b>blue boxes</b> explain what happens behind the scenes, <b>red boxes</b> are warnings, and <b>orange boxes</b> are golden rules.</li>
+    <li><b>Grey code lines</b> are optional. You never have to type them; your AI runs them for you. They are here for the curious.</li>
+    <li>Everything works the same in Spanish. A separate Spanish edition of this manual is in the repo.</li>
+  </ul>
+  <div class="callout gold"><b>The golden rule of this whole kit</b>You talk, the skills act, the vault remembers. Everything else in this manual is detail.</div>
+</div>
+
+<!-- ===== PAGE 3: WELCOME ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Welcome</div>
+  <h2>A brain outside your head</h2>
+  <p class="sub">What this kit is, in one page.</p>
+  <p>Every day you learn things: a client's habit, a price that worked, a decision and why you made it, a lesson that cost you money. Most of it is gone in a month. A <b>second brain</b> is a place where that knowledge lands, organized, connected, and easy to find again.</p>
+  <p>This kit turns the AI assistant you already use into the librarian of that place. You talk to it the way you always do. At the end, you say one sentence, and it files what was worth keeping. Next week, when you ask a question, it looks in your notes before asking you.</p>
+  <h3>The nine skills</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Skill</th><th>Its one job</th></tr>
+    <tr><td><code>second-brain-init</code></td><td>Builds your brain the first time (or upgrades a v1 brain)</td></tr>
+    <tr><td><code>save-to-obsidian</code></td><td>Saves what you learned, with clean links and a session log</td></tr>
+    <tr><td><code>brain-search</code></td><td>Searches your notes before answering or asking you</td></tr>
+    <tr><td><code>project-door</code></td><td>Keeps one page per project with where it stands today</td></tr>
+    <tr><td><code>session-checkpoint</code></td><td>A save point during long sessions</td></tr>
+    <tr><td><code>close-session</code></td><td>Closes a working session so nothing is lost</td></tr>
+    <tr><td><code>brain-health</code></td><td>A monthly checkup with a traffic light and a history</td></tr>
+    <tr><td><code>project-advisor</code></td><td>Scores a new idea before you spend time on it</td></tr>
+    <tr><td><code>obsidian-power-user</code></td><td>Works behind the others so every note is clean and linked</td></tr>
+  </table></div>
+  <h3>The promise</h3>
+  <ol class="steps">
+    <li><b>A brain that is set up</b>: a vault on your computer, organized into clear sections.</li>
+    <li><b>A capture habit</b>: end any conversation with "save to my brain" and trust the good parts are kept.</li>
+    <li><b>Recall without asking</b>: the AI finds what you already decided instead of asking you again.</li>
+    <li><b>Projects that pick up where they left off</b>, even after weeks away.</li>
+    <li><b>A brain that stays healthy</b>, measured the same way every month.</li>
+  </ol>
+  <div class="callout"><b>How long will this take?</b>Setup is about 10 minutes. Reading this manual, about an hour. Building the habit, a week. After that, it just works.</div>
+</div>
+
+<!-- ===== CH1 p1: INSTALL ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 1</div>
+  <h2><span class="num">1</span>Setup and install</h2>
+  <p class="sub">The one chapter that feels technical, and even this one is not really. One command, one sentence, seven questions.</p>
+  <div class="flowline">
+    <div class="step"><div class="n">Step 1</div><h4>Install</h4><p>One command copies the nine skills</p></div>
+    <div class="step"><div class="n">Step 2</div><h4>Say the sentence</h4><p>"Set up my second brain"</p></div>
+    <div class="step"><div class="n">Step 3</div><h4>Answer 7 questions</h4><p>One at a time, no wrong answers</p></div>
+    <div class="step"><div class="n">Step 4</div><h4>Vault built</h4><p>Folders, tools, settings</p></div>
+    <div class="step"><div class="n">Step 5</div><h4>Verified</h4><p>Every check shows OK</p></div>
+  </div>
+  <h3>What you need</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Required</h4><ul class="clean">
+      <li>An AI assistant that supports skills: Claude (including Cowork), Codex, Gemini, or any assistant that reads <code>SKILL.md</code> files.</li>
+      <li>This kit (the installer downloads it for you).</li></ul></div>
+    <div class="card"><h4>Optional, and worth it</h4><ul class="clean">
+      <li><b>Obsidian</b>, the free app from obsidian.md: the graph view and clickable links.</li>
+      <li><b>Python 3</b>: unlocks search, the note checker and the health check. Macs and Linux usually have it.</li></ul></div>
+  </div>
+  <div class="callout"><b>You do NOT need</b>A developer, a paid subscription, a server, Notion, or any coding. If you can paste one line and type a sentence, you can do this.</div>
+  <h3>Step 1. Install with one command</h3>
+  <p>Open the Terminal (Mac: press Cmd + Space, type "Terminal") and paste:</p>
+  <pre>curl -fsSL https://raw.githubusercontent.com/herreraspaintingba-hub/second-brain-starter-kit/main/install.sh | bash</pre>
+  <p>It downloads the kit, finds your assistant (Claude, Codex or Gemini) and copies the nine skills into its skills folder. If a skill was already there, the old copy is moved aside, never deleted. At the end it tells you whether Python was found.</p>
+  <div class="card tablecard"><table>
+    <tr><th>Your assistant</th><th>Where the skills land</th><th>To choose it yourself</th></tr>
+    <tr><td>Claude Code, Cowork</td><td><code>~/.claude/skills/</code></td><td><code>HOST=claude</code></td></tr>
+    <tr><td>Codex</td><td><code>~/.codex/skills/</code></td><td><code>HOST=codex</code></td></tr>
+    <tr><td>Gemini CLI</td><td><code>~/.gemini/skills/</code></td><td><code>HOST=gemini</code></td></tr>
+    <tr><td>Other</td><td colspan="2">Copy the nine folders from <code>skills/</code> to wherever your assistant loads skills from</td></tr>
+  </table></div>
+  <div class="callout info"><b>The ~ symbol</b>It is shorthand for your home folder (for example /Users/yourname on a Mac). Your file manager opens there by default.</div>
+</div>
+
+<!-- ===== CH1 p2: QUESTIONS ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Step 2. Say the sentence</h3>
+  <p>Open a new conversation with your assistant and type:</p>
+  <div class="say"><span>You say</span>"Set up my second brain."</div>
+  <p>That wakes up <code>second-brain-init</code>, which runs the whole setup. It does not have to be exact: "I just installed the starter kit" works too, and so does "Configura mi segundo cerebro".</p>
+  <div class="callout info"><b>What happens behind the scenes</b>The assistant sees there is no brain yet (no <code>CLAUDE.md</code> settings file), so it runs setup instead of guessing. This happens once. Saying the sentence again later only confirms you are set up.</div>
+  <h3>Step 3. Answer seven questions</h3>
+  <p>One at a time. There are no wrong answers, and you can change any of them later.</p>
+  <div class="card tablecard"><table>
+    <tr><th>#</th><th>Question</th><th>Why it asks</th></tr>
+    <tr><td>1</td><td>What should I call you?</td><td>So the brain speaks to you by name</td></tr>
+    <tr><td>2</td><td>What do you do? (optional)</td><td>So advice fits your work. Leave blank for personal use</td></tr>
+    <tr><td>3</td><td>What do you want to call your brain?</td><td>The vault's name, for example "My Second Brain"</td></tr>
+    <tr><td>4</td><td>Where should it live?</td><td>iCloud, Dropbox or OneDrive to sync across devices, or Documents</td></tr>
+    <tr><td>5</td><td>Which language by default?</td><td>English, Spanish or both. Every skill speaks both anyway</td></tr>
+    <tr><td>6</td><td>Do you use Notion?</td><td>Optional. If yes, the idea filter can copy its verdicts there</td></tr>
+    <tr><td>7</td><td>Turn on the monthly health check?</td><td>The brain checks itself on the 1st of each month. Recommended</td></tr>
+  </table></div>
+  <div class="grid g2">
+    <div class="callout"><b>About question 4</b>Want your brain on your phone too? Pick iCloud (Mac), OneDrive (Windows) or Dropbox. One computer only? Documents is perfectly fine.</div>
+    <div class="callout"><b>About question 7</b>Say yes. It runs once a month, takes seconds, changes none of your notes, and writes one row in a history note. You can turn it off any time.</div>
+  </div>
+  <div class="callout info"><b>No Python?</b>Setup notices and skips question 7. Every skill still works using plain text search; you can install Python later and the tools start working with no extra setup.</div>
+</div>
+
+<!-- ===== CH1 p3: BUILT + VERIFY ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Step 4. Your vault gets built</h3>
+  <p>The brain creates a set of folders with numbers and clear names, a hidden toolbox, and your settings. It reports each step as it goes.</p>
+  <div class="tree">Your Brain/
+├── 00 Inbox/                ← when it does not fit anywhere yet
+├── 01 Personal Knowledge/   ← people, places, routines, lessons
+├── 02 Strategy/             ← vision, goals, decisions, your North Star
+├── 03 Ideas &amp; Notes/        ← ideas, and saved references
+├── 04 Learning/             ← books, courses, tech, business
+├── 05 AI System/            ← how your tools fit together
+├── 06 Session Logs/         ← a record of every session, and checkpoints
+├── 07 Assets/               ← finished reports and documents
+├── 08 Projects/             ← working notes of active projects
+├── 09 MOCs/                 ← maps of your themes, and project Doors
+├── Archives/                ← old notes; nothing is ever deleted
+├── Templates/  Excalidraw/
+├── Home.md                  ← the front page of your brain
+└── .brain/                  ← tools and search index (hidden in Obsidian)</div>
+  <div class="callout"><b>Already have an Obsidian vault?</b>Point setup at it. It adds the missing sections next to your notes and never moves or deletes what is there.</div>
+  <h3>Step 5. Verify it worked</h3>
+  <p>Setup checks itself and shows you the result:</p>
+  <pre>OK   00 Inbox         OK   save-to-obsidian     OK   close-session
+OK   06 Session Logs  OK   project-advisor      OK   brain-health
+OK   09 MOCs          OK   brain-search         OK   CLAUDE.md
+OK   Archives         OK   project-door         0 notes with problems
+OK   .brain/tools     OK   session-checkpoint   search finds "Start Here"</pre>
+  <p>All OK means your brain is live. If something says MISSING, the brain walks you through the fix before calling setup done. The usual cause is the skills landing in the wrong folder; see Chapter 9.</p>
+  <h3>What setup created for you</h3>
+  <div class="grid g2">
+    <div class="card"><h4>CLAUDE.md</h4><p>Your brain's settings: your name, where the vault lives, your language, the rules, and the phrases. The assistant reads it at the start of every conversation.</p></div>
+    <div class="card"><h4>CURRENT-CONTEXT.md</h4><p>A short, living summary of what you are working on right now. Update it about once a week. It is the first note the brain reads.</p></div>
+    <div class="card"><h4>Home and Start Here</h4><p><code>Home.md</code> and <code>09 MOCs/MOC, Start Here</code> give the graph a center, so the first notes you save are never alone.</p></div>
+    <div class="card"><h4>.brain/</h4><p>The toolbox: the search index, the note checker, the Door reader, the health check, and <code>vocabulary.json</code>, the list of note types.</p></div>
+  </div>
+</div>
+
+<!-- ===== CH1 p4: UPGRADE + RECAP ===== -->
+<div class="sheet">
+  <div class="callout info" style="margin-top:0"><b>Your setup got saved too</b>The first thing your brain does after setup is write a session log of the setup itself. Its birth certificate is already in <code>06 Session Logs/</code>.</div>
+  <h3 style="margin-top:0">Upgrading from version 1</h3>
+  <p>If you set up your brain with v1 of this kit, you keep everything. Run the install command again (it moves your old skill copies aside), then say:</p>
+  <div class="say"><span>You say</span>"Upgrade my brain to v2."</div>
+  <ol class="steps">
+    <li>It adds the new folders: <code>References</code>, <code>07 Assets</code>, <code>08 Projects</code>, <code>09 MOCs</code>, <code>Archives</code> and <code>.brain</code>.</li>
+    <li>It puts the tools in <code>.brain/</code> and builds the first search index.</li>
+    <li>It rewrites <code>CLAUDE.md</code> with the v2 template, keeping every line you added.</li>
+    <li>It runs the first health check and shows you the light.</li>
+  </ol>
+  <div class="callout warn"><b>Do not panic at the first light</b>An older vault usually starts yellow or red: broken links and notes without the new properties pile up over months. That first number is your baseline, not a grade. The brain compares every month with the one before, and old notes get fixed as you touch them.</div>
+  <h3>A mental model to keep</h3>
+  <div class="grid g3">
+    <div class="card piece"><span class="tag t-blue">YOU</span><h4>You talk</h4><p>In plain language, in your language.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">SKILLS</span><h4>The skills act</h4><p>Each one has a job and a phrase that wakes it up.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">VAULT</span><h4>The vault remembers</h4><p>Everything lands in a labeled folder, connected to what came before.</p></div>
+  </div>
+  <div class="recap"><h4>Chapter 1 recap</h4>
+    <ul class="clean"><li>Ran one install command.</li><li>Said "Set up my second brain".</li><li>Answered seven questions.</li><li>Watched the vault, the toolbox and the settings get built.</li><li>Saw every check come back OK.</li></ul>
+  </div>
+  <p style="margin-top:12px"><b>Stuck?</b> Chapter 9 has two-line fixes for the usual problems. <b>Worked?</b> Next, a tour of your new brain.</p>
+</div>
+
+<!-- ===== CH2 p1: DRAWERS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 2</div>
+  <h2><span class="num">2</span>Meet your brain</h2>
+  <p class="sub">Your vault is a filing cabinet. Every drawer has a number, a label and a reason.</p>
+  <div class="card tablecard"><table>
+    <tr><th style="width:24%">Drawer</th><th>What goes in it</th><th style="width:30%">Example</th></tr>
+    <tr><td><b>00 Inbox</b></td><td>Only what does not fit anywhere yet. Empty it now and then</td><td>A quick thought from your phone</td></tr>
+    <tr><td><b>01 Personal Knowledge</b></td><td>People, places, routines, and lessons learned</td><td>"Always confirm the delivery window the day before"</td></tr>
+    <tr><td><b>02 Strategy</b></td><td>Vision, goals, your North Star, and the Decision Log</td><td>"Decision, Raise prices in March"</td></tr>
+    <tr><td><b>03 Ideas &amp; Notes</b></td><td>Ideas before they are projects; <code>References/</code> for saved articles</td><td>"Idea, Monthly newsletter"</td></tr>
+    <tr><td><b>04 Learning</b></td><td>Books, courses, tech, business</td><td>Notes from a book you finished</td></tr>
+    <tr><td><b>05 AI System</b></td><td>How your tools and skills fit together; the health history</td><td>"Brain Health History"</td></tr>
+    <tr><td><b>06 Session Logs</b></td><td>One record per working session, and project checkpoints</td><td>"2026-10-02 Session, Garden plan"</td></tr>
+    <tr><td><b>07 Assets</b></td><td>Finished outputs: reports, dashboards, documents</td><td>A quote you sent, a yearly summary</td></tr>
+    <tr><td><b>08 Projects</b></td><td>Working notes of active projects, one folder each</td><td>"08 Projects/Kitchen Remodel/"</td></tr>
+    <tr><td><b>09 MOCs</b></td><td>Maps of Content (hubs for a theme) and one Door per project</td><td>"MOC, Garden" and "Door, Garden"</td></tr>
+    <tr><td><b>Archives</b></td><td>Old or replaced notes. Nothing is ever deleted; it moves here</td><td>Last year's plan</td></tr>
+  </table></div>
+  <div class="callout info"><b>Rename freely</b>Skills find drawers by their number, so "01 Personal Knowledge" can become "01 Company Knowledge" and everything keeps working.</div>
+  <h3>Three words you will see a lot</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Link</h4><p>Writing <code>[[Note Name]]</code> inside a note connects it to another. Links are the brain's nerves: they are how one idea leads to the next.</p></div>
+    <div class="card"><h4>MOC</h4><p>A Map of Content: a note that lists and links everything about one theme. The table of contents of a topic.</p></div>
+    <div class="card"><h4>Door</h4><p>One note per project that says where it stands today, in one screen. Chapter 5 is all about Doors.</p></div>
+  </div>
+</div>
+
+<!-- ===== CH2 p2: MAP + HOW AI READS ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">The whole system on one page</h3>
+  <p class="small">Blue: what you do. Purple: the skills. Green: what lives in your vault. Dashed: reading, not writing.</p>
+  <div class="diagram">
+  <svg width="680" viewBox="0 0 900 470" font-family="DejaVu Sans, sans-serif">
+    <defs>
+      <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1e6fd9"/></marker>
+      <marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7a4fd9"/></marker>
+      <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1f9d55"/></marker>
+    </defs>
+    <rect x="20" y="30" width="190" height="100" rx="12" fill="#e8f1fd" stroke="#1e6fd9" stroke-width="2"/>
+    <text x="115" y="70" text-anchor="middle" font-size="17" font-weight="700" fill="#15497e">You</text>
+    <text x="115" y="92" text-anchor="middle" font-size="12" fill="#46627f">plain language</text>
+    <text x="115" y="110" text-anchor="middle" font-size="12" fill="#46627f">English or Spanish</text>
+    <rect x="300" y="20" width="300" height="430" rx="14" fill="#f1ebfc" stroke="#7a4fd9" stroke-width="2"/>
+    <text x="450" y="50" text-anchor="middle" font-size="16" font-weight="700" fill="#4a2d8c">Your AI with 9 skills</text>
+    <g font-size="12" text-anchor="middle">
+      <rect x="320" y="68" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="92" fill="#4a2d8c">brain-search · project-door</text>
+      <rect x="320" y="116" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="140" fill="#4a2d8c">save-to-obsidian</text>
+      <rect x="320" y="164" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="188" fill="#4a2d8c">session-checkpoint · close-session</text>
+      <rect x="320" y="212" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="236" fill="#4a2d8c">project-advisor</text>
+      <rect x="320" y="260" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="284" fill="#4a2d8c">brain-health (monthly)</text>
+      <rect x="320" y="308" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="332" fill="#4a2d8c">obsidian-power-user (formatting)</text>
+      <rect x="320" y="356" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="380" fill="#4a2d8c">second-brain-init (once)</text>
+    </g>
+    <text x="450" y="425" text-anchor="middle" font-size="11" font-weight="700" fill="#7a4fd9">EACH SKILL HAS ONE JOB</text>
+    <rect x="690" y="30" width="190" height="230" rx="12" fill="#e6f6ec" stroke="#1f9d55" stroke-width="2"/>
+    <text x="785" y="62" text-anchor="middle" font-size="17" font-weight="700" fill="#14613a">Your vault</text>
+    <text x="785" y="86" text-anchor="middle" font-size="12" fill="#2f7050">notes in 00 to 09</text>
+    <text x="785" y="106" text-anchor="middle" font-size="12" fill="#2f7050">Doors and MOCs</text>
+    <text x="785" y="126" text-anchor="middle" font-size="12" fill="#2f7050">session logs</text>
+    <text x="785" y="146" text-anchor="middle" font-size="12" fill="#2f7050">health history</text>
+    <text x="785" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#1f9d55">PLAIN FILES, YOURS</text>
+    <rect x="690" y="300" width="190" height="130" rx="12" fill="#e6f6ec" stroke="#1f9d55" stroke-width="2"/>
+    <text x="785" y="332" text-anchor="middle" font-size="16" font-weight="700" fill="#14613a">.brain/</text>
+    <text x="785" y="356" text-anchor="middle" font-size="12" fill="#2f7050">search index</text>
+    <text x="785" y="376" text-anchor="middle" font-size="12" fill="#2f7050">vocabulary.json</text>
+    <text x="785" y="396" text-anchor="middle" font-size="12" fill="#2f7050">the tools</text>
+    <line x1="210" y1="80" x2="296" y2="80" stroke="#1e6fd9" stroke-width="2.5" marker-end="url(#ab)"/>
+    <text x="252" y="70" text-anchor="middle" font-size="10" font-weight="600" fill="#1e6fd9">asks</text>
+    <line x1="600" y1="135" x2="686" y2="135" stroke="#1f9d55" stroke-width="2.5" marker-end="url(#ag)"/>
+    <text x="643" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#1f9d55">writes</text>
+    <line x1="686" y1="360" x2="604" y2="90" stroke="#7a4fd9" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#ap)"/>
+    <text x="636" y="262" text-anchor="end" font-size="11" font-weight="600" fill="#7a4fd9">searches first</text>
+    <line x1="296" y1="110" x2="214" y2="110" stroke="#1e6fd9" stroke-width="2.5" marker-end="url(#ab)"/>
+    <text x="252" y="128" text-anchor="middle" font-size="10" font-weight="600" fill="#1e6fd9">answers</text>
+  </svg>
+  </div>
+  <h3>How your AI reads the brain: three layers</h3>
+  <p>An AI's memory in one conversation is limited. Loading your whole vault at the start would fill it with history and leave less room for the work. So the brain reads in layers, set up in your <code>CLAUDE.md</code>:</p>
+  <div class="grid g3">
+    <div class="card piece"><span class="tag t-blue">LAYER 1 · ALWAYS</span><h4>Who and what now</h4><p><code>CLAUDE.md</code> and <code>CURRENT-CONTEXT.md</code>. Short on purpose: they are read every single time.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">LAYER 2 · BY TOPIC</span><h4>What this is about</h4><p>A project mentioned? Its Door front page. A past fact? A search. A note to write? The formatting rules.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">LAYER 3 · ON DEMAND</span><h4>Only if needed</h4><p>The rest of a Door, checkpoints, old session logs, MOCs. Read when the task asks for them.</p></div>
+  </div>
+  <div class="callout"><b>Why it matters to you</b>Long conversations stay sharp for longer, and the AI starts each session already knowing where things stand.</div>
+</div>
+
+<!-- ===== CH3 p1: SAVING ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 3</div>
+  <h2><span class="num">3</span>Saving knowledge</h2>
+  <p class="sub">The capture habit. The single most important page in this manual.</p>
+  <p>Have a normal conversation: plan a project, work through a problem, think out loud. At the end, say:</p>
+  <div class="say"><span>You say</span>"Save to my brain."  ·  "Guárdalo en mi cerebro."</div>
+  <p>The <code>save-to-obsidian</code> skill makes two things from the conversation:</p>
+  <div class="grid g2">
+    <div class="card piece"><span class="tag t-blue">1 · KNOWLEDGE</span><h4>Knowledge nuggets</h4><p>The pieces worth having in three months: a lesson, a decision and its reasons, an idea, something about a person. Each one filed in its drawer and linked to related notes.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">2 · RECORD</span><h4>A session log</h4><p>One record of the whole session in <code>06 Session Logs/</code>: what you set out to do, what got done, the decisions, the tools, and what is still open.</p></div>
+  </div>
+  <h3>What happens when you say it</h3>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Re-reads</h4><p>The whole conversation, from the top</p></div>
+    <div class="step"><div class="n">2</div><h4>Filters</h4><p>"Useful in three months?" Only yes survives</p></div>
+    <div class="step"><div class="n">3</div><h4>Searches</h4><p>A note on it already? Update it, no copies</p></div>
+    <div class="step"><div class="n">4</div><h4>Writes and links</h4><p>Right drawer, working links, a MOC entry</p></div>
+    <div class="step"><div class="n">5</div><h4>Checks</h4><p>Every note passes the property check</p></div>
+  </div>
+  <h3>When the brain saves, and when it does not</h3>
+  <div class="grid g2">
+    <div class="card"><h4 style="color:var(--green)">✓ It saves</h4><ul class="clean"><li>When you ask, in any words.</li><li>When it offers once, at the end of a session that produced something real (a decision, a lesson, a new process), and you say yes.</li></ul></div>
+    <div class="card"><h4 style="color:var(--red)">✕ It does not</h4><ul class="clean no"><li>In the middle of a session "just in case".</li><li>Every time a task finishes.</li><li>More than one offer per session.</li></ul></div>
+  </div>
+  <div class="callout gold"><b>Golden rule: save on purpose</b>A brain full of everything is as useless as an empty one. Saving only what is worth it keeps search sharp and your notes worth reading.</div>
+  <div class="callout info"><b>Doing the same thing three times?</b>The brain will offer to turn it into a skill of its own instead of saving it again. Repeated work is a sign of a missing tool.</div>
+</div>
+
+<!-- ===== CH3 p2: RULES ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">The rules that keep every note clean</h3>
+  <p>A vault does not break in one day. It rots slowly: a renamed note leaves dead links, a quick note has no description, a copy is left behind. Version 2 writes every note by these rules so that never starts.</p>
+  <div class="grid g2">
+    <div class="card piece"><span class="tag t-blue">LINKS</span><h4>Every link works</h4><ul class="clean">
+      <li>No file names with <code># ^ [ ] | :</code> (Obsidian cannot link them).</li>
+      <li>Before writing <code>[[A Note]]</code>, the brain checks that note exists.</li>
+      <li>No "placeholder" links to notes that do not exist yet.</li>
+      <li>Every new note gets at least one link pointing to it, usually from a MOC.</li></ul></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">PROPERTIES</span><h4>Every note has the same header</h4><ul class="clean">
+      <li>A type, a date and the <b>real time</b> from the clock.</li>
+      <li>A one-line description, written for a stranger.</li>
+      <li>Tags in lowercase, and a status (active, done, parked...).</li>
+      <li>A script checks each note before it counts as saved.</li></ul></div>
+  </div>
+  <p style="margin-top:10px">This is what that header (Obsidian calls it "properties") looks like:</p>
+  <pre>---
+title: "Decision, Cedar raised beds"
+type: decision
+date: 2026-10-02
+time: "14:35"
+description: "We chose cedar raised beds over in-ground rows; cost and back pain."
+tags: [garden, decisions]
+status: active
+---</pre>
+  <div class="callout info"><b>Why so strict?</b>Search ranks the title and description highest, filters use the type and the date, and the health check trusts the status. When every note has the same header, all of that just works. The list of allowed types lives in <code>.brain/vocabulary.json</code>; add your own whenever you need.</div>
+  <h3>Never delete, never copy</h3>
+  <ul class="clean">
+    <li><b>One note per topic.</b> New knowledge updates the existing note; no "v2" files.</li>
+    <li><b>Nothing is deleted.</b> A note that is no longer true moves to <code>Archives/</code> and is marked superseded.</li>
+    <li><b>No backup copies inside the vault.</b> A file like <code>note.md.bak</code> confuses search and links; backups go to <code>Archives/Backups/</code>.</li>
+  </ul>
+  <h3>Knowledge moves up</h3>
+  <p>A good brain promotes what repeats. A saved article you keep coming back to graduates to a real note. When five notes keep circling the same principle, the brain writes that principle once, as its own note, and links it from a MOC. When a theme grows past about seven notes, it proposes a MOC for it.</p>
+</div>
+
+<!-- ===== CH3 p3: EXAMPLE + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">A real save, start to finish</h3>
+  <p>Ana spent forty minutes with her AI planning a vegetable garden: bed material, the watering routine, and a mistake from last year (she planted tomatoes too early and lost them to frost). She said "save to my brain". This is what came back:</p>
+  <pre>Saved to Ana's Brain:
+- Decision, Cedar raised beds           → 02 Strategy / Decision Log
+- Lesson, Plant tomatoes after May 15    → 01 Personal Knowledge / Lessons Learned
+- Watering Schedule (updated)            → 01 Personal Knowledge / Routines
+- Session log                            → 06 Session Logs
+All notes pass the property check. Linked from MOC, Garden.</pre>
+  <div class="grid g2">
+    <div class="card"><h4>What it chose to keep</h4><p>The decision and its reasons, the frost lesson with the date to remember, and the change to a routine that already had a note (updated, not copied).</p></div>
+    <div class="card"><h4>What it left out</h4><p>The back-and-forth about seed brands that went nowhere. That lives in the session log, in case she ever wants it.</p></div>
+  </div>
+  <h3>Where things go</h3>
+  <div class="card tablecard"><table>
+    <tr><th>It is a...</th><th>It goes to</th></tr>
+    <tr><td>Lesson (went wrong or right, with a takeaway)</td><td><code>01 .../Lessons Learned</code></td></tr>
+    <tr><td>Decision (a choice and its reasons)</td><td><code>02 Strategy/Decision Log</code></td></tr>
+    <tr><td>Idea (to explore later)</td><td><code>03 Ideas &amp; Notes</code></td></tr>
+    <tr><td>Saved article, quote or clip</td><td><code>03 Ideas &amp; Notes/References</code></td></tr>
+    <tr><td>Book or course takeaway</td><td><code>04 Learning</code></td></tr>
+    <tr><td>Something about a skill or a tool connection</td><td><code>05 AI System</code> (what it is beats what it is about)</td></tr>
+    <tr><td>Finished report or document</td><td><code>07 Assets</code></td></tr>
+  </table></div>
+  <div class="recap"><h4>Chapter 3 recap</h4><ul class="clean">
+    <li>End a useful conversation with "save to my brain".</li>
+    <li>You get knowledge notes in the right drawers, plus a session log.</li>
+    <li>Every link works, every note has the same header, nothing is copied or deleted.</li>
+    <li>The brain saves when you ask, or offers once at the end.</li></ul></div>
+</div>
+
+<!-- ===== CH4 p1: SEARCH ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 4</div>
+  <h2><span class="num">4</span>Finding things again</h2>
+  <p class="sub">A brain you have to remember to look in is just a folder. This one looks for you.</p>
+  <div class="callout gold"><b>Golden rule: search before asking</b>When the AI needs a fact about your life or work (a decision, a price, a person, how you did something), it searches your notes first. It only asks you when the brain truly has nothing.</div>
+  <h3>Ask the way you talk</h3>
+  <div class="grid g2">
+    <div class="say"><span>You say</span>"What did we decide about the fence?"</div>
+    <div class="say"><span>You say</span>"Have we done something like this before?"</div>
+    <div class="say"><span>You say</span>"¿Qué sé de la familia Ortiz?"</div>
+    <div class="say"><span>You say</span>"Find that article about pricing I saved."</div>
+  </div>
+  <p>The <code>brain-search</code> skill searches, opens the top notes, and answers with what they say, naming each note so you can open it. If two notes disagree, it shows you both, newest first, instead of picking one quietly.</p>
+  <h3>How it finds things</h3>
+  <p>Setup built a search index of your whole vault inside <code>.brain/</code>. Think of it as the index at the back of a book, rebuilt in seconds whenever the brain saves or closes a session.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Titles weigh more</h4><p>A word in the title, the description or the tags counts more than the same word buried in the text. That is why descriptions matter.</p></div>
+    <div class="card"><h4>Accents do not matter</h4><p>"decision" finds "decisión", and "cafe" finds "café". Search in English or Spanish.</p></div>
+    <div class="card"><h4>All words, then any</h4><p>It first looks for notes with every word. If none exist, it tries any of them and tells you so.</p></div>
+  </div>
+  <h3>Recipes the AI uses for you</h3>
+  <div class="card tablecard"><table>
+    <tr><th>You ask</th><th>What it does</th></tr>
+    <tr><td>"What did we decide about X?"</td><td>Searches decisions with X in the title, newest first</td></tr>
+    <tr><td>"Where did we leave project Y?"</td><td>Opens the project's Door first (Chapter 5), then recent session logs</td></tr>
+    <tr><td>"Have we done this before?"</td><td>Searches session logs and lessons for the key words</td></tr>
+    <tr><td>"What do I know about Z?"</td><td>Searches people notes first, then everything</td></tr>
+  </table></div>
+</div>
+
+<!-- ===== CH4 p2: NO PYTHON + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">What a good answer looks like</h3>
+  <div class="mock">
+    <p><b>You:</b> What did we decide about the fence?</p>
+    <p><b>AI:</b> Searched the brain for "fence": 3 notes, I read the first two. On September 12 you decided on a cedar fence, 6 feet, along the back line only, because the neighbor is sharing the cost <i>([[Decision, Back fence]])</i>. The quote was $4,200 <i>([[2026-09-12 Session, Fence quotes]])</i>. One older note from August talked about vinyl; the September decision replaced it.</p>
+  </div>
+  <ul class="clean" style="margin-top:10px">
+    <li>It says where it looked, in one line.</li>
+    <li>It answers from the notes and names each one as a link.</li>
+    <li>It points out the older note that disagrees, instead of hiding it.</li>
+  </ul>
+  <h3>No Python? It still searches</h3>
+  <p>Without Python, the skill falls back to a plain text search of your vault: file names first, then the description lines, then the text. Same rule, same order, just less ranking. Install Python whenever you like; the index is built automatically the next time you save.</p>
+  <h3>Make your notes easy to find</h3>
+  <ul class="dots">
+    <li><b>Good titles.</b> "Decision, Back fence" beats "Thoughts 3".</li>
+    <li><b>A real description.</b> One line a stranger would understand. The brain writes it, and it is the line search trusts most.</li>
+    <li><b>Aliases.</b> Other names for the same thing ("the Ortiz job", "Ortiz kitchen") go in the aliases property.</li>
+  </ul>
+  <div class="callout info"><b>When the brain asks you anyway</b>It means the search came up empty. Answer, and if the fact will matter again, let it save it. Next time it will not ask.</div>
+  <pre>python3 .brain/tools/brain_search.py "fence" --type decision --sort date   # what the AI runs, if you are curious</pre>
+  <div class="recap"><h4>Chapter 4 recap</h4><ul class="clean">
+    <li>The AI searches your notes before asking you.</li>
+    <li>Ask in plain words, in English or Spanish.</li>
+    <li>Answers name the notes they come from, and show disagreements.</li>
+    <li>Titles and descriptions are what make notes findable.</li></ul></div>
+</div>
+
+<!-- ===== CH5 p1: DOORS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 5</div>
+  <h2><span class="num">5</span>Working on projects</h2>
+  <p class="sub">How a project picks up exactly where it left off, even after weeks away.</p>
+  <p>Without help, resuming a project means digging through old conversations and guessing which one is current. Version 2 gives every project three tools: a <b>Door</b> to open it, <b>checkpoints</b> while you work, and a <b>close</b> when you stop.</p>
+  <h3>The Door: one page per project</h3>
+  <p>A Door is a note in <code>09 MOCs/</code> called <code>Door, &lt;Project&gt;</code>. It says where the project stands today, in one screen, and it is the first thing the brain reads when you start working on that project.</p>
+  <div class="grid g2">
+    <div>
+      <div class="card tablecard" style="margin-top:0"><table>
+        <tr><th>#</th><th>Section</th><th>What it holds</th></tr>
+        <tr><td>1</td><td><b>Current state</b></td><td>3 to 6 lines of what is true today</td></tr>
+        <tr><td>2</td><td><b>Numbers that matter</b></td><td>The few figures that drive decisions, with their source</td></tr>
+        <tr><td>3</td><td><b>Next steps</b></td><td>Checkboxes, and who owns each</td></tr>
+        <tr><td>4</td><td>How it runs</td><td>How to operate it. Read only when needed</td></tr>
+        <tr><td>5</td><td>Where everything lives</td><td>Links to the MOC, decisions, files</td></tr>
+        <tr><td>6</td><td>History</td><td>One line per change, newest first</td></tr>
+      </table></div>
+      <p class="small">Sections 1 to 3 are the <b>front page</b>: that is all the brain reads to start. The rest waits until it is needed.</p>
+    </div>
+    <div class="mock">
+      <div class="fm">type: door · project: garden
+verified: 2026-10-02</div>
+      <b>Door, Garden</b>
+      <h5>1. Current state</h5><p>Three cedar beds built. Soil delivered. Planting starts after May 15 (frost lesson).</p>
+      <h5>2. Numbers that matter</h5><p>Spent $640 of $900 budget (receipts note, Oct 1). Beds: 3 of 4.</p>
+      <h5>3. Next steps</h5><p>☐ Build bed 4 (Ana)<br>☐ Order drip kit (Luis)<br>☑ Fill beds with soil</p>
+      <h5>4 to 6</h5><p class="small">How it runs · Where things live · History</p>
+    </div>
+  </div>
+  <div class="say"><span>You say</span>"Let's work on the garden."  ·  "¿En qué quedamos con el huerto?"</div>
+  <p>The brain opens the Door, tells you in one line where things stand and what is next, and gets to work. If the Door was last checked more than a week ago, it says so and checks the numbers before deciding anything.</p>
+  <div class="callout"><b>Starting something new?</b>Say "new project: kitchen remodel". The brain creates its Door, adds the project to your list, and links it from a MOC so it is never an orphan.</div>
+</div>
+
+<!-- ===== CH5 p2: CHECKPOINTS + CLOSE ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Checkpoints: a save point while you work</h3>
+  <p>In a long conversation, the AI eventually compresses the beginning to make room, a bit like keeping only the summary of the first chapters of a book. Details blur. A <b>checkpoint</b> is a save point, like in a video game: every 15 to 20 exchanges, at each milestone, and before any heavy step, the brain writes where the work stands to <code>06 Session Logs/Active Session State, &lt;Project&gt;</code>.</p>
+  <div class="grid g2">
+    <div class="card"><h4>One file per project</h4><p>Each project has its own checkpoint, overwritten each time. Two projects in one day never erase each other.</p></div>
+    <div class="card"><h4>After a compression</h4><p>The brain re-reads the checkpoint and tells you: "the conversation was compressed; we are at...". Then it carries on. You do nothing.</p></div>
+  </div>
+  <h3>Closing a session</h3>
+  <p>When you are done for the day, say:</p>
+  <div class="say"><span>You say</span>"Close the session."  ·  "Continuamos mañana."  ·  "Blindemos."</div>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Checkpoint</h4><p>The working state, current</p></div>
+    <div class="step"><div class="n">2</div><h4>Door</h4><p>Sections 1 to 3 rewritten, verified today</p></div>
+    <div class="step"><div class="n">3</div><h4>Save</h4><p>Knowledge and the session log</p></div>
+    <div class="step"><div class="n">4</div><h4>Index</h4><p>Search rebuilt with today's notes</p></div>
+    <div class="step"><div class="n">5</div><h4>Git</h4><p>Optional: a safe commit of the vault</p></div>
+  </div>
+  <div class="callout gold"><b>Golden rule: freeze, then write</b>All five steps describe the same moment. The brain decides what is true now, then writes it everywhere, so the checkpoint, the Door and the log never tell three different stories.</div>
+  <p>You get a five-line summary:</p>
+  <pre>Session closed:
+- Checkpoint: Active Session State, Garden (updated)
+- Door: Door, Garden (verified today; next step: build bed 4)
+- Brain: 2 notes + session log, all pass the property check
+- Index: rebuilt, 412 notes
+- Git: not a repo (skipped)</pre>
+  <div class="callout info"><b>About the git step</b>Only if your vault is a git repository (a technical way to keep versions). It pulls changes from your other computer only when they line up cleanly; if they do not, it stops and tells you instead of mixing them. It is the only thing that commits the vault, so turn off any plugin that commits on its own.</div>
+</div>
+
+<!-- ===== CH5 p3: DAY IN LIFE + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">A project day, start to finish</h3>
+  <div class="card tablecard"><table>
+    <tr><th style="width:18%">When</th><th style="width:36%">You</th><th>The brain</th></tr>
+    <tr><td>8:00</td><td>"Let's work on the kitchen remodel."</td><td>Reads the Door's front page: cabinets ordered, waiting on the plumber's quote, budget at 62%</td></tr>
+    <tr><td>8:05</td><td>"Did we ever pick a sink?"</td><td>Searches: a decision from September, undermount steel sink, with the model number</td></tr>
+    <tr><td>9:30</td><td>(long planning session)</td><td>Writes a checkpoint after the layout milestone</td></tr>
+    <tr><td>11:00</td><td>(the conversation gets long)</td><td>Notices the compression, re-reads the checkpoint, carries on</td></tr>
+    <tr><td>12:00</td><td>"Close the session."</td><td>Checkpoint, Door rewritten, new decision saved, index rebuilt. Five-line summary</td></tr>
+    <tr><td>Two weeks later</td><td>"Where are we with the kitchen?"</td><td>One line from the Door: what is done, what is next, and that the numbers are 14 days old</td></tr>
+  </table></div>
+  <h3>Which note answers which question</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Note</th><th>Answers</th><th>Changes</th></tr>
+    <tr><td><b>Door</b></td><td>Where does the project stand today?</td><td>Rewritten at every close</td></tr>
+    <tr><td><b>Checkpoint</b></td><td>What were we doing an hour ago?</td><td>During a long session</td></tr>
+    <tr><td><b>Session log</b></td><td>What happened in that session?</td><td>Never, once written</td></tr>
+    <tr><td><b>MOC</b></td><td>Where is everything about this theme?</td><td>When notes are added</td></tr>
+  </table></div>
+  <div class="recap"><h4>Chapter 5 recap</h4><ul class="clean">
+    <li>Every project has a Door: one screen, read first.</li>
+    <li>Long sessions get checkpoints, and recover by themselves.</li>
+    <li>"Close the session" updates everything at once, describing the same moment.</li>
+    <li>Numbers in a Door are only updated when they were checked.</li></ul></div>
+</div>
+
+<!-- ===== CH6 p1: ADVISOR ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 6</div>
+  <h2><span class="num">6</span>Deciding what to build</h2>
+  <p class="sub">The idea filter. Before you build anything, run it through this.</p>
+  <p>Every "yes" to a new project is a silent "no" to something else. Ideas feel exciting in the moment, and excitement is a terrible judge of what is worth building now. The <code>project-advisor</code> skill is a quick, honest filter that catches every idea before it eats your week.</p>
+  <div class="say"><span>You say</span>"Should I do this?"  ·  "¿Vale la pena este proyecto?"</div>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Reads your brain</h4><p>North Star, goals, related ideas, the project Door</p></div>
+    <div class="step"><div class="n">2</div><h4>Asks up to 7</h4><p>One question at a time</p></div>
+    <div class="step"><div class="n">3</div><h4>Scores 4</h4><p>Weighted, math shown</p></div>
+    <div class="step"><div class="n">4</div><h4>Verdict</h4><p>Green, yellow or red, written up</p></div>
+  </div>
+  <h3>The seven questions</h3>
+  <div class="card tablecard"><table>
+    <tr><th>#</th><th>The question</th><th>What it is really asking</th></tr>
+    <tr><td>1</td><td>In one sentence, what is this?</td><td>Can you say it clearly? Fuzzy ideas are not ready</td></tr>
+    <tr><td>2</td><td>What problem does it solve, and whose?</td><td>A real problem, or just novelty?</td></tr>
+    <tr><td>3</td><td>How is it handled today?</td><td>Does it replace painful manual work, or invent new work?</td></tr>
+    <tr><td>4</td><td>What does success look like in 90 days?</td><td>If you cannot name a number, it is not ready</td></tr>
+    <tr><td>5</td><td>What will it cost to build?</td><td>Time, money, tools. A rough guess is fine</td></tr>
+    <tr><td>6</td><td>If you build this, what does not get built?</td><td>The most important one. Every yes is a no</td></tr>
+    <tr><td>7</td><td>Which part of your life or work does it strengthen?</td><td>Only asked if still unclear</td></tr>
+  </table></div>
+  <h3>The scorecard</h3>
+  <div class="grid g2">
+    <div class="card tablecard" style="margin:0"><table>
+      <tr><th>Dimension</th><th>Weight</th></tr>
+      <tr><td>Systemization: turns repeated work into a system?</td><td>25%</td></tr>
+      <tr><td>North Star: moves you toward your vision?</td><td>30%</td></tr>
+      <tr><td>Revenue or cost: makes or saves money?</td><td>25%</td></tr>
+      <tr><td>Timing: is now the right moment?</td><td>20%</td></tr>
+    </table></div>
+    <div class="card tablecard" style="margin:0"><table>
+      <tr><th>Score</th><th>Verdict</th></tr>
+      <tr><td>7.5 to 10</td><td><span class="light" style="background:var(--green)"></span><b>GREEN</b>: build it</td></tr>
+      <tr><td>5.0 to 7.4</td><td><span class="light" style="background:var(--orange)"></span><b>YELLOW</b>: refine first</td></tr>
+      <tr><td>0 to 4.9</td><td><span class="light" style="background:var(--red)"></span><b>RED</b>: shelve it, saved</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ===== CH6 p2: EXAMPLE + CH7 ===== -->
+<div class="sheet">
+  <div class="callout info" style="margin-top:0"><b>Two honesty rules</b><b style="display:inline">Override:</b> North Star 9 or 10 and a total of at least 5.0 bumps it to green. <b style="display:inline">Veto:</b> Timing 1 or 2 caps it at yellow, however high the rest is.</div>
+  <h3>A worked example</h3>
+  <div class="mock"><p><b>You:</b> Should I do this? A weekly email that summarizes everything new in my industry.</p>
+  <p><b>Advisor:</b> (searches the brain: your North Star says "stay current without doom-scrolling"; your Door for the spring launch shows you are mid-launch this week.)</p></div>
+  <div class="card tablecard"><table>
+    <tr><th>Dimension</th><th>Score</th><th>Weight</th><th>Weighted</th></tr>
+    <tr><td>Systemization</td><td>8</td><td>25%</td><td>2.00</td></tr>
+    <tr><td>North Star</td><td>9</td><td>30%</td><td>2.70</td></tr>
+    <tr><td>Revenue or cost</td><td>4</td><td>25%</td><td>1.00</td></tr>
+    <tr><td>Timing</td><td>3</td><td>20%</td><td>0.60</td></tr>
+    <tr><td><b>Total</b></td><td></td><td></td><td><b>6.30</b></td></tr>
+  </table></div>
+  <p>Raw verdict yellow (6.3). The override applies (North Star 9, total over 5.0), so it is <b>green</b>, and the write-up is honest that timing is weak: start after this week's launch ships.</p>
+  <p class="small">Every run writes an idea note in <code>03 Ideas &amp; Notes</code>, a Decision Log entry for green or red, a printable brief, and (if you turned it on) a Notion entry. Red ideas are parked with what would bring them back, never thrown away.</p>
+  <div class="recap"><h4>Chapter 6 recap</h4><ul class="clean"><li>"Should I do this?", up to seven questions, four scores, one verdict with the math shown.</li><li>It reads your brain first, so the advice fits your priorities.</li></ul></div>
+
+</div>
+
+<!-- ===== CH7 ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 7</div>
+  <h2><span class="num">7</span>Power moves</h2>
+  <p class="sub">The skill you use the most and think about the least.</p>
+  <p>Whenever another skill writes to your vault, it first loads <code>obsidian-power-user</code>. That is why your notes come out with proper headers, working links and tidy callout boxes without you asking. Like a spell-checker, it runs in the background. When you call it on purpose, it is a full Obsidian expert:</p>
+  <div class="grid g2">
+    <div class="card"><h4>A template</h4><p>"Make me a weekly review template." A reusable note shape you fill in every week.</p></div>
+    <div class="card"><h4>A canvas</h4><p>"Make a canvas to plan the move." A visual board of cards you arrange and connect.</p></div>
+    <div class="card"><h4>A map or dashboard</h4><p>"Make a MOC of everything about pricing." Or a base: a table view of notes filtered by type or date.</p></div>
+    <div class="card"><h4>A clean note from a mess</h4><p>Paste rough notes and say "turn this into a proper note". Header, links and all.</p></div>
+    <div class="card"><h4>An import</h4><p>"Help me bring my notes from Apple Notes." It knows the importers for Notion, Evernote, Apple Notes, Roam and more, and what survives the trip.</p></div>
+    <div class="card"><h4>A query</h4><p>"Show me every decision from this year in one list." A Dataview query or a base that updates itself.</p></div>
+  </div>
+  <div class="callout"><b>You do not need the jargon</b>Describe what you want in plain words. It knows which Obsidian feature fits, and it follows the same link and header rules as every other skill.</div>
+  <div class="recap"><h4>Chapter 7 recap</h4><ul class="clean"><li>It runs behind every other skill, so notes come out clean.</li><li>Ask it directly for templates, canvases, maps, imports and queries, in plain words.</li></ul></div>
+</div>
+
+<!-- ===== CH8 p1: HEALTH ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 8</div>
+  <h2><span class="num">8</span>Keeping it healthy</h2>
+  <p class="sub">A brain rots quietly. Measured once a month with the same rules, it is caught while it is small.</p>
+  <p>None of the problems below hurts on the day it happens: a renamed note leaves a dead link, a quick save leaves an orphan, a copy is left behind. Together, over months, they turn a brain into a junk drawer. The <code>brain-health</code> skill measures nine things, the same way every month, and keeps the history.</p>
+  <div class="card tablecard"><table>
+    <tr><th>Measure</th><th>What it means</th><th>Healthy</th></tr>
+    <tr><td><b>Notes</b></td><td>How many, and per drawer</td><td>Growing where you work</td></tr>
+    <tr><td><b>Broken links</b></td><td>Links that point to a note that does not exist</td><td>Going down</td></tr>
+    <tr><td><b>Orphans</b></td><td>Notes nothing links to, so you never run into them</td><td>Few, shrinking</td></tr>
+    <tr><td><b>No header</b></td><td>Notes without the properties block</td><td>0 for new notes</td></tr>
+    <tr><td><b>Contract</b></td><td>% of notes that pass the property check</td><td>Going up</td></tr>
+    <tr><td><b>.bak files</b></td><td>Backup copies sitting inside the vault</td><td>Always 0</td></tr>
+    <tr><td><b>Duplicates</b></td><td>Notes that are exact copies of another</td><td>0</td></tr>
+    <tr><td><b>Bad names</b></td><td>File names Obsidian cannot link</td><td>0</td></tr>
+    <tr><td><b>Stale Doors</b></td><td>Project Doors not checked in 30 days</td><td>0</td></tr>
+  </table></div>
+  <h3>The traffic light</h3>
+  <div class="grid g3">
+    <div class="card piece" style="border-top-color:var(--red)"><span class="tag t-red">RED</span><h4>Fix this month</h4><p>Backup files inside the vault, or broken links grew more than 10% since last month.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">YELLOW</span><h4>Keep an eye</h4><p>Broken links grew a little, the contract % dropped, or there are bad names or stale Doors.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">GREEN</span><h4>Healthy</h4><p>None of the above. Keep doing what you are doing.</p></div>
+  </div>
+  <div class="callout gold"><b>Golden rule: compare with last month, not with perfection</b>An old vault can start with hundreds of broken links. That is fine as long as the number goes down. The light looks at the direction, not the size.</div>
+</div>
+
+<!-- ===== CH8 p2: SCHEDULE + FIX + WEEKLY ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">It runs by itself, once a month</h3>
+  <p>If you said yes to question 7 at setup, the check runs on the <b>1st of every month at 07:00</b>, rebuilds the search index, and adds one row to <code>05 AI System/Brain Health History</code>. Nothing else is touched. To see it or change it:</p>
+  <div class="grid g2">
+    <div class="say"><span>You say</span>"How is my brain doing?"  ·  "Salud del cerebro."</div>
+    <div class="say"><span>You say</span>"Turn off the monthly check."  ·  "Apaga la revisión mensual."</div>
+  </div>
+  <p class="small">Behind the scenes: macOS uses launchd, Linux uses cron, and on Windows the brain gives you one line to paste. On a Mac with the vault in iCloud, the first run may ask for Full Disk Access for Python (System Settings, Privacy and Security); the brain tells you if so.</p>
+  <h3>How the answer looks</h3>
+  <div class="mock"><p><b>AI:</b> Brain health, October 1: <b>YELLOW</b>. Broken links went from 41 to 47, mostly one note: six notes link to "Supplier List", which was renamed. Orphans 12 (was 15, good). Contract 88% (was 85%).<br>Three fixes, most useful first: 1) point the six links to "Suppliers"; 2) link the 3 newest orphans from their MOC; 3) verify the Door for the garden (32 days old). Want me to do them?</p></div>
+  <h3>How the fixes work</h3>
+  <ul class="clean">
+    <li><b>Backup files:</b> moved to <code>Archives/Backups/</code>. Never deleted.</li>
+    <li><b>Broken links:</b> the missing note is created as a short stub, or the link is pointed at the right name. One fix often repairs many links.</li>
+    <li><b>Orphans:</b> linked from their MOC or a related note, or archived if truly dead.</li>
+    <li><b>Property check:</b> the brain lists each note and what is missing, newest notes first.</li>
+    <li><b>Stale Doors:</b> verified with you, or the project is marked parked.</li>
+  </ul>
+  <div class="callout warn"><b>Two months in a row not green?</b>The numbers cannot see everything. The brain will offer a deeper review: notes that contradict each other, plans that are no longer true, MOCs that no longer match the vault.</div>
+  <h3>Your five-minute weekly habit</h3>
+  <p>Once a week, refresh <code>CURRENT-CONTEXT.md</code>: active projects (each linking its Door), this week's focus, open questions, recent decisions. It is the first note your brain reads, so keeping it current is the highest-value habit after saving. Ask: <i>"Help me update my current context for this week."</i></p>
+  <div class="recap"><h4>Chapter 8 recap</h4><ul class="clean"><li>Monthly: the checkup runs itself and writes one history row.</li><li>Weekly: five minutes on CURRENT-CONTEXT.md.</li><li>Fix at most three things at a time, most repeated first.</li></ul></div>
+</div>
+
+<!-- ===== CH9: TROUBLESHOOTING ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Chapter 9</div>
+  <h2><span class="num">9</span>Troubleshooting and FAQ</h2>
+  <p class="sub">There is little to break. Here is what people occasionally hit, with the fix.</p>
+  <div class="two-col">
+    <div class="card"><h4>"The brain cannot find my vault."</h4><p>The vault folder is not connected to your assistant in this session. In Cowork, grant access to the folder; elsewhere, open the assistant in or near the vault. The brain never writes notes somewhere random as a workaround; it stops and asks.</p></div>
+    <div class="card"><h4>"It did not trigger when I said the phrase."</h4><p>Say it more directly: "Save this to my brain." Still nothing? The skills may be in the wrong folder (Chapter 1, Step 1). Run the install command again and start a fresh conversation.</p></div>
+    <div class="card"><h4>"Search says there is no index."</h4><p>Ask: "rebuild the search index." It takes seconds. If it says Python or FTS5 is missing, install Python from python.org; until then search uses plain text.</p></div>
+    <div class="card"><h4>"The property check fails on my notes."</h4><p>Normal for notes written by hand or before v2. Ask "fix the properties of this note". If a type or project is new, add it to <code>.brain/vocabulary.json</code> (the brain can do it).</p></div>
+    <div class="card"><h4>"The monthly check never ran."</h4><p>Ask "is the monthly check on?" The brain shows the status and the last log lines. On a Mac with iCloud, give Python Full Disk Access. If the computer was off on the 1st, macOS runs it when it wakes.</p></div>
+    <div class="card"><h4>"The close stopped at the git step."</h4><p>Your vault changed on two computers and the changes do not line up. The brain stopped on purpose so nothing gets mixed up. Ask it to show you the difference and decide together.</p></div>
+    <div class="card"><h4>"It answered in the wrong language."</h4><p>Tell it: "answer in English" or "responde en español". For good, change the language line in <code>CLAUDE.md</code>.</p></div>
+    <div class="card"><h4>"I ran setup twice."</h4><p>No harm. Setup sees your brain exists and asks: keep it, change some answers, or start over. Choose keep.</p></div>
+    <div class="card"><h4>"I do not have Obsidian."</h4><p>Your brain still works: notes are plain text files. Install Obsidian (free) whenever you want the graph and clickable links.</p></div>
+    <div class="card"><h4>"Do I have to use Notion?"</h4><p>No. It only touches the idea filter, and only if you turned it on.</p></div>
+  </div>
+  <div class="callout info"><b>When in doubt, ask the brain</b>"Why did my save not work?" or "Is my vault connected?" usually gets a straight answer and a fix faster than this page.</div>
+</div>
+
+<!-- ===== CH9 FAQ + CH10 ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Quick FAQ</h3>
+  <div class="card tablecard"><table>
+    <tr><td style="width:36%"><b>Will it work on my phone?</b></td><td>Your notes sync if the vault is in iCloud, OneDrive or Dropbox. The skills run wherever you use your assistant.</td></tr>
+    <tr><td><b>Can I rename the folders?</b></td><td>Yes. Keep the number in front (01, 02...) and everything keeps working.</td></tr>
+    <tr><td><b>Is my data private?</b></td><td>Yes. Everything stays in your vault, on your computer or your cloud drive, in plain files.</td></tr>
+    <tr><td><b>Does anything run in the background?</b></td><td>Only the monthly health check, and only if you said yes.</td></tr>
+    <tr><td><b>What if I stop using the kit?</b></td><td>You keep every note, forever.</td></tr>
+    <tr><td><b>Can I share the kit?</b></td><td>Yes, that is the point. It is free under the MIT license.</td></tr>
+  </table></div>
+
+  <div class="chapter-eyebrow" style="margin-top:22px">Chapter 10</div>
+  <h2><span class="num">10</span>Growing your brain</h2>
+  <p class="sub">You started with scattered knowledge. You end with a system that remembers, finds, and looks after itself.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Name your North Star</h4><p>After a few weeks, write in <code>CLAUDE.md</code> the one outcome you are building toward. It sharpens the idea filter more than anything else.</p></div>
+    <div class="card"><h4>Teach it your world</h4><p>Add the people who matter, your vocabulary and nicknames to <code>CLAUDE.md</code>. Keep it short; move detail into notes and link them.</p></div>
+    <div class="card"><h4>Add your own types</h4><p>Track recipes, clients, properties? Add a type to <code>.brain/vocabulary.json</code> and every tool follows.</p></div>
+    <div class="card"><h4>Build a pack for your trade</h4><p>The same base can learn a trade: painters, real estate, consulting, restaurants. Use it a few weeks first; you will see what your trade needs.</p></div>
+  </div>
+  <div class="callout"><b>The best way to learn it is to teach it</b>Walk a friend through setup. It takes ten minutes, and now there are two of you with a second brain.</div>
+  <h3>A final word</h3>
+  <p>You do not have to be technical to think clearly, decide well and remember what matters. The hard part was having a place for it all. Now you do. Start small: save one conversation today, open one project through its Door, and let the brain take care of the rest.</p>
+</div>
+
+<!-- ===== GLOSSARY + REFERENCE CARD ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Reference</div>
+  <h2>Glossary</h2>
+  <p class="sub">The words in this manual, in plain language.</p>
+  <div class="two-col gloss">
+    <div class="card"><h4>Vault</h4><p>The folder that holds your brain. Obsidian calls it a vault.</p></div>
+    <div class="card"><h4>Skill</h4><p>A folder of instructions that teaches your AI one job.</p></div>
+    <div class="card"><h4>Link</h4><p><code>[[Note Name]]</code> inside a note: a doorway to another note.</p></div>
+    <div class="card"><h4>Broken link</h4><p>A doorway to a room that does not exist.</p></div>
+    <div class="card"><h4>Orphan</h4><p>A note nothing links to. You will never stumble on it again.</p></div>
+    <div class="card"><h4>Properties</h4><p>The header at the top of a note: type, date, time, description, tags, status.</p></div>
+    <div class="card"><h4>MOC</h4><p>Map of Content: the table of contents of one theme.</p></div>
+    <div class="card"><h4>Door</h4><p>One note per project: where it stands today, in one screen.</p></div>
+    <div class="card"><h4>Front page</h4><p>Sections 1 to 3 of a Door, the only part read to start.</p></div>
+    <div class="card"><h4>Checkpoint</h4><p>A save point of a long session, one per project.</p></div>
+    <div class="card"><h4>Compression</h4><p>When a long conversation gets summarized to make room.</p></div>
+    <div class="card"><h4>Search index</h4><p>Like the index at the back of a book, for your whole vault.</p></div>
+    <div class="card"><h4>Session log</h4><p>The record of one working session.</p></div>
+    <div class="card"><h4>North Star</h4><p>The one long-term outcome you are building toward.</p></div>
+  </div>
+  <h3>The reference card</h3>
+  <div class="card tablecard"><table class="ref">
+    <tr><th>Say this</th><th>And this happens</th></tr>
+    <tr><td>"Save to my brain" · "Guárdalo"</td><td>Knowledge filed, session logged, links checked</td></tr>
+    <tr><td>"What did we decide about X?"</td><td>The brain searches before answering</td></tr>
+    <tr><td>"Let's work on X" · "¿En qué quedamos?"</td><td>The project Door opens: state, numbers, next steps</td></tr>
+    <tr><td>"New project: X"</td><td>A Door is created and linked</td></tr>
+    <tr><td>"Close the session" · "Blindemos"</td><td>Checkpoint, Door, save, index, in one go</td></tr>
+    <tr><td>"Should I do this?"</td><td>Seven questions, four scores, one verdict</td></tr>
+    <tr><td>"How is my brain doing?"</td><td>The traffic light and the top three fixes</td></tr>
+  </table></div>
+  <footer class="end">Second Brain Starter Kit · User Manual · Version 2.0 · October 2026<br>github.com/herreraspaintingba-hub/second-brain-starter-kit · MIT license · Built to be shared</footer>
+</div>
+
+</body>
+</html>

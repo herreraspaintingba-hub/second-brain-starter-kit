@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Brain Starter Kit v2.0, Manual del Usuario</title>
+<style>
+:root{
+  --bg:#ffffff; --card:#ffffff; --ink:#1c2733; --muted:#5f6b7a; --border:#e3e7ec;
+  --blue:#1e6fd9; --blue-soft:#e8f1fd; --orange:#d97a1e; --orange-soft:#fdf1e3;
+  --green:#1f9d55; --green-soft:#e6f6ec; --red:#c43d3d; --red-soft:#fbeaea;
+  --purple:#7a4fd9; --purple-soft:#f1ebfc; --code:#0f1722;
+}
+@page{ size:letter; margin:0;
+  @bottom-center{ content: counter(page) " / " counter(pages); font-size:8pt; color:#5f6b7a; font-family:"DejaVu Sans",sans-serif; } }
+@page:first{ @bottom-center{ content:none; } }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DejaVu Sans",-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:10pt}
+.sheet{page-break-after:always;padding:0.55in 0.6in 0.6in}
+.sheet:last-child{page-break-after:avoid}
+h1{font-size:25pt;line-height:1.15;margin-bottom:10px}
+h2{font-size:16pt;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 6px;border-radius:8px;background:var(--blue);color:#fff;font-size:11pt}
+h3{font-size:11.5pt;margin:16px 0 6px}
+h4{font-size:10pt;margin-bottom:4px}
+p{margin:0 0 8px}
+.sub{color:var(--muted);font-size:10pt;margin-bottom:14px}
+.chapter-eyebrow{font-size:8pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.hero{background:linear-gradient(135deg,#10243e 0%,#1e3a5f 60%,#1e6fd9 100%);color:#fff;border-radius:16px;padding:40px 36px;margin-bottom:22px}
+.hero p{color:#cfe0f5;max-width:560px;font-size:11pt}
+.hero .kicker{font-size:9pt;letter-spacing:.12em;text-transform:uppercase;color:#9fc3f0;margin-bottom:10px}
+.badges{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:3px 11px;border-radius:999px;font-size:8.5pt;color:#fff}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.piece{border-top:4px solid var(--blue)}
+.card p{color:var(--muted);font-size:9.2pt;margin:0}
+.card h4{font-size:10.5pt;margin-bottom:5px}
+.tag{display:inline-block;font-size:7.5pt;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:7px;letter-spacing:.04em}
+.t-blue{background:var(--blue-soft);color:var(--blue)} .t-orange{background:var(--orange-soft);color:#8a4d10}
+.t-green{background:var(--green-soft);color:#14613a} .t-purple{background:var(--purple-soft);color:#4a2d8c}
+.t-red{background:var(--red-soft);color:var(--red)}
+.callout{border-left:4px solid var(--green);background:var(--green-soft);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:9.4pt}
+.callout b:first-child{display:block;margin-bottom:2px}
+.callout.warn{border-color:var(--red);background:var(--red-soft)}
+.callout.info{border-color:var(--blue);background:var(--blue-soft)}
+.callout.gold{border-color:var(--orange);background:var(--orange-soft)}
+.say{border:1.5px solid var(--blue);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:11pt;font-weight:700;color:#15497e;background:var(--blue-soft)}
+.say span{display:block;font-size:8pt;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+table{border-collapse:collapse;width:100%;font-size:9pt}
+th{text-align:left;padding:7px 10px;background:var(--blue-soft);color:#15497e;font-weight:700}
+td{padding:7px 10px;border-top:1px solid var(--border);vertical-align:top}
+.tablecard{padding:0;overflow:hidden;margin:8px 0 10px}
+code{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:8.3pt;background:#eef1f5;color:#15497e;padding:1px 5px;border-radius:4px}
+pre{font-family:"DejaVu Sans Mono",Menlo,monospace;font-size:8pt;background:var(--code);color:#cfe3ff;padding:10px 12px;border-radius:8px;margin:8px 0 10px;white-space:pre-wrap;line-height:1.45}
+.tree{font-family:"DejaVu Sans Mono",monospace;font-size:8.3pt;background:#f6f7f9;border:1px solid var(--border);color:var(--ink);border-radius:10px;padding:12px 14px;white-space:pre;line-height:1.5;margin:8px 0}
+.flowline{display:flex;gap:0;margin:10px 0}
+.step{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px;margin-right:20px;position:relative;background:#fff}
+.step::after{content:"→";position:absolute;right:-16px;top:40%;font-size:12pt;color:var(--muted)}
+.step:last-child{margin-right:0}
+.step:last-child::after{content:none}
+.step .n{font-size:7pt;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
+.step h4{font-size:9pt;margin:2px 0 3px}
+.step p{font-size:8pt;color:var(--muted);margin:0}
+ul.clean{list-style:none}
+ul.clean li{padding:6px 0 6px 22px;position:relative;border-bottom:1px solid var(--border);font-size:9.2pt}
+ul.clean li:last-child{border-bottom:none}
+ul.clean li::before{content:"✓";position:absolute;left:2px;color:var(--green);font-weight:700}
+ul.clean.no li::before{content:"✕";color:var(--red)}
+ol.steps{padding-left:20px;font-size:9.4pt} ol.steps li{margin-bottom:5px}
+ul.dots{padding-left:18px;font-size:9.4pt} ul.dots li{margin-bottom:4px}
+.recap{border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-top:12px;background:#fafbfc}
+.recap h4{color:var(--blue);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.diagram{border:1px solid var(--border);border-radius:14px;padding:14px;margin:10px 0;text-align:center}
+.toc td{font-size:10pt;padding:8px 10px}
+.toc td.pg{text-align:right;color:var(--muted);width:60px}
+.two-col{columns:2;column-gap:22px}
+.two-col .card{break-inside:avoid;margin-bottom:10px}
+.gloss .card{padding:6px 10px;margin-bottom:6px;border-radius:8px}
+.gloss .card h4{font-size:9pt;margin-bottom:1px}
+.gloss .card p{font-size:8.4pt}
+.mock{border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:8.6pt;background:#fbfcfd}
+.mock h5{font-size:9pt;margin:6px 0 2px;color:#15497e}
+.mock .fm{font-family:"DejaVu Sans Mono",monospace;font-size:7.6pt;color:var(--muted);border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:4px;white-space:pre}
+.light{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:middle;margin-right:5px}
+.small{font-size:8.6pt;color:var(--muted)}
+footer.end{margin-top:26px;text-align:center;color:var(--muted);font-size:8.5pt}
+.ref td:first-child{font-weight:700;color:#15497e;width:42%}
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE 1: COVER ===== -->
+<div class="sheet">
+  <div class="hero" style="padding:56px 40px 48px;margin-top:40px">
+    <div class="kicker">Manual del Usuario · Versión 2.0</div>
+    <h1 style="font-size:32pt">Second Brain<br>Starter Kit</h1>
+    <p>Convierte a tu asistente de IA en un segundo cerebro que recuerda lo que aprendes, lo busca antes de preguntarte, guarda el estado de cada proyecto en una sola página y revisa su propia salud cada mes. En lenguaje sencillo. No necesitas saber nada técnico.</p>
+    <div class="badges"><span class="badge">9 skills</span><span class="badge">English + Español</span><span class="badge">Bóveda de Obsidian</span><span class="badge">Gratis, licencia MIT</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card piece"><span class="tag t-blue">CAPTURA</span><h4>Recuerda</h4><p>Termina cualquier conversación con "Guárdalo en mi cerebro". Lo que vale la pena se archiva, se enlaza y se queda.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">MEMORIA</span><h4>Busca primero</h4><p>Antes de preguntarte algo, la IA busca en tus notas. Responde tu cerebro, no tu memoria.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">CUIDADO</span><h4>Se mantiene sano</h4><p>Una vez al mes se revisa solo y te dice lo único que vale la pena arreglar.</p></div>
+  </div>
+  <div class="callout info" style="margin-top:26px"><b>Lo nuevo en la versión 2.0</b>Cinco skills nuevos (búsqueda, Puertas de proyecto, checkpoints, cierre de sesión y salud mensual), reglas para que la bóveda no se eche a perder y una ruta de actualización para cerebros v1 que no mueve nada. El capítulo 1 te enseña cómo actualizar.</div>
+  <p class="small" style="margin-top:40px;text-align:center">github.com/herreraspaintingba-hub/second-brain-starter-kit</p>
+</div>
+
+<!-- ===== PAGE 2: CONTENTS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Contenido</div>
+  <h2>Qué hay adentro</h2>
+  <p class="sub">La primera vez léelo en orden. Después, brinca a lo que necesites.</p>
+  <div class="card tablecard"><table class="toc">
+    <tr><th>Capítulo</th><th>Lo que vas a aprender</th></tr>
+    <tr><td><b>Bienvenida</b></td><td>Qué es un segundo cerebro y qué te da este kit</td></tr>
+    <tr><td><b>1. Instalación</b></td><td>Un comando, siete preguntas, diez minutos. Y cómo actualizar desde la v1</td></tr>
+    <tr><td><b>2. Conoce tu cerebro</b></td><td>Los diez cajones de tu bóveda y cómo la lee la IA</td></tr>
+    <tr><td><b>3. Guardar lo que sabes</b></td><td>El hábito de capturar y las reglas que mantienen limpia cada nota</td></tr>
+    <tr><td><b>4. Encontrar las cosas</b></td><td>Buscar antes de preguntar: cómo el cerebro encuentra lo que ya sabes</td></tr>
+    <tr><td><b>5. Trabajar en proyectos</b></td><td>Puertas, checkpoints y cerrar una sesión sin perder nada</td></tr>
+    <tr><td><b>6. Decidir qué construir</b></td><td>El filtro de ideas: cuatro puntajes, un veredicto honesto</td></tr>
+    <tr><td><b>7. Trucos avanzados</b></td><td>Plantillas, canvas, bases y notas limpias cuando las pidas</td></tr>
+    <tr><td><b>8. Mantenerlo sano</b></td><td>La revisión mensual, el semáforo y cómo arreglar lo que encuentre</td></tr>
+    <tr><td><b>9. Problemas y preguntas</b></td><td>La solución para las pocas cosas que fallan</td></tr>
+    <tr><td><b>10. Haz crecer tu cerebro</b></td><td>A dónde llevarlo, un glosario y una tarjeta de referencia de una página</td></tr>
+  </table></div>
+  <h3>Cómo leer este manual</h3>
+  <ul class="dots">
+    <li><b>Las frases en recuadros azules</b> son lo que le dices a tu IA, tal cual o con tus propias palabras.</li>
+    <li><b>Los recuadros verdes</b> son consejos, <b>los azules</b> explican qué pasa por dentro, <b>los rojos</b> son advertencias y <b>los naranjas</b> son reglas de oro.</li>
+    <li><b>Las líneas de código grises</b> son opcionales. Nunca tienes que escribirlas; tu IA las corre por ti. Están aquí para los curiosos.</li>
+    <li>Todo funciona igual en inglés. En el repo hay una edición aparte de este manual en inglés.</li>
+  </ul>
+  <div class="callout gold"><b>La regla de oro de todo el kit</b>Tú hablas, los skills actúan, la bóveda recuerda. Todo lo demás en este manual es detalle.</div>
+</div>
+
+<!-- ===== PAGE 3: WELCOME ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Bienvenida</div>
+  <h2>Un cerebro fuera de tu cabeza</h2>
+  <p class="sub">Qué es este kit, en una página.</p>
+  <p>Todos los días aprendes cosas: la costumbre de un cliente, un precio que funcionó, una decisión y por qué la tomaste, una lección que te costó dinero. Casi todo se te olvida en un mes. Un <b>segundo cerebro</b> es un lugar donde todo eso queda guardado, ordenado, conectado y fácil de volver a encontrar.</p>
+  <p>Este kit convierte al asistente de IA que ya usas en el bibliotecario de ese lugar. Le hablas como siempre. Al final dices una frase y archiva lo que valió la pena. La próxima semana, cuando le preguntes algo, busca en tus notas antes de preguntarte a ti.</p>
+  <h3>Los nueve skills</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Skill</th><th>Su único trabajo</th></tr>
+    <tr><td><code>second-brain-init</code></td><td>Arma tu cerebro la primera vez (o actualiza un cerebro v1)</td></tr>
+    <tr><td><code>save-to-obsidian</code></td><td>Guarda lo que aprendiste, con links limpios y un log de sesión</td></tr>
+    <tr><td><code>brain-search</code></td><td>Busca en tus notas antes de responder o de preguntarte</td></tr>
+    <tr><td><code>project-door</code></td><td>Lleva una página por proyecto con cómo va hoy</td></tr>
+    <tr><td><code>session-checkpoint</code></td><td>Un punto de guardado en sesiones largas</td></tr>
+    <tr><td><code>close-session</code></td><td>Cierra una sesión de trabajo para que nada se pierda</td></tr>
+    <tr><td><code>brain-health</code></td><td>Una revisión mensual con semáforo e historial</td></tr>
+    <tr><td><code>project-advisor</code></td><td>Califica una idea nueva antes de que le dediques tiempo</td></tr>
+    <tr><td><code>obsidian-power-user</code></td><td>Trabaja detrás de los demás para que cada nota quede limpia y enlazada</td></tr>
+  </table></div>
+  <h3>La promesa</h3>
+  <ol class="steps">
+    <li><b>Un cerebro listo</b>: una bóveda en tu computadora, ordenada en secciones claras.</li>
+    <li><b>Un hábito de captura</b>: termina cualquier conversación con "Guárdalo en mi cerebro" y confía en que lo bueno se queda.</li>
+    <li><b>Memoria sin preguntar</b>: la IA encuentra lo que ya decidiste en vez de volver a preguntarte.</li>
+    <li><b>Proyectos que siguen donde se quedaron</b>, aunque pasen semanas.</li>
+    <li><b>Un cerebro que se mantiene sano</b>, medido igual cada mes.</li>
+  </ol>
+  <div class="callout"><b>¿Cuánto tiempo toma?</b>La instalación, unos 10 minutos. Leer este manual, como una hora. Agarrar el hábito, una semana. Después, simplemente funciona.</div>
+</div>
+
+<!-- ===== CH1 p1: INSTALL ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 1</div>
+  <h2><span class="num">1</span>Instalación</h2>
+  <p class="sub">El único capítulo que suena técnico, y ni este lo es tanto. Un comando, una frase, siete preguntas.</p>
+  <div class="flowline">
+    <div class="step"><div class="n">Paso 1</div><h4>Instala</h4><p>Un comando copia los nueve skills</p></div>
+    <div class="step"><div class="n">Paso 2</div><h4>Di la frase</h4><p>"Configura mi segundo cerebro"</p></div>
+    <div class="step"><div class="n">Paso 3</div><h4>Contesta 7 preguntas</h4><p>Una a la vez, sin respuestas malas</p></div>
+    <div class="step"><div class="n">Paso 4</div><h4>Bóveda lista</h4><p>Carpetas, herramientas, ajustes</p></div>
+    <div class="step"><div class="n">Paso 5</div><h4>Verificado</h4><p>Cada revisión dice OK</p></div>
+  </div>
+  <h3>Lo que necesitas</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Indispensable</h4><ul class="clean">
+      <li>Un asistente de IA que use skills: Claude (incluido Cowork), Codex, Gemini o cualquiera que lea archivos <code>SKILL.md</code>.</li>
+      <li>Este kit (el instalador lo descarga por ti).</li></ul></div>
+    <div class="card"><h4>Opcional, y vale la pena</h4><ul class="clean">
+      <li><b>Obsidian</b>, la app gratis de obsidian.md: la vista de grafo y los links que se pueden abrir.</li>
+      <li><b>Python 3</b>: activa la búsqueda, el revisor de notas y la revisión de salud. Mac y Linux casi siempre lo traen.</li></ul></div>
+  </div>
+  <div class="callout"><b>NO necesitas</b>Un programador, una suscripción pagada, un servidor, Notion ni saber programar. Si puedes pegar una línea y escribir una frase, puedes hacerlo.</div>
+  <h3>Paso 1. Instala con un comando</h3>
+  <p>Abre la Terminal (en Mac: Cmd + Espacio, escribe "Terminal") y pega:</p>
+  <pre>curl -fsSL https://raw.githubusercontent.com/herreraspaintingba-hub/second-brain-starter-kit/main/install.sh | bash</pre>
+  <p>Descarga el kit, encuentra tu asistente (Claude, Codex o Gemini) y copia los nueve skills en su carpeta de skills. Si un skill ya estaba, la copia vieja se hace a un lado, nunca se borra. Al final te dice si encontró Python.</p>
+  <div class="card tablecard"><table>
+    <tr><th>Tu asistente</th><th>Dónde quedan los skills</th><th>Para elegirlo tú</th></tr>
+    <tr><td>Claude Code, Cowork</td><td><code>~/.claude/skills/</code></td><td><code>HOST=claude</code></td></tr>
+    <tr><td>Codex</td><td><code>~/.codex/skills/</code></td><td><code>HOST=codex</code></td></tr>
+    <tr><td>Gemini CLI</td><td><code>~/.gemini/skills/</code></td><td><code>HOST=gemini</code></td></tr>
+    <tr><td>Otro</td><td colspan="2">Copia las nueve carpetas de <code>skills/</code> a donde tu asistente carga sus skills</td></tr>
+  </table></div>
+  <div class="callout info"><b>El símbolo ~</b>Es la forma corta de decir tu carpeta personal (por ejemplo /Users/tunombre en una Mac). Tu explorador de archivos abre ahí por defecto.</div>
+</div>
+
+<!-- ===== CH1 p2: QUESTIONS ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Paso 2. Di la frase</h3>
+  <p>Abre una conversación nueva con tu asistente y escribe:</p>
+  <div class="say"><span>Tú dices</span>"Configura mi segundo cerebro."  ·  "Set up my second brain."</div>
+  <p>Eso despierta a <code>second-brain-init</code>, que hace toda la instalación. No tiene que ser exacto: "Acabo de instalar el starter kit" también funciona.</p>
+  <div class="callout info"><b>Qué pasa por dentro</b>El asistente ve que todavía no hay cerebro (no existe el archivo de ajustes <code>CLAUDE.md</code>), así que hace la instalación en vez de adivinar. Esto pasa una sola vez. Si dices la frase otra vez después, solo confirma que ya está listo.</div>
+  <h3>Paso 3. Contesta siete preguntas</h3>
+  <p>Una a la vez. No hay respuestas malas y puedes cambiar cualquiera después.</p>
+  <div class="card tablecard"><table>
+    <tr><th>#</th><th>Pregunta</th><th>Por qué la hace</th></tr>
+    <tr><td>1</td><td>¿Cómo te llamo?</td><td>Para que el cerebro te hable por tu nombre</td></tr>
+    <tr><td>2</td><td>¿A qué te dedicas? (opcional)</td><td>Para que los consejos encajen con tu trabajo. Déjala vacía si es para uso personal</td></tr>
+    <tr><td>3</td><td>¿Cómo quieres llamar a tu cerebro?</td><td>El nombre de la bóveda, por ejemplo "Mi Segundo Cerebro"</td></tr>
+    <tr><td>4</td><td>¿Dónde lo guardo?</td><td>iCloud, Dropbox u OneDrive para sincronizar entre aparatos, o Documentos</td></tr>
+    <tr><td>5</td><td>¿Qué idioma por defecto?</td><td>Inglés, español o los dos. Todos los skills hablan ambos de todos modos</td></tr>
+    <tr><td>6</td><td>¿Usas Notion?</td><td>Opcional. Si dices que sí, el filtro de ideas puede copiar ahí sus veredictos</td></tr>
+    <tr><td>7</td><td>¿Activo la revisión de salud mensual?</td><td>El cerebro se revisa solo el día 1 de cada mes. Recomendado</td></tr>
+  </table></div>
+  <div class="grid g2">
+    <div class="callout"><b>Sobre la pregunta 4</b>¿Quieres tu cerebro también en el celular? Elige iCloud (Mac), OneDrive (Windows) o Dropbox. ¿Una sola computadora? Documentos está perfecto.</div>
+    <div class="callout"><b>Sobre la pregunta 7</b>Di que sí. Corre una vez al mes, tarda segundos, no cambia ninguna de tus notas y escribe un renglón en una nota de historial. La puedes apagar cuando quieras.</div>
+  </div>
+  <div class="callout info"><b>¿No tienes Python?</b>La instalación se da cuenta y se salta la pregunta 7. Todos los skills siguen funcionando con búsqueda de texto simple; puedes instalar Python después y las herramientas arrancan solas, sin configurar nada.</div>
+</div>
+
+<!-- ===== CH1 p3: BUILT + VERIFY ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Paso 4. Se arma tu bóveda</h3>
+  <p>El cerebro crea un juego de carpetas con números y nombres claros, una caja de herramientas escondida y tus ajustes. Te va contando cada paso.</p>
+  <div class="tree">Your Brain/
+├── 00 Inbox/                ← lo que todavía no tiene lugar
+├── 01 Personal Knowledge/   ← personas, lugares, rutinas, lecciones
+├── 02 Strategy/             ← visión, metas, decisiones, Estrella Polar (North Star)
+├── 03 Ideas &amp; Notes/        ← ideas y referencias guardadas
+├── 04 Learning/             ← libros, cursos, tecnología, negocio
+├── 05 AI System/            ← cómo encajan tus herramientas
+├── 06 Session Logs/         ← registro de cada sesión, y checkpoints
+├── 07 Assets/               ← reportes y documentos terminados
+├── 08 Projects/             ← notas de trabajo de proyectos activos
+├── 09 MOCs/                 ← mapas de tus temas, y Puertas de proyecto
+├── Archives/                ← notas viejas; nunca se borra nada
+├── Templates/  Excalidraw/
+├── Home.md                  ← la portada de tu cerebro
+└── .brain/                  ← herramientas e índice (oculto en Obsidian)</div>
+  <div class="callout"><b>¿Ya tienes una bóveda de Obsidian?</b>Apunta la instalación hacia ella. Agrega las secciones que faltan junto a tus notas y nunca mueve ni borra lo que ya está.</div>
+  <h3>Paso 5. Verifica que funcionó</h3>
+  <p>La instalación se revisa sola y te enseña el resultado:</p>
+  <pre>OK   00 Inbox         OK   save-to-obsidian     OK   close-session
+OK   06 Session Logs  OK   project-advisor      OK   brain-health
+OK   09 MOCs          OK   brain-search         OK   CLAUDE.md
+OK   Archives         OK   project-door         0 notas con problemas
+OK   .brain/tools     OK   session-checkpoint   la búsqueda encuentra "Start Here"</pre>
+  <p>Si todo dice OK, tu cerebro ya está vivo. Si algo dice MISSING, el cerebro te guía para arreglarlo antes de dar la instalación por terminada. Lo más común es que los skills quedaron en la carpeta equivocada; ve el capítulo 9.</p>
+  <h3>Lo que la instalación creó para ti</h3>
+  <div class="grid g2">
+    <div class="card"><h4>CLAUDE.md</h4><p>Los ajustes de tu cerebro: tu nombre, dónde vive la bóveda, tu idioma, las reglas y las frases. El asistente lo lee al empezar cada conversación.</p></div>
+    <div class="card"><h4>CURRENT-CONTEXT.md</h4><p>Un resumen corto y vivo de en qué estás trabajando ahorita. Actualízalo más o menos una vez por semana. Es la primera nota que lee el cerebro.</p></div>
+    <div class="card"><h4>Home y Start Here</h4><p><code>Home.md</code> y <code>09 MOCs/MOC, Start Here</code> le dan un centro al grafo, así las primeras notas que guardes nunca quedan solas.</p></div>
+    <div class="card"><h4>.brain/</h4><p>La caja de herramientas: el índice de búsqueda, el revisor de notas, el lector de Puertas, la revisión de salud y <code>vocabulary.json</code>, la lista de tipos de nota.</p></div>
+  </div>
+</div>
+
+<!-- ===== CH1 p4: UPGRADE + RECAP ===== -->
+<div class="sheet">
+  <div class="callout info" style="margin-top:0"><b>Tu instalación también quedó guardada</b>Lo primero que hace tu cerebro después de instalarse es escribir un log de sesión de la propia instalación. Su acta de nacimiento ya está en <code>06 Session Logs/</code>.</div>
+  <h3 style="margin-top:0">Actualizar desde la versión 1</h3>
+  <p>Si armaste tu cerebro con la v1 de este kit, conservas todo. Corre otra vez el comando de instalación (hace a un lado tus copias viejas de los skills) y luego di:</p>
+  <div class="say"><span>Tú dices</span>"Actualiza mi cerebro a la v2."  ·  "Upgrade my brain to v2."</div>
+  <ol class="steps">
+    <li>Agrega las carpetas nuevas: <code>References</code>, <code>07 Assets</code>, <code>08 Projects</code>, <code>09 MOCs</code>, <code>Archives</code> y <code>.brain</code>.</li>
+    <li>Pone las herramientas en <code>.brain/</code> y arma el primer índice de búsqueda.</li>
+    <li>Reescribe <code>CLAUDE.md</code> con la plantilla v2, conservando cada línea que tú agregaste.</li>
+    <li>Corre la primera revisión de salud y te enseña el semáforo.</li>
+  </ol>
+  <div class="callout warn"><b>No te asustes con el primer semáforo</b>Una bóveda vieja casi siempre empieza en amarillo o rojo: los links rotos y las notas sin las propiedades nuevas se juntan con los meses. Ese primer número es tu punto de partida, no una calificación. El cerebro compara cada mes con el anterior, y las notas viejas se arreglan conforme las vas tocando.</div>
+  <h3>Una idea para no olvidar</h3>
+  <div class="grid g3">
+    <div class="card piece"><span class="tag t-blue">TÚ</span><h4>Tú hablas</h4><p>Con palabras sencillas, en tu idioma.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">SKILLS</span><h4>Los skills actúan</h4><p>Cada uno tiene un trabajo y una frase que lo despierta.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">BÓVEDA</span><h4>La bóveda recuerda</h4><p>Todo cae en una carpeta con nombre, conectado a lo que vino antes.</p></div>
+  </div>
+  <div class="recap"><h4>Resumen del capítulo 1</h4>
+    <ul class="clean"><li>Corriste un comando de instalación.</li><li>Dijiste "Configura mi segundo cerebro".</li><li>Contestaste siete preguntas.</li><li>Viste cómo se armaron la bóveda, las herramientas y los ajustes.</li><li>Viste que todas las revisiones regresaron OK.</li></ul>
+  </div>
+  <p style="margin-top:12px"><b>¿Te atoraste?</b> El capítulo 9 tiene soluciones de dos líneas para los problemas comunes. <b>¿Funcionó?</b> Ahora, un recorrido por tu cerebro nuevo.</p>
+</div>
+
+<!-- ===== CH2 p1: DRAWERS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 2</div>
+  <h2><span class="num">2</span>Conoce tu cerebro</h2>
+  <p class="sub">Tu bóveda es un archivero. Cada cajón tiene un número, una etiqueta y una razón.</p>
+  <div class="card tablecard"><table>
+    <tr><th style="width:24%">Cajón</th><th>Qué va ahí</th><th style="width:30%">Ejemplo</th></tr>
+    <tr><td><b>00 Inbox</b></td><td>Solo lo que todavía no tiene lugar. Vacíalo de vez en cuando</td><td>Una idea rápida desde el celular</td></tr>
+    <tr><td><b>01 Personal Knowledge</b></td><td>Personas, lugares, rutinas y lecciones aprendidas</td><td>"Confirmar siempre la hora de entrega un día antes"</td></tr>
+    <tr><td><b>02 Strategy</b></td><td>Visión, metas, tu North Star y el Decision Log</td><td>"Decisión, Subir precios en marzo"</td></tr>
+    <tr><td><b>03 Ideas &amp; Notes</b></td><td>Ideas antes de ser proyectos; <code>References/</code> para artículos guardados</td><td>"Idea, Boletín mensual"</td></tr>
+    <tr><td><b>04 Learning</b></td><td>Libros, cursos, tecnología, negocio</td><td>Notas de un libro que terminaste</td></tr>
+    <tr><td><b>05 AI System</b></td><td>Cómo encajan tus herramientas y skills; el historial de salud</td><td>"Brain Health History"</td></tr>
+    <tr><td><b>06 Session Logs</b></td><td>Un registro por sesión de trabajo, y los checkpoints de proyecto</td><td>"2026-10-02 Sesión, Plan del huerto"</td></tr>
+    <tr><td><b>07 Assets</b></td><td>Resultados terminados: reportes, dashboards, documentos</td><td>Una cotización que mandaste, un resumen anual</td></tr>
+    <tr><td><b>08 Projects</b></td><td>Notas de trabajo de proyectos activos, una carpeta cada uno</td><td>"08 Projects/Remodelación Cocina/"</td></tr>
+    <tr><td><b>09 MOCs</b></td><td>Mapas de contenido (centros de un tema) y una Puerta por proyecto</td><td>"MOC, Huerto" y "Puerta, Huerto"</td></tr>
+    <tr><td><b>Archives</b></td><td>Notas viejas o reemplazadas. Nunca se borra nada; se mueve aquí</td><td>El plan del año pasado</td></tr>
+  </table></div>
+  <div class="callout info"><b>Cámbiales el nombre sin miedo</b>Los skills encuentran los cajones por su número, así que "01 Personal Knowledge" puede volverse "01 Conocimiento de la Empresa" y todo sigue funcionando.</div>
+  <h3>Tres palabras que vas a ver mucho</h3>
+  <div class="grid g3">
+    <div class="card"><h4>Link</h4><p>Escribir <code>[[Note Name]]</code> dentro de una nota la conecta con otra. Los links son los nervios del cerebro: así una idea te lleva a la siguiente.</p></div>
+    <div class="card"><h4>MOC</h4><p>Un mapa de contenido (Map of Content): una nota que enlista y enlaza todo sobre un tema. El índice de un tema.</p></div>
+    <div class="card"><h4>Puerta</h4><p>Una nota por proyecto que dice cómo va hoy, en una pantalla. El capítulo 5 es todo sobre Puertas.</p></div>
+  </div>
+</div>
+
+<!-- ===== CH2 p2: MAP + HOW AI READS ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Todo el sistema en una página</h3>
+  <p class="small">Azul: lo que haces tú. Morado: los skills. Verde: lo que vive en tu bóveda. Punteado: leer, no escribir.</p>
+  <div class="diagram">
+  <svg width="680" viewBox="0 0 900 470" font-family="DejaVu Sans, sans-serif">
+    <defs>
+      <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1e6fd9"/></marker>
+      <marker id="ap" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7a4fd9"/></marker>
+      <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1f9d55"/></marker>
+    </defs>
+    <rect x="20" y="30" width="190" height="100" rx="12" fill="#e8f1fd" stroke="#1e6fd9" stroke-width="2"/>
+    <text x="115" y="70" text-anchor="middle" font-size="17" font-weight="700" fill="#15497e">Tú</text>
+    <text x="115" y="92" text-anchor="middle" font-size="12" fill="#46627f">palabras sencillas</text>
+    <text x="115" y="110" text-anchor="middle" font-size="12" fill="#46627f">español o inglés</text>
+    <rect x="300" y="20" width="300" height="430" rx="14" fill="#f1ebfc" stroke="#7a4fd9" stroke-width="2"/>
+    <text x="450" y="50" text-anchor="middle" font-size="16" font-weight="700" fill="#4a2d8c">Tu IA con 9 skills</text>
+    <g font-size="12" text-anchor="middle">
+      <rect x="320" y="68" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="92" fill="#4a2d8c">brain-search · project-door</text>
+      <rect x="320" y="116" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="140" fill="#4a2d8c">save-to-obsidian</text>
+      <rect x="320" y="164" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="188" fill="#4a2d8c">session-checkpoint · close-session</text>
+      <rect x="320" y="212" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="236" fill="#4a2d8c">project-advisor</text>
+      <rect x="320" y="260" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="284" fill="#4a2d8c">brain-health (mensual)</text>
+      <rect x="320" y="308" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="332" fill="#4a2d8c">obsidian-power-user (formato)</text>
+      <rect x="320" y="356" width="260" height="38" rx="8" fill="#fff" stroke="#7a4fd9"/><text x="450" y="380" fill="#4a2d8c">second-brain-init (una vez)</text>
+    </g>
+    <text x="450" y="425" text-anchor="middle" font-size="11" font-weight="700" fill="#7a4fd9">CADA SKILL TIENE UN TRABAJO</text>
+    <rect x="690" y="30" width="190" height="230" rx="12" fill="#e6f6ec" stroke="#1f9d55" stroke-width="2"/>
+    <text x="785" y="62" text-anchor="middle" font-size="17" font-weight="700" fill="#14613a">Tu bóveda</text>
+    <text x="785" y="86" text-anchor="middle" font-size="12" fill="#2f7050">notas de 00 a 09</text>
+    <text x="785" y="106" text-anchor="middle" font-size="12" fill="#2f7050">Puertas y MOCs</text>
+    <text x="785" y="126" text-anchor="middle" font-size="12" fill="#2f7050">logs de sesión</text>
+    <text x="785" y="146" text-anchor="middle" font-size="12" fill="#2f7050">historial de salud</text>
+    <text x="785" y="240" text-anchor="middle" font-size="10" font-weight="700" fill="#1f9d55">ARCHIVOS SIMPLES, TUYOS</text>
+    <rect x="690" y="300" width="190" height="130" rx="12" fill="#e6f6ec" stroke="#1f9d55" stroke-width="2"/>
+    <text x="785" y="332" text-anchor="middle" font-size="16" font-weight="700" fill="#14613a">.brain/</text>
+    <text x="785" y="356" text-anchor="middle" font-size="12" fill="#2f7050">índice de búsqueda</text>
+    <text x="785" y="376" text-anchor="middle" font-size="12" fill="#2f7050">vocabulary.json</text>
+    <text x="785" y="396" text-anchor="middle" font-size="12" fill="#2f7050">las herramientas</text>
+    <line x1="210" y1="80" x2="296" y2="80" stroke="#1e6fd9" stroke-width="2.5" marker-end="url(#ab)"/>
+    <text x="252" y="70" text-anchor="middle" font-size="10" font-weight="600" fill="#1e6fd9">pregunta</text>
+    <line x1="600" y1="135" x2="686" y2="135" stroke="#1f9d55" stroke-width="2.5" marker-end="url(#ag)"/>
+    <text x="643" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#1f9d55">escribe</text>
+    <line x1="686" y1="360" x2="604" y2="90" stroke="#7a4fd9" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#ap)"/>
+    <text x="636" y="262" text-anchor="end" font-size="11" font-weight="600" fill="#7a4fd9">busca primero</text>
+    <line x1="296" y1="110" x2="214" y2="110" stroke="#1e6fd9" stroke-width="2.5" marker-end="url(#ab)"/>
+    <text x="252" y="128" text-anchor="middle" font-size="10" font-weight="600" fill="#1e6fd9">responde</text>
+  </svg>
+  </div>
+  <h3>Cómo lee tu IA el cerebro: tres capas</h3>
+  <p>La memoria de una IA en una conversación es limitada. Cargar toda tu bóveda al inicio la llenaría de historia y dejaría menos espacio para el trabajo. Por eso el cerebro lee por capas, definidas en tu <code>CLAUDE.md</code>:</p>
+  <div class="grid g3">
+    <div class="card piece"><span class="tag t-blue">CAPA 1 · SIEMPRE</span><h4>Quién y qué ahora</h4><p><code>CLAUDE.md</code> y <code>CURRENT-CONTEXT.md</code>. Cortos a propósito: se leen cada vez.</p></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">CAPA 2 · POR TEMA</span><h4>De qué se trata</h4><p>¿Mencionas un proyecto? La portada de su Puerta. ¿Un dato pasado? Una búsqueda. ¿Una nota? Las reglas de formato.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">CAPA 3 · SI HACE FALTA</span><h4>Solo si se necesita</h4><p>El resto de una Puerta, checkpoints, logs de sesión viejos, MOCs. Se leen cuando la tarea los pide.</p></div>
+  </div>
+  <div class="callout"><b>Por qué te importa</b>Las conversaciones largas se mantienen claras por más tiempo, y la IA empieza cada sesión sabiendo ya cómo van las cosas.</div>
+</div>
+
+<!-- ===== CH3 p1: SAVING ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 3</div>
+  <h2><span class="num">3</span>Guardar lo que sabes</h2>
+  <p class="sub">El hábito de capturar. La página más importante de este manual.</p>
+  <p>Ten una conversación normal: planea un proyecto, resuelve un problema, piensa en voz alta. Al final, di:</p>
+  <div class="say"><span>Tú dices</span>"Guárdalo en mi cerebro."  ·  "Save to my brain."</div>
+  <p>El skill <code>save-to-obsidian</code> saca dos cosas de la conversación:</p>
+  <div class="grid g2">
+    <div class="card piece"><span class="tag t-blue">1 · CONOCIMIENTO</span><h4>Pepitas de conocimiento</h4><p>Lo que vale la pena tener en tres meses: una lección, una decisión y sus razones, una idea, algo sobre una persona. Cada una en su cajón y enlazada a notas relacionadas.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">2 · REGISTRO</span><h4>Un log de sesión</h4><p>Un registro de toda la sesión en <code>06 Session Logs/</code>: qué querías hacer, qué se hizo, las decisiones, las herramientas y lo que quedó pendiente.</p></div>
+  </div>
+  <h3>Qué pasa cuando lo dices</h3>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Relee</h4><p>Toda la conversación, desde arriba</p></div>
+    <div class="step"><div class="n">2</div><h4>Filtra</h4><p>"¿Útil en tres meses?" Solo pasa el sí</p></div>
+    <div class="step"><div class="n">3</div><h4>Busca</h4><p>¿Ya hay una nota? La actualiza, sin copias</p></div>
+    <div class="step"><div class="n">4</div><h4>Escribe y enlaza</h4><p>Cajón correcto, links que sirven, entrada en un MOC</p></div>
+    <div class="step"><div class="n">5</div><h4>Revisa</h4><p>Cada nota pasa la revisión de propiedades</p></div>
+  </div>
+  <h3>Cuándo guarda el cerebro, y cuándo no</h3>
+  <div class="grid g2">
+    <div class="card"><h4 style="color:var(--green)">✓ Sí guarda</h4><ul class="clean"><li>Cuando se lo pides, con cualquier palabra.</li><li>Cuando lo ofrece una vez, al final de una sesión que dejó algo real (una decisión, una lección, un proceso nuevo), y le dices que sí.</li></ul></div>
+    <div class="card"><h4 style="color:var(--red)">✕ No guarda</h4><ul class="clean no"><li>A media sesión "por si acaso".</li><li>Cada vez que termina una tarea.</li><li>Más de una oferta por sesión.</li></ul></div>
+  </div>
+  <div class="callout gold"><b>Regla de oro: guarda a propósito</b>Un cerebro lleno de todo es tan inútil como uno vacío. Guardar solo lo que vale la pena mantiene la búsqueda precisa y tus notas dignas de leerse.</div>
+  <div class="callout info"><b>¿Haces lo mismo tres veces?</b>El cerebro te va a ofrecer convertirlo en un skill propio en vez de volver a guardarlo. El trabajo repetido es señal de que falta una herramienta.</div>
+</div>
+
+<!-- ===== CH3 p2: RULES ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Las reglas que mantienen limpia cada nota</h3>
+  <p>Una bóveda no se descompone en un día. Se echa a perder poco a poco: una nota renombrada deja links muertos, una nota rápida no tiene descripción, una copia se queda olvidada. La versión 2 escribe cada nota con estas reglas para que eso nunca empiece.</p>
+  <div class="grid g2">
+    <div class="card piece"><span class="tag t-blue">LINKS</span><h4>Cada link sirve</h4><ul class="clean">
+      <li>Nada de nombres de archivo con <code># ^ [ ] | :</code> (Obsidian no los puede enlazar).</li>
+      <li>Antes de escribir <code>[[A Note]]</code>, el cerebro revisa que esa nota exista.</li>
+      <li>Nada de links "de relleno" a notas que todavía no existen.</li>
+      <li>Cada nota nueva recibe al menos un link que apunte a ella, casi siempre desde un MOC.</li></ul></div>
+    <div class="card piece" style="border-top-color:var(--purple)"><span class="tag t-purple">PROPIEDADES</span><h4>Cada nota tiene el mismo encabezado</h4><ul class="clean">
+      <li>Un tipo, una fecha y la <b>hora real</b> del reloj.</li>
+      <li>Una descripción de una línea, escrita para un desconocido.</li>
+      <li>Tags en minúsculas y un estado (active, done, parked...).</li>
+      <li>Un script revisa cada nota antes de darla por guardada.</li></ul></div>
+  </div>
+  <p style="margin-top:10px">Así se ve ese encabezado (Obsidian les dice "propiedades"):</p>
+  <pre>---
+title: "Decisión, Camas elevadas de cedro"
+type: decision
+date: 2026-10-02
+time: "14:35"
+description: "Elegimos camas elevadas de cedro en vez de surcos en el suelo; costo y dolor de espalda."
+tags: [huerto, decisiones]
+status: active
+---</pre>
+  <div class="callout info"><b>¿Por qué tan estricto?</b>La búsqueda le da más peso al título y la descripción, los filtros usan el tipo y la fecha, y la revisión de salud confía en el estado. Cuando todas las notas tienen el mismo encabezado, todo eso simplemente funciona. La lista de tipos permitidos vive en <code>.brain/vocabulary.json</code>; agrega los tuyos cuando quieras.</div>
+  <h3>Nunca borrar, nunca copiar</h3>
+  <ul class="clean">
+    <li><b>Una nota por tema.</b> Lo nuevo actualiza la nota que ya existe; nada de archivos "v2".</li>
+    <li><b>No se borra nada.</b> Una nota que ya no es cierta se mueve a <code>Archives/</code> y se marca como reemplazada.</li>
+    <li><b>Nada de respaldos dentro de la bóveda.</b> Un archivo como <code>note.md.bak</code> confunde a la búsqueda y a los links; los respaldos van en <code>Archives/Backups/</code>.</li>
+  </ul>
+  <h3>El conocimiento sube de nivel</h3>
+  <p>Un buen cerebro asciende lo que se repite. Un artículo guardado al que siempre regresas se gradúa a nota de verdad. Cuando cinco notas le dan vueltas al mismo principio, el cerebro escribe ese principio una vez, como nota propia, y lo enlaza desde un MOC. Cuando un tema pasa de unas siete notas, propone un MOC para él.</p>
+</div>
+
+<!-- ===== CH3 p3: EXAMPLE + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Un guardado real, de principio a fin</h3>
+  <p>Ana pasó cuarenta minutos con su IA planeando un huerto: el material de las camas, la rutina de riego y un error del año pasado (sembró los tomates muy temprano y se le helaron). Dijo "Guárdalo en mi cerebro". Esto fue lo que regresó:</p>
+  <pre>Guardado en el Cerebro de Ana:
+- Decisión, Camas elevadas de cedro           → 02 Strategy / Decision Log
+- Lección, Tomates después del 15 de mayo     → 01 Personal Knowledge / Lessons Learned
+- Horario de riego (actualizado)              → 01 Personal Knowledge / Routines
+- Log de sesión                               → 06 Session Logs
+Todas las notas pasan la revisión de propiedades. Enlazadas desde MOC, Huerto.</pre>
+  <div class="grid g2">
+    <div class="card"><h4>Lo que decidió guardar</h4><p>La decisión y sus razones, la lección de la helada con la fecha para recordar, y el cambio a una rutina que ya tenía nota (actualizada, no copiada).</p></div>
+    <div class="card"><h4>Lo que dejó fuera</h4><p>El ir y venir sobre marcas de semillas que no llevó a nada. Eso vive en el log de sesión, por si algún día lo quiere.</p></div>
+  </div>
+  <h3>Dónde va cada cosa</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Si es...</th><th>Va a</th></tr>
+    <tr><td>Lección (salió mal o bien, con una enseñanza)</td><td><code>01 .../Lessons Learned</code></td></tr>
+    <tr><td>Decisión (una elección y sus razones)</td><td><code>02 Strategy/Decision Log</code></td></tr>
+    <tr><td>Idea (para explorar después)</td><td><code>03 Ideas &amp; Notes</code></td></tr>
+    <tr><td>Artículo, cita o recorte guardado</td><td><code>03 Ideas &amp; Notes/References</code></td></tr>
+    <tr><td>Enseñanza de un libro o curso</td><td><code>04 Learning</code></td></tr>
+    <tr><td>Algo sobre un skill o una conexión entre herramientas</td><td><code>05 AI System</code> (manda lo que es, no de qué trata)</td></tr>
+    <tr><td>Reporte o documento terminado</td><td><code>07 Assets</code></td></tr>
+  </table></div>
+  <div class="recap"><h4>Resumen del capítulo 3</h4><ul class="clean">
+    <li>Termina una conversación útil con "Guárdalo en mi cerebro".</li>
+    <li>Recibes notas de conocimiento en los cajones correctos, más un log de sesión.</li>
+    <li>Cada link sirve, cada nota tiene el mismo encabezado, nada se copia ni se borra.</li>
+    <li>El cerebro guarda cuando se lo pides, o lo ofrece una vez al final.</li></ul></div>
+</div>
+
+<!-- ===== CH4 p1: SEARCH ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 4</div>
+  <h2><span class="num">4</span>Encontrar las cosas</h2>
+  <p class="sub">Un cerebro en el que tienes que acordarte de buscar es solo una carpeta. Este busca por ti.</p>
+  <div class="callout gold"><b>Regla de oro: buscar antes de preguntar</b>Cuando la IA necesita un dato de tu vida o tu trabajo (una decisión, un precio, una persona, cómo hiciste algo), primero busca en tus notas. Solo te pregunta cuando el cerebro de verdad no tiene nada.</div>
+  <h3>Pregunta como hablas</h3>
+  <div class="grid g2">
+    <div class="say"><span>Tú dices</span>"¿Qué decidimos de la cerca?"</div>
+    <div class="say"><span>Tú dices</span>"¿Ya hicimos algo así antes?"</div>
+    <div class="say"><span>Tú dices</span>"¿Qué sé de la familia Ortiz?"</div>
+    <div class="say"><span>Tú dices</span>"Búscame ese artículo de precios que guardé."</div>
+  </div>
+  <p>El skill <code>brain-search</code> busca, abre las mejores notas y responde con lo que dicen, nombrando cada nota para que la puedas abrir. Si dos notas no coinciden, te enseña las dos, la más nueva primero, en vez de escoger una a escondidas.</p>
+  <h3>Cómo encuentra las cosas</h3>
+  <p>La instalación armó un índice de búsqueda de toda tu bóveda dentro de <code>.brain/</code>. Piensa en el índice al final de un libro, que se rehace en segundos cada vez que el cerebro guarda o cierra una sesión.</p>
+  <div class="grid g3">
+    <div class="card"><h4>El título pesa más</h4><p>Una palabra en el título, la descripción o los tags cuenta más que la misma palabra perdida en el texto. Por eso importan las descripciones.</p></div>
+    <div class="card"><h4>Los acentos no importan</h4><p>"decision" encuentra "decisión", y "cafe" encuentra "café". Busca en español o en inglés.</p></div>
+    <div class="card"><h4>Todas las palabras, luego cualquiera</h4><p>Primero busca notas con todas las palabras. Si no hay, prueba con cualquiera de ellas y te avisa.</p></div>
+  </div>
+  <h3>Recetas que la IA usa por ti</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Tú preguntas</th><th>Lo que hace</th></tr>
+    <tr><td>"¿Qué decidimos sobre X?"</td><td>Busca decisiones con X en el título, la más nueva primero</td></tr>
+    <tr><td>"¿En qué quedamos con el proyecto Y?"</td><td>Abre primero la Puerta del proyecto (capítulo 5), luego los logs de sesión recientes</td></tr>
+    <tr><td>"¿Ya hicimos esto antes?"</td><td>Busca las palabras clave en logs de sesión y lecciones</td></tr>
+    <tr><td>"¿Qué sé de Z?"</td><td>Busca primero en notas de personas, luego en todo</td></tr>
+  </table></div>
+</div>
+
+<!-- ===== CH4 p2: NO PYTHON + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Cómo se ve una buena respuesta</h3>
+  <div class="mock">
+    <p><b>Tú:</b> ¿Qué decidimos de la cerca?</p>
+    <p><b>IA:</b> Busqué "cerca" en el cerebro: 3 notas, leí las dos primeras. El 12 de septiembre decidiste una cerca de cedro, de 6 pies, solo en la línea de atrás, porque el vecino va a compartir el costo <i>([[Decisión, Cerca de atrás]])</i>. La cotización fue de $4,200 <i>([[2026-09-12 Sesión, Cotizaciones de cerca]])</i>. Una nota más vieja de agosto hablaba de vinil; la decisión de septiembre la reemplazó.</p>
+  </div>
+  <ul class="clean" style="margin-top:10px">
+    <li>Dice dónde buscó, en una línea.</li>
+    <li>Responde con lo que dicen las notas y nombra cada una como link.</li>
+    <li>Señala la nota vieja que no coincide, en vez de esconderla.</li>
+  </ul>
+  <h3>¿Sin Python? Igual busca</h3>
+  <p>Sin Python, el skill usa una búsqueda de texto simple en tu bóveda: primero los nombres de archivo, luego las líneas de descripción, luego el texto. Misma regla, mismo orden, solo que ordena menos fino. Instala Python cuando quieras; el índice se arma solo la próxima vez que guardes.</p>
+  <h3>Haz que tus notas sean fáciles de encontrar</h3>
+  <ul class="dots">
+    <li><b>Buenos títulos.</b> "Decisión, Cerca de atrás" le gana a "Ideas 3".</li>
+    <li><b>Una descripción de verdad.</b> Una línea que un desconocido entendería. El cerebro la escribe, y es la línea en la que más confía la búsqueda.</li>
+    <li><b>Alias.</b> Otros nombres para lo mismo ("el trabajo de Ortiz", "cocina Ortiz") van en la propiedad aliases.</li>
+  </ul>
+  <div class="callout info"><b>Cuando el cerebro te pregunta de todos modos</b>Quiere decir que la búsqueda no encontró nada. Contesta, y si el dato va a importar otra vez, deja que lo guarde. La próxima vez no te va a preguntar.</div>
+  <pre>python3 .brain/tools/brain_search.py "fence" --type decision --sort date   # lo que corre la IA, por si te da curiosidad</pre>
+  <div class="recap"><h4>Resumen del capítulo 4</h4><ul class="clean">
+    <li>La IA busca en tus notas antes de preguntarte.</li>
+    <li>Pregunta con palabras sencillas, en español o en inglés.</li>
+    <li>Las respuestas nombran las notas de donde salen y enseñan los desacuerdos.</li>
+    <li>Los títulos y las descripciones son lo que hace que las notas se encuentren.</li></ul></div>
+</div>
+
+<!-- ===== CH5 p1: DOORS ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 5</div>
+  <h2><span class="num">5</span>Trabajar en proyectos</h2>
+  <p class="sub">Cómo un proyecto sigue justo donde se quedó, aunque pasen semanas.</p>
+  <p>Sin ayuda, retomar un proyecto es escarbar en conversaciones viejas y adivinar cuál es la vigente. La versión 2 le da tres herramientas a cada proyecto: una <b>Puerta</b> para abrirlo, <b>checkpoints</b> mientras trabajas y un <b>cierre</b> cuando paras.</p>
+  <h3>La Puerta: una página por proyecto</h3>
+  <p>Una Puerta es una nota en <code>09 MOCs/</code>. En español se llama <code>Puerta, &lt;Proyecto&gt;</code> y en inglés <code>Door, &lt;Project&gt;</code>. Dice cómo va el proyecto hoy, en una pantalla, y es lo primero que lee el cerebro cuando empiezas a trabajar en él.</p>
+  <div class="grid g2">
+    <div>
+      <div class="card tablecard" style="margin-top:0"><table>
+        <tr><th>#</th><th>Sección</th><th>Qué contiene</th></tr>
+        <tr><td>1</td><td><b>Estado vigente</b></td><td>3 a 6 líneas de lo que es cierto hoy</td></tr>
+        <tr><td>2</td><td><b>Números que mandan</b></td><td>Las pocas cifras que guían las decisiones, con su fuente</td></tr>
+        <tr><td>3</td><td><b>Pendientes</b></td><td>Casillas, y quién se encarga de cada una</td></tr>
+        <tr><td>4</td><td>Cómo se opera</td><td>Cómo se maneja. Se lee solo si hace falta</td></tr>
+        <tr><td>5</td><td>Dónde vive lo demás</td><td>Links al MOC, decisiones, archivos</td></tr>
+        <tr><td>6</td><td>Historial</td><td>Una línea por cambio, lo más nuevo primero</td></tr>
+      </table></div>
+      <p class="small">Las secciones 1 a 3 son la <b>portada</b>: es todo lo que el cerebro lee para empezar. Lo demás espera hasta que se necesite.</p>
+    </div>
+    <div class="mock">
+      <div class="fm">type: door · project: garden
+verified: 2026-10-02</div>
+      <b>Puerta, Huerto</b>
+      <h5>1. Estado vigente</h5><p>Tres camas de cedro hechas. Tierra entregada. Se siembra después del 15 de mayo (lección de la helada).</p>
+      <h5>2. Números que mandan</h5><p>Gastado $640 de $900 de presupuesto (nota de recibos, 1 oct). Camas: 3 de 4.</p>
+      <h5>3. Pendientes</h5><p>☐ Hacer la cama 4 (Ana)<br>☐ Pedir kit de goteo (Luis)<br>☑ Llenar camas con tierra</p>
+      <h5>4 a 6</h5><p class="small">Cómo se opera · Dónde vive lo demás · Historial</p>
+    </div>
+  </div>
+  <div class="say"><span>Tú dices</span>"¿En qué quedamos con el huerto?"  ·  "Let's work on the garden."</div>
+  <p>El cerebro abre la Puerta, te dice en una línea cómo van las cosas y qué sigue, y se pone a trabajar. Si la Puerta se revisó hace más de una semana, te avisa y revisa los números antes de decidir nada.</p>
+  <div class="callout"><b>¿Empiezas algo nuevo?</b>Di "Proyecto nuevo: remodelación de cocina". El cerebro crea su Puerta, agrega el proyecto a tu lista y lo enlaza desde un MOC para que nunca quede huérfano.</div>
+</div>
+
+<!-- ===== CH5 p2: CHECKPOINTS + CLOSE ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Checkpoints: un punto de guardado mientras trabajas</h3>
+  <p>En una conversación larga, la IA en algún momento comprime el principio para hacer espacio, como quedarte solo con el resumen de los primeros capítulos de un libro. Los detalles se borran. Un <b>checkpoint</b> es un punto de guardado, como en un videojuego: cada 15 a 20 intercambios, en cada logro y antes de cualquier paso pesado, el cerebro escribe cómo va el trabajo en <code>06 Session Logs/Active Session State, &lt;Project&gt;</code>.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Un archivo por proyecto</h4><p>Cada proyecto tiene su propio checkpoint, que se sobrescribe cada vez. Dos proyectos en un mismo día nunca se borran entre sí.</p></div>
+    <div class="card"><h4>Después de una compresión</h4><p>El cerebro relee el checkpoint y te dice: "la conversación se comprimió; vamos en...". Y sigue. Tú no haces nada.</p></div>
+  </div>
+  <h3>Cerrar una sesión</h3>
+  <p>Cuando termines por hoy, di:</p>
+  <div class="say"><span>Tú dices</span>"Cierra la sesión."  ·  "Continuamos mañana."  ·  "Blindemos."  ·  "Close the session."</div>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Checkpoint</h4><p>El estado del trabajo, al día</p></div>
+    <div class="step"><div class="n">2</div><h4>Puerta</h4><p>Secciones 1 a 3 reescritas, verificada hoy</p></div>
+    <div class="step"><div class="n">3</div><h4>Guardar</h4><p>Conocimiento y el log de sesión</p></div>
+    <div class="step"><div class="n">4</div><h4>Índice</h4><p>Búsqueda rehecha con las notas de hoy</p></div>
+    <div class="step"><div class="n">5</div><h4>Git</h4><p>Opcional: un commit seguro de la bóveda</p></div>
+  </div>
+  <div class="callout gold"><b>Regla de oro: congela, luego escribe</b>Los cinco pasos describen el mismo momento. El cerebro decide qué es cierto ahora y luego lo escribe en todos lados, así el checkpoint, la Puerta y el log nunca cuentan tres historias distintas.</div>
+  <p>Recibes un resumen de cinco líneas:</p>
+  <pre>Sesión cerrada:
+- Checkpoint: Active Session State, Huerto (actualizado)
+- Puerta: Puerta, Huerto (verificada hoy; siguiente paso: hacer la cama 4)
+- Cerebro: 2 notas + log de sesión, todas pasan la revisión de propiedades
+- Índice: rehecho, 412 notas
+- Git: no es un repo (omitido)</pre>
+  <div class="callout info"><b>Sobre el paso de git</b>Solo si tu bóveda es un repositorio git (una forma técnica de guardar versiones). Trae los cambios de tu otra computadora solo cuando encajan limpio; si no, se detiene y te avisa en vez de revolverlos. Es lo único que hace commits de la bóveda, así que apaga cualquier plugin que haga commits por su cuenta.</div>
+</div>
+
+<!-- ===== CH5 p3: DAY IN LIFE + RECAP ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Un día de proyecto, de principio a fin</h3>
+  <div class="card tablecard"><table>
+    <tr><th style="width:18%">Cuándo</th><th style="width:36%">Tú</th><th>El cerebro</th></tr>
+    <tr><td>8:00</td><td>"Vamos a trabajar en la remodelación de la cocina."</td><td>Lee la portada de la Puerta: gabinetes pedidos, esperando la cotización del plomero, presupuesto al 62%</td></tr>
+    <tr><td>8:05</td><td>"¿Al final escogimos fregadero?"</td><td>Busca: una decisión de septiembre, fregadero de acero bajo cubierta, con el número de modelo</td></tr>
+    <tr><td>9:30</td><td>(sesión larga de planeación)</td><td>Escribe un checkpoint después del logro del diseño</td></tr>
+    <tr><td>11:00</td><td>(la conversación se alarga)</td><td>Nota la compresión, relee el checkpoint, sigue</td></tr>
+    <tr><td>12:00</td><td>"Cierra la sesión."</td><td>Checkpoint, Puerta reescrita, decisión nueva guardada, índice rehecho. Resumen de cinco líneas</td></tr>
+    <tr><td>Dos semanas después</td><td>"¿En qué quedamos con la cocina?"</td><td>Una línea de la Puerta: qué está hecho, qué sigue, y que los números tienen 14 días</td></tr>
+  </table></div>
+  <h3>Qué nota responde qué pregunta</h3>
+  <div class="card tablecard"><table>
+    <tr><th>Nota</th><th>Responde</th><th>Cambia</th></tr>
+    <tr><td><b>Puerta</b></td><td>¿Cómo va el proyecto hoy?</td><td>Se reescribe en cada cierre</td></tr>
+    <tr><td><b>Checkpoint</b></td><td>¿Qué estábamos haciendo hace una hora?</td><td>Durante una sesión larga</td></tr>
+    <tr><td><b>Log de sesión</b></td><td>¿Qué pasó en esa sesión?</td><td>Nunca, una vez escrito</td></tr>
+    <tr><td><b>MOC</b></td><td>¿Dónde está todo sobre este tema?</td><td>Cuando se agregan notas</td></tr>
+  </table></div>
+  <div class="recap"><h4>Resumen del capítulo 5</h4><ul class="clean">
+    <li>Cada proyecto tiene una Puerta: una pantalla, se lee primero.</li>
+    <li>Las sesiones largas tienen checkpoints y se recuperan solas.</li>
+    <li>"Cierra la sesión" actualiza todo de una vez, describiendo el mismo momento.</li>
+    <li>Los números de una Puerta solo se actualizan cuando se revisaron.</li></ul></div>
+</div>
+
+<!-- ===== CH6 p1: ADVISOR ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 6</div>
+  <h2><span class="num">6</span>Decidir qué construir</h2>
+  <p class="sub">El filtro de ideas. Antes de construir cualquier cosa, pásala por aquí.</p>
+  <p>Cada "sí" a un proyecto nuevo es un "no" silencioso a otra cosa. Las ideas emocionan en el momento, y la emoción es pésima para juzgar qué vale la pena construir ahora. El skill <code>project-advisor</code> es un filtro rápido y honesto que atrapa cada idea antes de que se coma tu semana.</p>
+  <div class="say"><span>Tú dices</span>"¿Vale la pena este proyecto?"  ·  "Should I do this?"</div>
+  <div class="flowline">
+    <div class="step"><div class="n">1</div><h4>Lee tu cerebro</h4><p>North Star, metas, ideas relacionadas, la Puerta del proyecto</p></div>
+    <div class="step"><div class="n">2</div><h4>Hasta 7 preguntas</h4><p>Una pregunta a la vez</p></div>
+    <div class="step"><div class="n">3</div><h4>4 puntajes</h4><p>Ponderados, con las cuentas a la vista</p></div>
+    <div class="step"><div class="n">4</div><h4>Veredicto</h4><p>Verde, amarillo o rojo, por escrito</p></div>
+  </div>
+  <h3>Las siete preguntas</h3>
+  <div class="card tablecard"><table>
+    <tr><th>#</th><th>La pregunta</th><th>Lo que en verdad pregunta</th></tr>
+    <tr><td>1</td><td>En una frase, ¿qué es esto?</td><td>¿Lo puedes decir claro? Las ideas borrosas no están listas</td></tr>
+    <tr><td>2</td><td>¿Qué problema resuelve, y de quién?</td><td>¿Un problema real, o pura novedad?</td></tr>
+    <tr><td>3</td><td>¿Cómo se resuelve hoy?</td><td>¿Reemplaza trabajo manual pesado, o inventa trabajo nuevo?</td></tr>
+    <tr><td>4</td><td>¿Cómo se ve el éxito en 90 días?</td><td>Si no puedes decir un número, no está listo</td></tr>
+    <tr><td>5</td><td>¿Cuánto cuesta construirlo?</td><td>Tiempo, dinero, herramientas. Un cálculo a ojo está bien</td></tr>
+    <tr><td>6</td><td>Si construyes esto, ¿qué no se construye?</td><td>La más importante. Cada sí es un no</td></tr>
+    <tr><td>7</td><td>¿Qué parte de tu vida o trabajo fortalece?</td><td>Solo se pregunta si todavía no está claro</td></tr>
+  </table></div>
+  <h3>La tabla de puntajes</h3>
+  <div class="grid g2">
+    <div class="card tablecard" style="margin:0"><table>
+      <tr><th>Dimensión</th><th>Peso</th></tr>
+      <tr><td>Sistematización: ¿convierte trabajo repetido en un sistema?</td><td>25%</td></tr>
+      <tr><td>North Star: ¿te acerca a tu visión?</td><td>30%</td></tr>
+      <tr><td>Ingresos o costos: ¿genera o ahorra dinero?</td><td>25%</td></tr>
+      <tr><td>Momento: ¿es ahora el momento correcto?</td><td>20%</td></tr>
+    </table></div>
+    <div class="card tablecard" style="margin:0"><table>
+      <tr><th>Puntaje</th><th>Veredicto</th></tr>
+      <tr><td>7.5 a 10</td><td><span class="light" style="background:var(--green)"></span><b>VERDE</b>: constrúyelo</td></tr>
+      <tr><td>5.0 a 7.4</td><td><span class="light" style="background:var(--orange)"></span><b>AMARILLO</b>: afínalo primero</td></tr>
+      <tr><td>0 a 4.9</td><td><span class="light" style="background:var(--red)"></span><b>ROJO</b>: guárdalo para después</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ===== CH6 p2: EXAMPLE + CH7 ===== -->
+<div class="sheet">
+  <div class="callout info" style="margin-top:0"><b>Dos reglas de honestidad</b><b style="display:inline">Excepción:</b> North Star de 9 o 10 y un total de al menos 5.0 lo sube a verde. <b style="display:inline">Veto:</b> un Momento de 1 o 2 lo deja máximo en amarillo, por alto que esté lo demás.</div>
+  <h3>Un ejemplo completo</h3>
+  <div class="mock"><p><b>Tú:</b> ¿Vale la pena este proyecto? Un correo semanal que resuma todo lo nuevo en mi industria.</p>
+  <p><b>Asesor:</b> (busca en el cerebro: tu North Star dice "estar al día sin pasarme horas en redes"; la Puerta del lanzamiento de primavera dice que estás a media semana de lanzamiento.)</p></div>
+  <div class="card tablecard"><table>
+    <tr><th>Dimensión</th><th>Puntaje</th><th>Peso</th><th>Ponderado</th></tr>
+    <tr><td>Sistematización</td><td>8</td><td>25%</td><td>2.00</td></tr>
+    <tr><td>North Star</td><td>9</td><td>30%</td><td>2.70</td></tr>
+    <tr><td>Ingresos o costos</td><td>4</td><td>25%</td><td>1.00</td></tr>
+    <tr><td>Momento</td><td>3</td><td>20%</td><td>0.60</td></tr>
+    <tr><td><b>Total</b></td><td></td><td></td><td><b>6.30</b></td></tr>
+  </table></div>
+  <p>El veredicto inicial es amarillo (6.3). Aplica la excepción (North Star 9, total arriba de 5.0), así que queda en <b>verde</b>, y el reporte dice con honestidad que el momento está flojo: empieza cuando salga el lanzamiento de esta semana.</p>
+  <p class="small">Cada vez escribe una nota de idea en <code>03 Ideas &amp; Notes</code>, una entrada en el Decision Log si es verde o rojo, un resumen imprimible y (si lo activaste) una entrada en Notion. Las ideas rojas se estacionan con lo que las haría volver, nunca se tiran.</p>
+  <div class="recap"><h4>Resumen del capítulo 6</h4><ul class="clean"><li>"¿Vale la pena este proyecto?": hasta siete preguntas, cuatro puntajes, un veredicto con las cuentas a la vista.</li><li>Primero lee tu cerebro, así el consejo encaja con tus prioridades.</li></ul></div>
+
+</div>
+
+<!-- ===== CH7 ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 7</div>
+  <h2><span class="num">7</span>Trucos avanzados</h2>
+  <p class="sub">El skill que más usas y en el que menos piensas.</p>
+  <p>Cada vez que otro skill escribe en tu bóveda, primero carga <code>obsidian-power-user</code>. Por eso tus notas salen con buenos encabezados, links que sirven y recuadros ordenados sin que lo pidas. Como un corrector de ortografía, trabaja en segundo plano. Cuando lo llamas a propósito, es todo un experto en Obsidian:</p>
+  <div class="grid g2">
+    <div class="card"><h4>Una plantilla</h4><p>"Hazme una plantilla de revisión semanal." Una forma de nota que llenas cada semana.</p></div>
+    <div class="card"><h4>Un canvas</h4><p>"Haz un canvas para planear la mudanza." Un tablero visual de tarjetas que acomodas y conectas.</p></div>
+    <div class="card"><h4>Un mapa o dashboard</h4><p>"Haz un MOC de todo lo de precios." O una base: una vista de tabla de notas filtradas por tipo o fecha.</p></div>
+    <div class="card"><h4>Una nota limpia de un desorden</h4><p>Pega notas sueltas y di "conviértelo en una nota bien hecha". Con encabezado, links y todo.</p></div>
+    <div class="card"><h4>Una importación</h4><p>"Ayúdame a traer mis notas de Apple Notes." Conoce los importadores de Notion, Evernote, Apple Notes, Roam y más, y qué sobrevive el viaje.</p></div>
+    <div class="card"><h4>Una consulta</h4><p>"Enséñame todas las decisiones de este año en una lista." Una consulta de Dataview o una base que se actualiza sola.</p></div>
+  </div>
+  <div class="callout"><b>No necesitas la jerga</b>Describe lo que quieres con palabras sencillas. Sabe qué función de Obsidian encaja, y sigue las mismas reglas de links y encabezados que los demás skills.</div>
+  <div class="recap"><h4>Resumen del capítulo 7</h4><ul class="clean"><li>Trabaja detrás de todos los demás skills, así las notas salen limpias.</li><li>Pídele directo plantillas, canvas, mapas, importaciones y consultas, con palabras sencillas.</li></ul></div>
+</div>
+
+<!-- ===== CH8 p1: HEALTH ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 8</div>
+  <h2><span class="num">8</span>Mantenerlo sano</h2>
+  <p class="sub">Un cerebro se echa a perder en silencio. Si lo mides una vez al mes con las mismas reglas, lo agarras cuando todavía es poco.</p>
+  <p>Ninguno de estos problemas duele el día que pasa: una nota renombrada deja un link muerto, un guardado rápido deja una huérfana, una copia se queda olvidada. Juntos, con los meses, convierten un cerebro en un cajón de tiliches. El skill <code>brain-health</code> mide nueve cosas, igual cada mes, y guarda el historial.</p>
+  <div class="card tablecard"><table>
+    <tr><th>Medida</th><th>Qué significa</th><th>Sano</th></tr>
+    <tr><td><b>Notas</b></td><td>Cuántas, y por cajón</td><td>Creciendo donde trabajas</td></tr>
+    <tr><td><b>Links rotos</b></td><td>Links que apuntan a una nota que no existe</td><td>Bajando</td></tr>
+    <tr><td><b>Huérfanas</b></td><td>Notas a las que nada enlaza, así nunca te topas con ellas</td><td>Pocas, y bajando</td></tr>
+    <tr><td><b>Sin encabezado</b></td><td>Notas sin el bloque de propiedades</td><td>0 en notas nuevas</td></tr>
+    <tr><td><b>Contrato</b></td><td>% de notas que pasan la revisión de propiedades</td><td>Subiendo</td></tr>
+    <tr><td><b>Archivos .bak</b></td><td>Copias de respaldo dentro de la bóveda</td><td>Siempre 0</td></tr>
+    <tr><td><b>Duplicados</b></td><td>Notas que son copia exacta de otra</td><td>0</td></tr>
+    <tr><td><b>Nombres malos</b></td><td>Nombres de archivo que Obsidian no puede enlazar</td><td>0</td></tr>
+    <tr><td><b>Puertas viejas</b></td><td>Puertas de proyecto sin revisar en 30 días</td><td>0</td></tr>
+  </table></div>
+  <h3>El semáforo</h3>
+  <div class="grid g3">
+    <div class="card piece" style="border-top-color:var(--red)"><span class="tag t-red">ROJO</span><h4>Arréglalo este mes</h4><p>Archivos de respaldo dentro de la bóveda, o los links rotos crecieron más de 10% desde el mes pasado.</p></div>
+    <div class="card piece" style="border-top-color:var(--orange)"><span class="tag t-orange">AMARILLO</span><h4>Ponle ojo</h4><p>Los links rotos crecieron un poco, bajó el % de contrato, o hay nombres malos o Puertas viejas.</p></div>
+    <div class="card piece" style="border-top-color:var(--green)"><span class="tag t-green">VERDE</span><h4>Sano</h4><p>Nada de lo anterior. Sigue haciendo lo que haces.</p></div>
+  </div>
+  <div class="callout gold"><b>Regla de oro: compara con el mes pasado, no con la perfección</b>Una bóveda vieja puede empezar con cientos de links rotos. No pasa nada mientras el número baje. El semáforo ve la dirección, no el tamaño.</div>
+</div>
+
+<!-- ===== CH8 p2: SCHEDULE + FIX + WEEKLY ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Corre solo, una vez al mes</h3>
+  <p>Si le dijiste que sí a la pregunta 7 en la instalación, la revisión corre el <b>día 1 de cada mes a las 07:00</b>, rehace el índice de búsqueda y agrega un renglón a <code>05 AI System/Brain Health History</code>. No toca nada más. Para verla o cambiarla:</p>
+  <div class="grid g2">
+    <div class="say"><span>Tú dices</span>"¿Cómo está mi cerebro?"  ·  "Salud del cerebro."</div>
+    <div class="say"><span>Tú dices</span>"Apaga la revisión mensual."  ·  "Turn off the monthly check."</div>
+  </div>
+  <p class="small">Por dentro: macOS usa launchd, Linux usa cron, y en Windows el cerebro te da una línea para pegar. En una Mac con la bóveda en iCloud, la primera vez puede pedir Acceso total al disco para Python (Ajustes del Sistema, Privacidad y seguridad); el cerebro te avisa si es así.</p>
+  <h3>Cómo se ve la respuesta</h3>
+  <div class="mock"><p><b>IA:</b> Salud del cerebro, 1 de octubre: <b>AMARILLO</b>. Los links rotos pasaron de 41 a 47, casi todo por una nota: seis notas apuntan a "Lista de Proveedores", que se renombró. Huérfanas 12 (eran 15, bien). Contrato 88% (era 85%).<br>Tres arreglos, el más útil primero: 1) apuntar los seis links a "Proveedores"; 2) enlazar las 3 huérfanas más nuevas desde su MOC; 3) verificar la Puerta del huerto (32 días). ¿Los hago?</p></div>
+  <h3>Cómo funcionan los arreglos</h3>
+  <ul class="clean">
+    <li><b>Archivos de respaldo:</b> se mueven a <code>Archives/Backups/</code>. Nunca se borran.</li>
+    <li><b>Links rotos:</b> se crea la nota que falta como un esbozo corto, o el link se apunta al nombre correcto. Un arreglo muchas veces repara muchos links.</li>
+    <li><b>Huérfanas:</b> se enlazan desde su MOC o una nota relacionada, o se archivan si de verdad están muertas.</li>
+    <li><b>Revisión de propiedades:</b> el cerebro enlista cada nota y lo que le falta, las más nuevas primero.</li>
+    <li><b>Puertas viejas:</b> se verifican contigo, o el proyecto se marca como estacionado.</li>
+  </ul>
+  <div class="callout warn"><b>¿Dos meses seguidos sin verde?</b>Los números no lo ven todo. El cerebro te va a ofrecer una revisión más a fondo: notas que se contradicen, planes que ya no son ciertos, MOCs que ya no cuadran con la bóveda.</div>
+  <h3>Tu hábito semanal de cinco minutos</h3>
+  <p>Una vez por semana, refresca <code>CURRENT-CONTEXT.md</code>: proyectos activos (cada uno con link a su Puerta), el enfoque de la semana, preguntas abiertas, decisiones recientes. Es la primera nota que lee tu cerebro, así que tenerla al día es el hábito más valioso después de guardar. Pide: <i>"Ayúdame a actualizar mi contexto de esta semana."</i></p>
+  <div class="recap"><h4>Resumen del capítulo 8</h4><ul class="clean"><li>Cada mes: la revisión corre sola y escribe un renglón de historial.</li><li>Cada semana: cinco minutos en CURRENT-CONTEXT.md.</li><li>Arregla máximo tres cosas a la vez, lo más repetido primero.</li></ul></div>
+</div>
+
+<!-- ===== CH9: TROUBLESHOOTING ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Capítulo 9</div>
+  <h2><span class="num">9</span>Problemas y preguntas</h2>
+  <p class="sub">Hay poco que se pueda romper. Esto es lo que a veces pasa, y cómo arreglarlo.</p>
+  <div class="two-col">
+    <div class="card"><h4>"El cerebro no encuentra mi bóveda."</h4><p>La carpeta de la bóveda no está conectada a tu asistente en esta sesión. En Cowork, dale acceso a la carpeta; en otros, abre el asistente en la bóveda o cerca. El cerebro nunca escribe notas en cualquier lado; se detiene y te pregunta.</p></div>
+    <div class="card"><h4>"No se activó cuando dije la frase."</h4><p>Dila más directo: "Guarda esto en mi cerebro." ¿Nada? Los skills pueden estar en la carpeta equivocada (capítulo 1, paso 1). Corre otra vez la instalación y abre una conversación nueva.</p></div>
+    <div class="card"><h4>"La búsqueda dice que no hay índice."</h4><p>Pide: "rehaz el índice de búsqueda." Tarda segundos. Si dice que falta Python o FTS5, instala Python desde python.org; mientras, la búsqueda usa texto simple.</p></div>
+    <div class="card"><h4>"Mis notas no pasan la revisión de propiedades."</h4><p>Es normal en notas hechas a mano o antes de la v2. Pide "arregla las propiedades de esta nota". Si un tipo o proyecto es nuevo, agrégalo a <code>.brain/vocabulary.json</code> (el cerebro lo puede hacer).</p></div>
+    <div class="card"><h4>"La revisión mensual nunca corrió."</h4><p>Pregunta "¿está activa la revisión mensual?" El cerebro te enseña el estado y las últimas líneas del log. En Mac con iCloud, dale a Python Acceso total al disco. Si la computadora estaba apagada el día 1, macOS la corre al despertar.</p></div>
+    <div class="card"><h4>"El cierre se detuvo en el paso de git."</h4><p>Tu bóveda cambió en dos computadoras y los cambios no encajan. El cerebro paró a propósito para no revolver nada. Pídele que te enseñe la diferencia y decidan juntos.</p></div>
+    <div class="card"><h4>"Me contestó en el idioma equivocado."</h4><p>Dile: "responde en español" o "answer in English". Para siempre, cambia la línea del idioma en <code>CLAUDE.md</code>.</p></div>
+    <div class="card"><h4>"Corrí la instalación dos veces."</h4><p>No pasa nada. Ve que tu cerebro existe y pregunta: conservarlo, cambiar algunas respuestas o empezar de cero. Elige conservar.</p></div>
+    <div class="card"><h4>"No tengo Obsidian."</h4><p>Tu cerebro igual funciona: las notas son archivos de texto simple. Instala Obsidian (gratis) cuando quieras el grafo y los links que se abren.</p></div>
+    <div class="card"><h4>"¿Tengo que usar Notion?"</h4><p>No. Solo toca el filtro de ideas, y solo si lo activaste.</p></div>
+  </div>
+  <div class="callout info"><b>Si tienes duda, pregúntale al cerebro</b>"¿Por qué no funcionó mi guardado?" o "¿Está conectada mi bóveda?" casi siempre te da una respuesta y una solución más rápido que esta página.</div>
+</div>
+
+<!-- ===== CH9 FAQ + CH10 ===== -->
+<div class="sheet">
+  <h3 style="margin-top:0">Preguntas rápidas</h3>
+  <div class="card tablecard"><table>
+    <tr><td style="width:36%"><b>¿Funciona en mi celular?</b></td><td>Tus notas se sincronizan si la bóveda está en iCloud, OneDrive o Dropbox. Los skills corren donde uses tu asistente.</td></tr>
+    <tr><td><b>¿Puedo cambiar el nombre de las carpetas?</b></td><td>Sí. Deja el número al principio (01, 02...) y todo sigue funcionando.</td></tr>
+    <tr><td><b>¿Mis datos son privados?</b></td><td>Sí. Todo se queda en tu bóveda, en tu computadora o tu nube, en archivos simples.</td></tr>
+    <tr><td><b>¿Algo corre en segundo plano?</b></td><td>Solo la revisión de salud mensual, y solo si dijiste que sí.</td></tr>
+    <tr><td><b>¿Y si dejo de usar el kit?</b></td><td>Te quedas con todas tus notas, para siempre.</td></tr>
+    <tr><td><b>¿Puedo compartir el kit?</b></td><td>Sí, de eso se trata. Es gratis con licencia MIT.</td></tr>
+  </table></div>
+
+  <div class="chapter-eyebrow" style="margin-top:22px">Capítulo 10</div>
+  <h2><span class="num">10</span>Haz crecer tu cerebro</h2>
+  <p class="sub">Empezaste con conocimiento regado. Terminas con un sistema que recuerda, encuentra y se cuida solo.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Define tu North Star</h4><p>Después de unas semanas, escribe en <code>CLAUDE.md</code> el resultado al que le estás apostando. Afina el filtro de ideas más que cualquier otra cosa.</p></div>
+    <div class="card"><h4>Enséñale tu mundo</h4><p>Agrega a <code>CLAUDE.md</code> a la gente que importa, tu vocabulario y tus apodos. Que sea corto; pasa el detalle a notas y enlázalas.</p></div>
+    <div class="card"><h4>Agrega tus propios tipos</h4><p>¿Llevas recetas, clientes, propiedades? Agrega un tipo a <code>.brain/vocabulary.json</code> y todas las herramientas lo siguen.</p></div>
+    <div class="card"><h4>Arma un paquete para tu oficio</h4><p>La misma base puede aprender un oficio: pintores, bienes raíces, consultoría, restaurantes. Úsalo unas semanas primero; vas a ver qué necesita tu oficio.</p></div>
+  </div>
+  <div class="callout"><b>La mejor forma de aprenderlo es enseñarlo</b>Guía a un amigo en la instalación. Toma diez minutos, y ya son dos con un segundo cerebro.</div>
+  <h3>Una última palabra</h3>
+  <p>No tienes que ser técnico para pensar con claridad, decidir bien y recordar lo que importa. Lo difícil era tener un lugar para todo eso. Ahora lo tienes. Empieza poco a poco: guarda una conversación hoy, abre un proyecto por su Puerta y deja que el cerebro se encargue del resto.</p>
+</div>
+
+<!-- ===== GLOSSARY + REFERENCE CARD ===== -->
+<div class="sheet">
+  <div class="chapter-eyebrow">Referencia</div>
+  <h2>Glosario</h2>
+  <p class="sub">Las palabras de este manual, en lenguaje sencillo.</p>
+  <div class="two-col gloss">
+    <div class="card"><h4>Bóveda</h4><p>La carpeta que guarda tu cerebro. Obsidian le dice vault.</p></div>
+    <div class="card"><h4>Skill</h4><p>Una carpeta de instrucciones que le enseña a tu IA un trabajo.</p></div>
+    <div class="card"><h4>Link</h4><p><code>[[Note Name]]</code> dentro de una nota: una puerta hacia otra nota.</p></div>
+    <div class="card"><h4>Link roto</h4><p>Una puerta hacia un cuarto que no existe.</p></div>
+    <div class="card"><h4>Huérfana</h4><p>Una nota a la que nada enlaza. Nunca te la vas a volver a topar.</p></div>
+    <div class="card"><h4>Propiedades</h4><p>El encabezado arriba de una nota: type, date, time, description, tags, status.</p></div>
+    <div class="card"><h4>MOC</h4><p>Mapa de contenido (Map of Content): el índice de un tema.</p></div>
+    <div class="card"><h4>Puerta</h4><p>Una nota por proyecto: cómo va hoy, en una pantalla.</p></div>
+    <div class="card"><h4>Portada</h4><p>Las secciones 1 a 3 de una Puerta, lo único que se lee para empezar.</p></div>
+    <div class="card"><h4>Checkpoint</h4><p>Un punto de guardado de una sesión larga, uno por proyecto.</p></div>
+    <div class="card"><h4>Compresión</h4><p>Cuando una conversación larga se resume para hacer espacio.</p></div>
+    <div class="card"><h4>Índice de búsqueda</h4><p>Como el índice al final de un libro, pero de toda tu bóveda.</p></div>
+    <div class="card"><h4>Log de sesión</h4><p>El registro de una sesión de trabajo.</p></div>
+    <div class="card"><h4>North Star</h4><p>El resultado de largo plazo al que le estás apostando.</p></div>
+  </div>
+  <h3>La tarjeta de referencia</h3>
+  <div class="card tablecard"><table class="ref">
+    <tr><th>Di esto</th><th>Y pasa esto</th></tr>
+    <tr><td>"Guárdalo en mi cerebro" · "Save to my brain"</td><td>Conocimiento archivado, sesión registrada, links revisados</td></tr>
+    <tr><td>"¿Qué decidimos sobre X?"</td><td>El cerebro busca antes de responder</td></tr>
+    <tr><td>"¿En qué quedamos con X?"</td><td>Se abre la Puerta del proyecto: estado, números, pendientes</td></tr>
+    <tr><td>"Proyecto nuevo: X"</td><td>Se crea una Puerta y se enlaza</td></tr>
+    <tr><td>"Cierra la sesión" · "Blindemos"</td><td>Checkpoint, Puerta, guardado e índice, de un jalón</td></tr>
+    <tr><td>"¿Vale la pena este proyecto?"</td><td>Siete preguntas, cuatro puntajes, un veredicto</td></tr>
+    <tr><td>"¿Cómo está mi cerebro?"</td><td>El semáforo y los tres arreglos principales</td></tr>
+  </table></div>
+  <footer class="end">Second Brain Starter Kit · Manual del Usuario · Versión 2.0 · Octubre 2026<br>github.com/herreraspaintingba-hub/second-brain-starter-kit · Licencia MIT · Hecho para compartirse</footer>
+</div>
+
+</body>
+</html>

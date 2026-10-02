@@ -69,7 +69,7 @@ def mocs_dir(vault):
 def all_doors(vault):
     out = []
     for pre in PREFIXES:
-        out += glob.glob(os.path.join(mocs_dir(vault), pre + "*.md"))
+        out += glob.glob(os.path.join(glob.escape(mocs_dir(vault)), pre + "*.md"))
     return sorted(out)
 
 
@@ -89,7 +89,9 @@ def verified(txt):
     m = re.search(r'^verified:\s*"?(\d{4}-\d{2}-\d{2})', txt, re.M)
     if not m:
         return None, None
-    d = dt.date.fromisoformat(m.group(1))
+    d = bl.safe_date(m.group(1))
+    if d is None:
+        return m.group(1) + " (invalid date)", None
     return m.group(1), (dt.date.today() - d).days
 
 
@@ -110,7 +112,9 @@ def label(path):
 
 
 def create(vault, name, lang, project):
-    bad = sorted(set(name) & bl.FORBIDDEN_NAME_CHARS)
+    if not name:
+        sys.exit("Give the project a name.")
+    bad = sorted(set(name) & (bl.FORBIDDEN_NAME_CHARS | set("/\\")))
     if bad:
         sys.exit("The name has %s, which Obsidian cannot link. Choose another name." % " ".join(bad))
     os.makedirs(mocs_dir(vault), exist_ok=True)
@@ -122,11 +126,12 @@ def create(vault, name, lang, project):
     today = now.strftime("%Y-%m-%d")
     desc = ("Estado vigente de %s en una pantalla; se sobrescribe en cada cierre de sesión" % name
             if lang == "es" else "Current state of %s in one screen; rewritten at every session close" % name)
-    lines = ["---", 'title: "%s%s"' % (pre, name), "type: door"]
+    yq = lambda s: "'" + s.replace("'", "''") + "'"  # YAML single-quoted string
+    lines = ["---", "title: %s" % yq(pre + name), "type: door"]
     if project:
         lines.append("project: %s" % project)
     lines += ["date: %s" % today, 'time: "%s"' % now.strftime("%H:%M"), "verified: %s" % today,
-              'description: "%s"' % desc, "tags: [door]", "status: active", "---", "",
+              "description: %s" % yq(desc), "tags: [door]", "status: active", "---", "",
               "# %s%s" % (pre, name), ""]
     for i, (title, hint) in enumerate(zip(SECTIONS[lang], HINTS[lang]), 1):
         lines += ["## %d. %s" % (i, title), "", hint.format(date=today), ""]

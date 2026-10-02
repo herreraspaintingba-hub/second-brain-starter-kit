@@ -155,7 +155,8 @@ bash tests/run_tests.sh     # end-to-end test of the tools on an example vault
 ```
 
 The tools live in `skills/second-brain-init/tools/` (standard-library Python and one
-shell script) and are copied into `<vault>/.brain/tools/` at setup.
+shell script) and are copied into `<vault>/.brain/tools/` at setup. The manuals are built
+from `docs/manual-en.html` and `docs/manual-es.html` with WeasyPrint.
 
 ---
 

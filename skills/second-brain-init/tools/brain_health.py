@@ -41,6 +41,8 @@ import brainlib as bl  # noqa: E402
 import check_frontmatter as cf  # noqa: E402
 
 HISTORY_REL = os.path.join("05 AI System", "Brain Health History.md")
+START = "<!-- brain-health:start -->"
+END = "<!-- brain-health:end -->"
 RED_BROKEN_GROWTH = 0.10
 STALE_DOOR_DAYS = 30
 NOT_ORPHAN_TYPES = {"moc", "door", "health", "checkpoint", "session"}
@@ -64,7 +66,7 @@ def measure(vault, vocab):
         in_archives = os.path.relpath(dp, vault).split(os.sep)[0] == "Archives"
         for f in fns:
             all_names.add(bl.note_key(f))
-            if ".bak" in f.lower() and not in_archives:
+            if bl.is_backup_name(f) and not in_archives:
                 bak.append(os.path.relpath(os.path.join(dp, f), vault))
 
     inbound = {rel: 0 for rel in notes}
@@ -110,8 +112,8 @@ def measure(vault, vocab):
     for rel, n in notes.items():
         if bl.as_text(bl.pick(n["data"], "type")).lower() != "door":
             continue
-        v = bl.norm_date(n["data"].get("verified", ""))
-        if not v or (today - dt.date.fromisoformat(v)).days > STALE_DOOR_DAYS:
+        v = bl.safe_date(bl.as_text(n["data"].get("verified", "")))
+        if not v or (today - v).days > STALE_DOOR_DAYS:
             stale.append(rel)
 
     sections = {}
@@ -143,7 +145,10 @@ def previous_rows(path):
     if not os.path.exists(path):
         return []
     rows = []
-    for line in bl.read_text(path).splitlines():
+    text = bl.read_text(path)
+    if START in text and END in text:
+        text = text.split(START, 1)[1].split(END, 1)[0]  # only the generated table
+    for line in text.splitlines():
         if ROW_RE.match(line):
             rows.append(line.rstrip())
     return rows
@@ -216,8 +221,9 @@ def write_note(path, rows, m, color, reasons, now):
          "tags: [brain-health]", "status: active", "---", "",
          "# Brain Health History", "",
          "> [!info] What this is",
-         "> Written by `brain_health.py`. One row per run. Compare against last month, not against perfection.", "",
-         "## Latest: %s, %s" % (now.strftime("%Y-%m-%d %H:%M"), color), ""]
+         "> Written by `brain_health.py`. One row per run. Compare against last month, not against perfection.",
+         "> Everything between the two START and END markers is rewritten on each run; write your own notes outside them.", "",
+         START, "## Latest: %s, %s" % (now.strftime("%Y-%m-%d %H:%M"), color), ""]
     L += ["- " + r for r in reasons]
     L += ["", "| Section | Notes |", "|---|---|"]
     L += ["| %s | %d |" % (k, v) for k, v in m["sections"].items()]
@@ -243,9 +249,22 @@ def write_note(path, rows, m, color, reasons, now):
           "3. Orphans: link each one from its MOC or a related note, or archive it.",
           "4. Contract: run `check_frontmatter.py --all` and fix the notes it lists.",
           "5. Two months in a row not green: ask your AI for a deep review of the vault.", ""]
+    L.append(END)
+    text = "\n".join(L)
+    if os.path.exists(path):
+        old = bl.read_text(path)
+        if START in old and END in old:
+            # keep the user's own frontmatter and words; swap only the generated block
+            head, rest = old.split(START, 1)
+            tail = rest.split(END, 1)[1]
+            gen = text[text.index(START):]
+            text = head + gen + tail
+        else:
+            kept = old.split("\n---\n", 1)[1] if old.startswith("---") and "\n---\n" in old else old
+            text += "\n\n## Earlier content of this note (kept)\n\n" + kept.strip() + "\n"
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(L))
+        fh.write(text)
 
 
 def main(argv=None):
