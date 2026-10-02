@@ -1,423 +1,316 @@
 ---
 name: second-brain-init
 description: >
-  First-run setup skill for the Second Brain Starter Kit. Use this skill the
-  very first time a user installs the kit — it creates their Obsidian vault,
-  installs the three companion skills (obsidian-power-user, save-to-obsidian,
-  project-advisor), writes their personalized CLAUDE.md, and runs a verification
-  pass. Trigger when the user says "set up my second brain," "install the
-  starter kit," "initialize my brain," "set up my vault," "configura mi segundo
-  cerebro," "instala el starter kit," "inicializa mi cerebro," "configura mi
-  bóveda," or when the user is in their first conversation with no
-  CLAUDE.md present and asks how to get started. Also auto-trigger when the
-  assistant detects that none of the other Second Brain skills have been
-  configured yet (no `second_brain_initialized: true` marker in CLAUDE.md).
-  This skill runs ONCE per brain. Re-running is safe but will prompt for
-  confirmation before overwriting existing setup. Bilingual EN+ES.
-version: 1.0.0
+  First-run setup (and v1 upgrade) for the Second Brain Starter Kit. Builds the
+  Obsidian vault, checks the eight companion skills are installed, puts the brain's
+  tools in the vault (search index, frontmatter contract, project Doors, health check),
+  writes the personalized CLAUDE.md with the three-layer startup, turns on the monthly
+  health check, and verifies everything. Trigger on "set up my second brain," "install
+  the starter kit," "initialize my brain," "set up my vault," "upgrade my brain to v2,"
+  "configura mi segundo cerebro," "instala el starter kit," "inicializa mi cerebro,"
+  "configura mi bóveda," "actualiza mi cerebro a la v2," or when there is no CLAUDE.md
+  with `second_brain_initialized: true` and the user asks how to start. Runs once per
+  brain; re-running asks before changing anything. Bilingual EN+ES.
 kit: Second Brain Starter Kit
+version: 2.0.0
 language: en+es
 ---
 
-# Second Brain — Init Skill
+# Second Brain: Setup
 
-> **One-time setup.** This skill runs the first time you install the Second
-> Brain Starter Kit. It builds your vault, installs the three companion skills,
-> writes your personalized CLAUDE.md, and verifies everything works.
+> **One-time setup.** Builds your vault, sets up the tools, writes your CLAUDE.md and
+> checks that everything works. About 10 minutes.
 >
-> **Setup único.** Esta skill corre la primera vez que instalas el Starter Kit.
-> Construye tu bóveda, instala las tres skills compañeras, escribe tu CLAUDE.md
-> personalizado, y verifica que todo funcione.
+> **Configuración única.** Construye tu bóveda, instala las herramientas, escribe tu
+> CLAUDE.md y verifica que todo funcione. Unos 10 minutos.
 
 ---
 
-## When to run this skill / Cuándo correr esta skill
+## When to run it
 
-**Run once when:**
-- The user is installing the Second Brain Starter Kit for the first time
-- The user explicitly asks to "set up my brain" / "initialize the kit"
-- No `CLAUDE.md` exists in the working directory, or it exists but lacks the marker `second_brain_initialized: true`
+- First install of the kit, or the user asks to set up or initialize the brain.
+- No `CLAUDE.md`, or one without `second_brain_initialized: true`.
+- **Upgrade:** a CLAUDE.md with `kit_version: 1.0.0`. Then follow "Upgrading from v1"
+  at the end instead of a fresh setup.
 
-**Correr una vez cuando:**
-- El usuario está instalando el Starter Kit por primera vez
-- El usuario pide explícitamente "configura mi cerebro" / "inicializa el kit"
-- No existe `CLAUDE.md` en el directorio de trabajo, o existe pero sin el marcador `second_brain_initialized: true`
-
-**Do NOT re-run if:**
-- `CLAUDE.md` exists and has `second_brain_initialized: true` — the brain is already set up
-- The user is in a normal working session — they want a different skill (probably `save-to-obsidian` or `obsidian-power-user`)
-
-If a partial setup is detected, offer to resume rather than restart.
-
----
+**Do not run it** when the brain is set up and the user is just working: they want
+another skill. If a setup was left half done, offer to resume it.
 
 ## Triggers / Activadores
 
-**English:**
-- "set up my second brain"
-- "install the starter kit"
-- "initialize my brain"
-- "set up my vault"
-- "I just installed the kit"
-- "start the setup"
-- "first-time setup"
+**English:** "set up my second brain" · "install the starter kit" · "initialize my brain"
+· "set up my vault" · "I just installed the kit" · "upgrade my brain to v2"
 
-**Español:**
-- "configura mi segundo cerebro"
-- "instala el starter kit"
-- "inicializa mi cerebro"
-- "configura mi bóveda"
-- "acabo de instalar el kit"
-- "empieza el setup"
-- "configuración inicial"
+**Español:** "configura mi segundo cerebro" · "instala el starter kit" · "inicializa mi
+cerebro" · "configura mi bóveda" · "acabo de instalar el kit" · "actualiza mi cerebro a
+la v2"
+
+## Load first
+
+`obsidian-power-user`, for the formatting of every note this setup writes.
 
 ---
 
-## Required: Load companion skills before writing files
-
-Before creating any vault file or skill placement, load:
-
-1. **`obsidian-power-user`** — provides the formatting standards used in CLAUDE.md, the seed CURRENT-CONTEXT.md note, and the vault templates.
-
-This skill (`second-brain-init`) handles orchestration. `obsidian-power-user` handles the actual Obsidian-native formatting. Without it, the seed files will be plain markdown instead of vault-ready notes.
-
----
-
-## Step 1 — Detect environment / Detectar entorno
-
-Before asking anything, check:
+## Step 1. Look around before asking
 
 ```bash
-# Is there a CLAUDE.md already?
-ls "$WORKING_DIR/CLAUDE.md" 2>/dev/null
-
-# Is there a vault folder hint?
-ls "$WORKING_DIR" | grep -iE "vault|brain|obsidian"
-
-# Is the user on macOS, Windows, Linux?
-uname -s
+ls "$WORKING_DIR/CLAUDE.md" 2>/dev/null           # already set up?
+ls "$WORKING_DIR" | grep -iE "vault|brain|obsidian" # a vault nearby?
+uname -s                                            # macOS, Linux, Windows
+python3 -c "import sqlite3; c=sqlite3.connect(':memory:'); c.execute('create virtual table t using fts5(x)'); print('python ok, fts5 ok')"
 ```
 
-Use the output to pre-fill defaults in Step 2 questions. Never assume — always confirm with the user.
+Use what you find as defaults for the questions. **Python is optional.** With Python 3
+and FTS5 the brain gets real search, the frontmatter check and the monthly health
+check. Without it, every skill still works with plain text search and manual checks.
+If it is missing on a Mac, macOS offers to install it the first time `python3` runs;
+on Windows, python.org has an installer. Never block the setup on it.
 
 ---
 
-## Step 2 — Six setup questions / Seis preguntas de configuración
+## Step 2. Seven questions
 
-Ask these via `AskUserQuestion` (or the equivalent multiple-choice mechanism in the host LLM). Ask one at a time, do not batch. Capture all six answers before moving on.
+Ask them one at a time (with `AskUserQuestion` or the host's multiple choice).
 
-### Question 1 — Your name / Tu nombre
+**Q1. Your name / Tu nombre.** "What should I call you?" / "¿Cómo te llamo?"
+→ `{{USER_NAME}}`
 
-> **EN:** What should I call you?
-> **ES:** ¿Cómo te llamo?
+**Q2. Your role or business / Tu rol o negocio.** Optional. → `{{BUSINESS_NAME}}`
 
-Free-text. Default: empty. Stores as `{{USER_NAME}}`.
+**Q3. Vault name / Nombre de la bóveda.** Default "My Second Brain" / "Mi Segundo
+Cerebro". → `{{VAULT_NAME}}`
 
-### Question 2 — Your role or business / Tu rol o negocio
+**Q4. Where it lives / Dónde vive.** Most people pick a synced folder.
+1. iCloud Drive: `~/Library/Mobile Documents/com~apple~CloudDocs/{{VAULT_NAME}}` (Mac)
+2. Dropbox: `~/Dropbox/{{VAULT_NAME}}`
+3. OneDrive: `~/OneDrive/{{VAULT_NAME}}` (Windows)
+4. Documents, local only: `~/Documents/{{VAULT_NAME}}`
+5. A path they type
+→ `{{VAULT_PATH}}`
 
-> **EN:** What do you do? (Optional — leave blank if personal use only.)
-> **ES:** ¿A qué te dedicas? (Opcional — déjalo en blanco si es uso personal.)
+**Q5. Main language / Idioma principal.** English / Español / Both. Every skill works
+in both; this sets the default for headings and summaries. → `{{PRIMARY_LANGUAGE}}`
 
-Free-text. Default: empty. Stores as `{{BUSINESS_NAME}}`.
+**Q6. Notion.** "Do you also use Notion? `project-advisor` can mirror its verdicts
+there." Yes / No / Later. → `{{NOTION_ENABLED}}`
 
-### Question 3 — Vault name / Nombre de la bóveda
-
-> **EN:** What do you want to call your brain? Examples: "My Second Brain," "Knowledge Base," "[Your Name]'s Brain."
-> **ES:** ¿Cómo quieres llamar a tu cerebro? Ejemplos: "Mi Segundo Cerebro," "Base de Conocimiento," "Cerebro de [Tu Nombre]."
-
-Free-text. Default: `"My Second Brain"`. Stores as `{{VAULT_NAME}}`.
-
-### Question 4 — Vault location / Ubicación de la bóveda
-
-> **EN:** Where should the vault live? Most users pick iCloud or Dropbox so it syncs across devices.
-> **ES:** ¿Dónde quieres guardar la bóveda? La mayoría elige iCloud o Dropbox para que sincronice entre dispositivos.
-
-Options:
-1. iCloud Drive (`~/Library/Mobile Documents/com~apple~CloudDocs/{{VAULT_NAME}}`) — Recommended for macOS
-2. Dropbox (`~/Dropbox/{{VAULT_NAME}}`) — Cross-platform
-3. Documents folder (`~/Documents/{{VAULT_NAME}}`) — Local only
-4. Custom path — User enters absolute path
-
-Stores as `{{VAULT_PATH}}`.
-
-### Question 5 — Primary language / Idioma principal
-
-> **EN:** Which language should the brain default to? (Skills work in both — this just sets the default for outputs and labels.)
-> **ES:** ¿Qué idioma debe usar el cerebro por defecto? (Las skills funcionan en ambos — esto solo configura el default de outputs y etiquetas.)
-
-Options: EN / ES / Both at parity. Stores as `{{PRIMARY_LANGUAGE}}`.
-
-### Question 6 — Notion integration / Integración con Notion
-
-> **EN:** Do you also use Notion? If yes, some skills can mirror outputs there. If no, everything stays in Obsidian.
-> **ES:** ¿También usas Notion? Si sí, algunas skills pueden reflejar outputs ahí. Si no, todo queda en Obsidian.
-
-Options: Yes / No / Maybe later. Stores as `{{NOTION_ENABLED}}` (boolean).
+**Q7. Monthly health check / Revisión mensual.** "Once a month (the 1st, 07:00) the
+brain can check itself: broken links, orphan notes, backups left inside, and keep a
+history. Turn it on?" **Yes (recommended)** / No, I'll ask for it.
+→ `{{HEALTH_SCHEDULED}}`. Skip this question if Python is not available.
 
 ---
 
-## Step 3 — Create vault folder structure / Crear estructura de carpetas
+## Step 3. Build the vault
 
-Create the vault at `{{VAULT_PATH}}` with this exact structure:
+Create `{{VAULT_PATH}}` with:
 
 ```
 {{VAULT_NAME}}/
 ├── 00 Inbox/
-├── 01 Personal Knowledge/
-│   ├── People/
-│   ├── Places/
-│   ├── Routines/
-│   └── Lessons Learned/
-├── 02 Strategy/
-│   ├── Vision/
-│   ├── Goals/
-│   ├── Decision Log/
-│   └── North Star/
-├── 03 Ideas & Notes/
-├── 04 Learning/
-│   ├── Books/
-│   ├── Courses/
-│   ├── AI & Tech/
-│   └── Business/
-├── 05 AI System/
-│   ├── Skills/
-│   ├── Integrations/
-│   └── Architecture/
+├── 01 Personal Knowledge/   People/ Places/ Routines/ Lessons Learned/
+├── 02 Strategy/             Vision/ Goals/ Decision Log/ North Star/
+├── 03 Ideas & Notes/        References/
+├── 04 Learning/             Books/ Courses/ AI & Tech/ Business/
+├── 05 AI System/            Skills/ Integrations/ Architecture/
 ├── 06 Session Logs/
+├── 07 Assets/
+├── 08 Projects/
+├── 09 MOCs/
+├── Archives/
 ├── Templates/
-└── Excalidraw/
+├── Excalidraw/
+└── .brain/                  tools/  vocabulary.json  (hidden from Obsidian)
 ```
 
-> **Note on naming:** The vault sections use generic names by default. Users with a business focus may want to rename "01 Personal Knowledge" → "01 Company Knowledge" later — that's fine. The skills resolve the section by number prefix (`01`, `02`, etc.), not by full name.
+Sections are found by number prefix, so "01 Personal Knowledge" can become "01 Company
+Knowledge" later. Then write two starter notes so the graph has a center:
 
-After creating folders, write a `.obsidian-vault-marker` file in the root so other tools can detect this is a managed vault.
+- `Home.md` at the root: one paragraph on what this brain is, and a link to each MOC.
+- `09 MOCs/MOC, Start Here.md` (`type: moc`): links to `Home`, to the session log of
+  this setup, and a short "how to use me" list (the four phrases from Step 8).
 
----
+## Step 4. Check the skills are installed
 
-## Step 4 — Install the 3 companion skills / Instalar las 3 skills compañeras
+`install.sh` copies all nine skills. Confirm they are in the host's skills folder
+(`~/.claude/skills/`, `~/.codex/skills/`, `~/.gemini/skills/`, or where the user's AI
+loads skills from):
 
-Copy the following skill folders into the user's skills directory:
+| Skill | Job |
+|---|---|
+| `second-brain-init` | This setup |
+| `obsidian-power-user` | Obsidian formatting and features |
+| `save-to-obsidian` | Save knowledge and the session log |
+| `project-advisor` | Score an idea before committing |
+| `brain-search` | Search the brain before asking |
+| `project-door` | One current-state note per project |
+| `session-checkpoint` | Save point for long sessions |
+| `close-session` | Close a session without losing anything |
+| `brain-health` | Monthly checkup with history |
 
-| Skill | Source (in kit) | Destination |
-|-------|-----------------|-------------|
-| `obsidian-power-user` | `kit/skills/obsidian-power-user/` | `{{SKILLS_DIR}}/obsidian-power-user/` |
-| `save-to-obsidian` | `kit/skills/save-to-obsidian/` | `{{SKILLS_DIR}}/save-to-obsidian/` |
-| `project-advisor` | `kit/skills/project-advisor/` | `{{SKILLS_DIR}}/project-advisor/` |
+If any is missing, copy it from the kit's `skills/` folder.
 
-**Skills directory by host:**
+## Step 5. Put the tools in the vault (when Python works)
 
-| Host | Skills directory |
-|------|-----------------|
-| Claude Code / Cowork | `~/.claude/skills/` |
-| Codex | `~/.codex/skills/` |
-| Gemini CLI | `~/.gemini/skills/` |
-| OpenCloud | User-configured path |
-| Other | Ask the user where their LLM loads skills from |
+The tools ship inside this skill, in `second-brain-init/tools/`. Copy them:
 
-If the user is unsure, ask them to check their LLM's documentation. The kit is portable — it ships as a folder, not a plugin.
+```bash
+SRC="<skills folder>/second-brain-init/tools"
+mkdir -p "{{VAULT_PATH}}/.brain/tools"
+cp "$SRC"/*.py "$SRC"/*.sh "{{VAULT_PATH}}/.brain/tools/"
+cp "$SRC/vocabulary.json" "{{VAULT_PATH}}/.brain/vocabulary.json"
+```
 
----
+In `.brain/vocabulary.json`, set `time_required_since` to today's date (from the
+clock), so every note from today on carries the real time and older notes are not
+flagged for it. Then build the first index:
 
-## Step 5 — Write personalized CLAUDE.md / Escribir CLAUDE.md personalizado
+```bash
+python3 "{{VAULT_PATH}}/.brain/tools/brain_index.py"
+```
 
-Write `{{WORKING_DIR}}/CLAUDE.md` using this template, filling all `{{ }}` placeholders from Step 2 answers:
+If Python is not available, still copy the folder (it will work the day Python is
+installed) and say so in the summary.
+
+## Step 6. Write CLAUDE.md
+
+Write `{{WORKING_DIR}}/CLAUDE.md` from this template. Keep it short: it is read at the
+start of every conversation, and every line costs memory.
 
 ```markdown
-# {{VAULT_NAME}} — Brain Configuration
-
-> This file configures how the Second Brain Starter Kit operates for {{USER_NAME}}.
-> It is read at the start of every conversation. Keep it updated when context changes.
+# {{VAULT_NAME}}: brain configuration
 
 second_brain_initialized: true
 initialized_date: {{TODAYS_DATE}}
-kit_version: 1.0.0
+kit_version: 2.0.0
 
-## Owner / Dueño
+## Owner
+- Name: {{USER_NAME}} · Role: {{BUSINESS_NAME}} · Language: {{PRIMARY_LANGUAGE}}
 
-- **Name / Nombre:** {{USER_NAME}}
-- **Role / Rol:** {{BUSINESS_NAME}}
-- **Primary language / Idioma principal:** {{PRIMARY_LANGUAGE}}
+## Vault
+- Name: {{VAULT_NAME}} · Path: {{VAULT_PATH}}
+- Tools: {{VAULT_PATH}}/.brain/tools/ · Notion mirror: {{NOTION_ENABLED}}
+- Monthly health check: {{HEALTH_SCHEDULED}}
 
-## Vault / Bóveda
+## Startup, in three layers
+1. Always: this file and `{{VAULT_PATH}}/CURRENT-CONTEXT.md`.
+2. By topic, before answering:
+   - A project is mentioned: read its Door front page first (`project-door`).
+   - A past fact, decision or "have we done this": search the brain (`brain-search`).
+   - Anything written into the vault: `obsidian-power-user` rules.
+3. On demand only: the rest of a Door, checkpoints, old session logs, MOCs.
 
-- **Name / Nombre:** {{VAULT_NAME}}
-- **Path / Ruta:** {{VAULT_PATH}}
-- **Notion integration enabled / Integración Notion:** {{NOTION_ENABLED}}
+## Rules
+- Search the brain before asking the user for a fact.
+- Save only when asked, or offer once at the end of a session with something real.
+- Real date and time on every note; frontmatter checked with check_frontmatter.py.
+- Never delete in the vault: archive. No .bak copies inside it.
+- Every link must resolve; no file names with # ^ [ ] | :
 
-## Installed skills / Skills instaladas
+## Phrases
+- "save to my brain" / "guárdalo en mi cerebro" → save-to-obsidian
+- "should I do this?" / "¿vale la pena?" → project-advisor
+- "where are we with X?" / "¿en qué quedamos con X?" → project-door
+- "close the session" / "blindemos" → close-session
+- "brain health" / "salud del cerebro" → brain-health
 
-- `second-brain-init` — One-time setup (this skill)
-- `obsidian-power-user` — Master Obsidian skill
-- `save-to-obsidian` — Capture knowledge to the vault
-- `project-advisor` — Evaluate ideas before committing
-
-## Trigger phrases / Frases de activación
-
-- **Save knowledge / Guardar conocimiento:** "save to my brain" / "guárdalo en mi cerebro"
-- **Evaluate a project / Evaluar un proyecto:** "should I do this?" / "¿debería hacer esto?"
-- **Write to vault / Escribir en la bóveda:** any mention of the vault triggers `obsidian-power-user` formatting standards
-
-## Routing rules / Reglas de routing
-
-When the user asks to "save to my brain" → load `save-to-obsidian`.
-When the user describes a new project idea → load `project-advisor`.
-When writing any file inside the vault → always load `obsidian-power-user` first for formatting.
-When the user asks about Obsidian features (canvas, base, Dataview, etc.) → load `obsidian-power-user`.
-
-## North Star / Estrella polar
-
-> Edit this section to capture your long-term vision. Skills like `project-advisor`
-> use it to evaluate whether new ideas align with what you're building toward.
-
-(empty — fill this in after a few weeks of use)
-
-## How to extend this file
-
-As you use the kit, the brain will learn more about you. Update this file with:
-- People who matter (clients, team, collaborators)
-- Recurring projects
-- Vocabulary specific to your work
-- Trigger phrases you prefer
-
-Keep this file under 200 lines — long contexts cost tokens. Move detailed knowledge
-into the vault instead.
+## North Star
+(Fill this in after a few weeks: what you are building toward. project-advisor uses it.)
 ```
 
----
+## Step 7. Seed CURRENT-CONTEXT.md
 
-## Step 6 — Seed CURRENT-CONTEXT.md / Sembrar CURRENT-CONTEXT.md
+Write `{{VAULT_PATH}}/CURRENT-CONTEXT.md` (`type: note`, with date and time): active
+projects (each linking its Door once it has one), this week's focus, open questions,
+recent decisions. Short on purpose: it is read at every start. Keep it under one screen.
 
-Write `{{VAULT_PATH}}/CURRENT-CONTEXT.md` as a rolling summary file the user updates over time:
+## Step 8. Turn on the health check
 
-```markdown
----
-title: "Current Context"
-type: meta
-updated: {{TODAYS_DATE}}
----
-
-# Current Context — {{USER_NAME}}'s Brain
-
-> What's happening right now. Update this file weekly. It's the first thing
-> every Claude session reads to get oriented.
-
-## Active projects
-
-- (none yet — add as you start things)
-
-## This week's focus
-
-- (set this on Monday)
-
-## Open questions
-
-- (capture things you want to think about but haven't resolved)
-
-## Recent decisions
-
-- (link to notes in `02 Strategy/Decision Log/` as you make them)
-
----
-
-*This file is intentionally short. Detailed knowledge lives in the vault sections.*
-```
-
----
-
-## Step 7 — Verification / Verificación
-
-Run three checks and report results to the user:
+If `{{HEALTH_SCHEDULED}}` is yes:
 
 ```bash
-# 1. Vault structure
-test -d "{{VAULT_PATH}}/00 Inbox" && echo "✅ Vault created" || echo "❌ Vault missing"
-
-# 2. Skills installed
-for skill in obsidian-power-user save-to-obsidian project-advisor; do
-  test -f "{{SKILLS_DIR}}/$skill/SKILL.md" \
-    && echo "✅ $skill installed" \
-    || echo "❌ $skill missing"
-done
-
-# 3. CLAUDE.md written
-grep -q "second_brain_initialized: true" "{{WORKING_DIR}}/CLAUDE.md" \
-  && echo "✅ CLAUDE.md configured" \
-  || echo "❌ CLAUDE.md not configured"
+bash "{{VAULT_PATH}}/.brain/tools/schedule_health.sh" install
+python3 "{{VAULT_PATH}}/.brain/tools/brain_health.py" --write     # first row of the history
 ```
 
-If any check fails, walk the user through the fix before declaring setup complete.
+Tell the user it runs on the 1st of each month and that "turn off the monthly check"
+switches it off. On a Mac with the vault in iCloud, mention the Full Disk Access tip the
+script prints.
 
----
+## Step 9. Verify
 
-## Step 8 — First-action suggestion / Sugerencia de primera acción
+```bash
+V="{{VAULT_PATH}}"
+for d in "00 Inbox" "06 Session Logs" "09 MOCs" "Archives" ".brain/tools"; do
+  test -d "$V/$d" && echo "OK   $d" || echo "MISSING $d"; done
+for s in obsidian-power-user save-to-obsidian project-advisor brain-search project-door session-checkpoint close-session brain-health; do
+  test -f "<skills folder>/$s/SKILL.md" && echo "OK   $s" || echo "MISSING $s"; done
+grep -q "second_brain_initialized: true" "{{WORKING_DIR}}/CLAUDE.md" && echo "OK   CLAUDE.md" || echo "MISSING CLAUDE.md"
+python3 "$V/.brain/tools/check_frontmatter.py" --all --summary   # the starter notes must pass
+python3 "$V/.brain/tools/brain_search.py" "start here"           # finds MOC, Start Here
+```
 
-After verification passes, give the user one concrete next step:
+Fix anything missing before calling the setup done.
 
-> **EN:** Your brain is ready. Try this: have a normal conversation about something you're working on, and at the end say "save to my brain." I'll extract the useful knowledge into your vault and write a session log.
+## Step 10. One next step, and the setup log
+
+Give the user exactly one thing to try:
+
+> **EN:** Your brain is ready. Talk about something you are working on, and at the end
+> say "save to my brain".
 >
-> **ES:** Tu cerebro está listo. Prueba esto: ten una conversación normal sobre algo en lo que estés trabajando, y al final di "guárdalo en mi cerebro." Yo extraigo el conocimiento útil hacia tu bóveda y escribo un session log.
+> **ES:** Tu cerebro está listo. Platica de algo en lo que estés trabajando y al final
+> di "guárdalo en mi cerebro".
 
-Do not suggest more than one next action. Overwhelm kills adoption.
-
----
-
-## Step 9 — Save the setup session itself / Guardar la sesión de setup
-
-Load `save-to-obsidian` and write a session log in `{{VAULT_PATH}}/06 Session Logs/` titled:
-
-```
-{{TODAYS_DATE}} — Second Brain Initial Setup.md
-```
-
-The log captures: the 6 answers, what was installed, where it lives, and any decisions the user made along the way. This becomes the historical record of how their brain was born.
+Then run `save-to-obsidian` to log this setup as
+`06 Session Logs/{{TODAYS_DATE}} Session, Second Brain Setup.md`: the answers, what was
+installed, where it lives. It is the birth certificate of the brain.
 
 ---
 
-## Edge cases / Casos especiales
+## Upgrading from v1
 
-**The user already has an Obsidian vault and wants to use it:**
-- Skip Step 3 (vault creation)
-- Detect the existing structure
-- Add missing folders (`00 Inbox` through `06 Session Logs`) without deleting anything
-- Warn the user: "Your existing notes weren't moved. The kit adds new sections alongside what you have."
+When CLAUDE.md says `kit_version: 1.0.0`, ask once: "Upgrade your brain to v2? Nothing
+is moved or deleted; I add what is new." If yes:
 
-**The user is on Windows / Linux / Codex / Gemini:**
-- Path conventions differ — use the host's native conventions
-- iCloud option in Question 4 becomes "OneDrive" on Windows or hides on Linux
-- Skill directory in Step 4 depends on the host
+1. Add the missing folders: `03 Ideas & Notes/References`, `07 Assets`, `08 Projects`,
+   `09 MOCs`, `Archives`, `.brain/tools`.
+2. Steps 5, 7 (only if CURRENT-CONTEXT.md is missing) and 8.
+3. Rewrite CLAUDE.md with the v2 template, **keeping** every line the user added
+   (people, vocabulary, North Star).
+4. Run `brain_health.py --write` and show the first light. Old vaults usually start
+   yellow or red; that is the baseline, not a failure. Offer the three biggest fixes.
+5. Do not mass-edit old notes to the new contract. They get fixed when they are next
+   touched; the health history shows the progress.
 
-**The user doesn't have Obsidian installed yet:**
-- The kit doesn't depend on Obsidian.app being installed — it just writes markdown files
-- After setup, tell the user: "These are plain markdown files. You can open them in any editor, but Obsidian gives you the graph view and linking that makes this a real brain. Install it from obsidian.md when you're ready."
+## Edge cases
 
-**The user re-runs `second-brain-init` accidentally:**
-- Detect `second_brain_initialized: true` in CLAUDE.md
-- Stop and ask: "Your brain is already set up. Do you want to (A) keep what you have, (B) update specific answers, or (C) start over from scratch?"
-- Never silently overwrite
+- **The user already has a vault:** use it. Add missing folders, never move or delete
+  notes, and say so.
+- **No Obsidian installed:** the notes are plain markdown; Obsidian adds the graph and
+  clickable links. Suggest obsidian.md when they are ready.
+- **Re-run by accident:** stop and ask: keep it, change some answers, or start over.
+  Never overwrite silently.
+- **Windows:** use OneDrive or Documents; the health schedule prints a `schtasks` line.
+- **The host cannot run commands:** create the folders and notes by hand, skip the
+  tools, and tell the user what they are missing.
 
-**The user wants to migrate from Notion / Apple Notes / Evernote later:**
-- Out of scope for this skill — point them to `obsidian-power-user` and the kit's PDF manual
+## How to talk during setup
 
----
+Plain words, concrete steps ("Creating the vault in iCloud...", "Building the search
+index..."). At the end give three things only: a short confirmation in the user's
+language, the verification lines, and the one next step.
 
-## Output format / Formato de output
+## What this skill does not do
 
-When the skill is running, talk plainly. No emoji unless the user uses them first. Show progress as concrete steps ("Creating vault at /path...", "Installing obsidian-power-user...") not as percentages or progress bars.
+- It does not write the user's knowledge; that is `save-to-obsidian`.
+- It does not import notes from Notion, Apple Notes or Evernote; `obsidian-power-user`
+  has the import guide.
 
-When the skill finishes, give exactly three things:
+## Changelog
 
-1. A one-paragraph confirmation in the user's primary language
-2. The list of verification check results (✅ / ❌)
-3. The single suggested next action (Step 8)
-
-Nothing else. Setup is over. Get out of the way.
-
----
-
-## What this skill does NOT do / Lo que esta skill NO hace
-
-- It does not customize the other 3 skills — sanitization is the kit author's job, not the user's
-- It does not write actual knowledge into the vault — that's `save-to-obsidian`'s job
-- It does not configure third-party tools (Notion connectors, MCP servers) — out of scope for v1.0
-- It does not run periodically — runs once, then never again
-- It does not validate the user's CLAUDE.md edits over time — the user owns their config
+- **2.0.0 (2026-10-02):** Installs nine skills. Tools in `.brain/` (index, search,
+  frontmatter contract, Doors, health). Folders 07, 08, 09, Archives, References.
+  CLAUDE.md with three-layer startup and rules. Monthly health check (Q7). Home and
+  Start Here notes. Upgrade path from v1. Python optional throughout.
+- **1.0.0 (2026-05-29):** First public version.

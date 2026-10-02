@@ -185,7 +185,7 @@ source: {{domain}}
 [[{{url}}]]
 ```
 
-### Variables — Complete Reference
+### Variables: Complete Reference
 
 | Variable | Description | Example |
 |---|---|---|
@@ -211,7 +211,7 @@ source: {{domain}}
 
 Filters transform variable output. Chain multiple filters with `|`.
 
-### `replace` — Replace text pattern
+### `replace`: Replace text pattern
 
 ```
 {{title | replace("Old", "New")}}
@@ -219,11 +219,11 @@ Filters transform variable output. Chain multiple filters with `|`.
 
 **Example:**
 ```
-{{title | replace("—", "-")}}  // Replace em-dash with hyphen
+{{title | replace(":", " -")}}  // Replace colons with a hyphen
 {{url | replace("https://", "")}}  // Remove protocol
 ```
 
-### `trim` — Remove whitespace
+### `trim`: Remove whitespace
 
 ```
 {{content | trim}}
@@ -231,7 +231,7 @@ Filters transform variable output. Chain multiple filters with `|`.
 
 Removes leading/trailing spaces and newlines. Useful for cleaning up extracted content.
 
-### `upper` — Convert to uppercase
+### `upper`: Convert to uppercase
 
 ```
 {{title | upper}}
@@ -239,7 +239,7 @@ Removes leading/trailing spaces and newlines. Useful for cleaning up extracted c
 
 Output: "HOW TO BUILD A SECOND BRAIN"
 
-### `lower` — Convert to lowercase
+### `lower`: Convert to lowercase
 
 ```
 {{author | lower}}
@@ -247,7 +247,7 @@ Output: "HOW TO BUILD A SECOND BRAIN"
 
 Output: "john smith"
 
-### `slice` — Extract substring
+### `slice`: Extract substring
 
 ```
 {{url | slice(0, 50)}}
@@ -261,17 +261,17 @@ Extracts first 50 characters of URL.
 
 First 200 characters of content (useful for excerpts).
 
-### `date` — Format date
+### `date`: Format date
 
 ```
 {{date | date("YYYY-MM-DD")}}
 ```
 
 Available formats:
-- `YYYY-MM-DD` — "2024-01-15"
-- `MMM DD, YYYY` — "Jan 15, 2024"
-- `DD/MM/YYYY` — "15/01/2024"
-- `YYYY-MM-DD HH:MM:SS` — "2024-01-15 14:30:45"
+- `YYYY-MM-DD`: "2024-01-15"
+- `MMM DD, YYYY`: "Jan 15, 2024"
+- `DD/MM/YYYY`: "15/01/2024"
+- `YYYY-MM-DD HH:MM:SS`: "2024-01-15 14:30:45"
 
 **Example:**
 ```
@@ -306,10 +306,10 @@ Display content only if condition is true:
 Only shows author section if author data exists.
 
 **Common conditions:**
-- `{% if author %}` — Author exists
-- `{% if description %}` — Description exists
-- `{% if published %}` — Has publication date
-- `{% if image %}` — Page has image
+- `{% if author %}`: Author exists
+- `{% if description %}`: Description exists
+- `{% if published %}`: Has publication date
+- `{% if image %}`: Page has image
 
 **Multiple conditions (AND):**
 ```

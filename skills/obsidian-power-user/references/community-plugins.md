@@ -6,7 +6,7 @@ Dataview is a query engine that turns your vault into a database. It lets you se
 
 ### Query Types
 
-**TABLE** — Tabular output with columns
+**TABLE**: Tabular output with columns
 ```dataview
 TABLE status, priority, due
 FROM #project
@@ -15,7 +15,7 @@ SORT due ASC
 ```
 Output: Table with file names and specified properties as columns.
 
-**LIST** — Simple list of links
+**LIST**: Simple list of links
 ```dataview
 LIST
 FROM "Projects"
@@ -24,7 +24,7 @@ SORT file.name
 ```
 Output: Bulleted list of matching file links.
 
-**TASK** — Aggregated tasks from across the vault
+**TASK**: Aggregated tasks from across the vault
 ```dataview
 TASK
 WHERE !completed
@@ -32,7 +32,7 @@ SORT due ASC
 ```
 Output: Checklist items extracted from all notes, sortable and filterable.
 
-**CALENDAR** — Calendar visualization by date
+**CALENDAR**: Calendar visualization by date
 ```dataview
 CALENDAR file.day
 FROM ""
@@ -40,7 +40,7 @@ WHERE file.day
 ```
 Output: Calendar grid showing which days have notes/events. Click day to see notes created that day.
 
-### FROM Clause — Data Sources
+### FROM Clause: Data Sources
 
 Specify where Dataview should query:
 
@@ -52,7 +52,7 @@ FROM #tag and #subtag   /* Multiple tags (AND logic) */
 FROM #tag or #subtag    /* Multiple tags (OR logic) */
 ```
 
-### WHERE Clause — Filtering
+### WHERE Clause: Filtering
 
 Filter results by property or field values:
 
@@ -66,7 +66,7 @@ WHERE contains(tags, "urgent")
 WHERE length(aliases) > 0
 ```
 
-### SORT Clause — Ordering
+### SORT Clause: Ordering
 
 Sort results by one or more fields:
 
@@ -78,7 +78,7 @@ SORT file.name            /* Alphabetical by file name */
 SORT file.size DESC       /* Largest files first */
 ```
 
-### GROUP BY Clause — Grouping
+### GROUP BY Clause: Grouping
 
 Group results by a field:
 
@@ -89,7 +89,7 @@ GROUP BY file.day         /* One group per day */
 GROUP BY priority         /* One group per priority level */
 ```
 
-### LIMIT Clause — Cap Results
+### LIMIT Clause: Cap Results
 
 Limit how many results are returned:
 
@@ -98,7 +98,7 @@ LIMIT 10                  /* Return first 10 results */
 LIMIT 5                   /* Return first 5 results */
 ```
 
-### FLATTEN Clause — Expand Lists
+### FLATTEN Clause: Expand Lists
 
 Expand multi-value fields into separate rows:
 
@@ -107,7 +107,7 @@ FLATTEN tags              /* Each tag becomes a separate row */
 FLATTEN assignees         /* Each assignee becomes a separate row */
 ```
 
-### Implicit Fields — Built-in Properties
+### Implicit Fields: Built-in Properties
 
 Dataview provides fields automatically available on every note:
 
@@ -209,7 +209,7 @@ Templater turns note templates into dynamic generators. It executes JavaScript f
 
 | Delimiter | Purpose | Example |
 |---|---|---|
-| `<% %>` | Execution block — runs code | `<% tp.date.now("YYYY-MM-DD") %>` |
+| `<% %>` | Execution block, runs code | `<% tp.date.now("YYYY-MM-DD") %>` |
 | `<%* %>` | Execution block with whitespace control | `<%* let x = 5 %>` |
 | `<%= %>` | Output block (rarely needed, `<% %>` usually suffices) | `<%= myVariable %>` |
 | `<%- %>` | Output with dash for whitespace trimming | `<%-  result %>` |
@@ -258,7 +258,7 @@ tp.web.daily_quote()               /* Get a random daily quote */
 
 Define custom JavaScript functions in a designated folder, then call them in templates:
 
-1. **Settings → Templater → Script files folder** — Set path to folder containing custom functions
+1. **Settings → Templater → Script files folder**: Set path to folder containing custom functions
 2. Create files like `my-function.js` containing:
    ```javascript
    module.exports = async (tp) => {
@@ -270,7 +270,7 @@ Define custom JavaScript functions in a designated folder, then call them in tem
 ### Startup Templates
 
 Templater can run a template automatically when Obsidian starts:
-1. **Settings → Templater → Startup templates** — List templates to run on startup
+1. **Settings → Templater → Startup templates**: List templates to run on startup
 2. Use case: Create a daily note, open a dashboard, generate a work log
 
 ### Complete Templater Examples
@@ -334,7 +334,7 @@ Started: <% tp.date.now("YYYY-MM-DD") %>
 
 **4. Weekly Review Template (with Dataview)**
 ```
-# Weekly Review — <% tp.date.now("YYYY-MM-DD") %>
+# Weekly Review: <% tp.date.now("YYYY-MM-DD") %>
 
 ## This Week's Wins
 -
@@ -459,7 +459,7 @@ group by due
 ```
 ````
 
-Place anywhere in your vault — the block displays matching tasks.
+Place anywhere in your vault: the block displays matching tasks.
 
 ### Query Filters
 

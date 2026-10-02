@@ -4,8 +4,8 @@
 
 Before importing from any source:
 
-1. **Backup your source** — Export your original vault/library completely
-2. **Test with a small batch** — Import 10-20 notes first to verify quality
+1. **Backup your source**: Export your original vault/library completely
+2. **Test with a small batch**: Import 10-20 notes first to verify quality
 3. **Run post-import cleanup:**
    - Verify frontmatter format and consistency
    - Fix broken links and references
@@ -27,9 +27,9 @@ Before importing from any source:
 - Creation and modification dates
 
 **Lost or needs cleanup:**
-- Apple Notes-specific styling (colors, pins) — becomes plain text
-- Handwritten notes — not imported (export as images first if needed)
-- Links to other notes — must be manually re-created with `[[wikilinks]]`
+- Apple Notes-specific styling (colors, pins), becomes plain text
+- Handwritten notes, not imported (export as images first if needed)
+- Links to other notes, must be manually re-created with `[[wikilinks]]`
 - Shared note metadata
 - Apple Reminders pinned to notes
 
@@ -206,12 +206,12 @@ Before importing from any source:
 - Databases with simple properties (text, multi-select, date, checkbox)
 
 **Lost or needs cleanup:**
-- Complex Notion database features (formulas, rollups, aggregations) — become plain text
-- Database views (filters, sorts, groupings) — not replicated
+- Complex Notion database features (formulas, rollups, aggregations), become plain text
+- Database views (filters, sorts, groupings), not replicated
 - Inline database queries
 - Synced blocks (duplicated content; delete duplicates manually)
 - Database buttons and automation
-- Multi-select/relation field values — converted to comma-separated text or tags
+- Multi-select/relation field values, converted to comma-separated text or tags
 - Notion comments (thread metadata)
 
 **Process:**
@@ -239,7 +239,7 @@ Before importing from any source:
 - Daily notes structure
 
 **Lost or needs cleanup:**
-- Roam-specific metadata (block refs with `^xxxx` syntax — converted but may break)
+- Roam-specific metadata (block refs with `^xxxx` syntax, converted but may break)
 - Block embeds and transclusion syntax (converted to links)
 - Roam queries and dynamic content
 - Custom CSS and workspace styling
@@ -302,7 +302,7 @@ My Note,Design,https://example.com,First design note
 - HTML-specific styling (colors, fonts, CSS classes)
 - JavaScript and interactivity
 - Complex table layouts
-- Embedded media (video, audio) — links preserved, files not
+- Embedded media (video, audio), links preserved, files not
 - HTML comments
 - Form elements
 
@@ -371,7 +371,7 @@ My Note,Design,https://example.com,First design note
 **Importer:** If exporting from Zettlr, The Archive, or similar: use markdown export + manual ID mapping
 
 **Preserved:**
-- Note ID scheme (e.g., `202401011423`) — preserved in filename or frontmatter
+- Note ID scheme (e.g., `202401011423`), preserved in filename or frontmatter
 - Markdown content
 - Tags and cross-references
 - Images and attachments
@@ -430,5 +430,5 @@ After importing from any source:
 - [ ] Test cross-vault links if importing from multiple sources
 - [ ] Review and clean up any placeholder metadata (blank fields, "TODO" entries)
 - [ ] Verify HTML encoding (especially for special characters: `&amp;`, `&quot;`)
-- [ ] Check relative link paths — update if folder structure changed
+- [ ] Check relative link paths, update if folder structure changed
 - [ ] Run `Orphaned files` check to find and categorize unlinked notes

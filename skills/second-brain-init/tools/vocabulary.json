@@ -1,0 +1,43 @@
+{
+  "_note": "The frontmatter contract of your brain. One file owns the closed lists, and check_frontmatter.py, brain_health.py and save-to-obsidian all read it. Edit it freely: add a type, a status or a project, and every tool follows. Keys are compared in lowercase.",
+  "required_keys": ["title", "type", "date", "description", "tags", "status"],
+  "time_required_since": "2000-01-01",
+  "type": [
+    "session",
+    "decision",
+    "lesson",
+    "idea",
+    "learning",
+    "reference",
+    "person",
+    "process",
+    "architecture",
+    "integration",
+    "moc",
+    "door",
+    "checkpoint",
+    "health",
+    "note"
+  ],
+  "status": ["active", "done", "superseded", "parked", "stub", "draft"],
+  "project": [],
+  "project_required": false,
+  "tags_form": "lowercase, no accents, no spaces (use a hyphen), no leading #",
+  "type_help": {
+    "session": "A session log in 06 Session Logs",
+    "decision": "A decision with its reasons, in 02 Strategy/Decision Log",
+    "lesson": "Something learned the hard way, in 01 .../Lessons Learned",
+    "idea": "An idea before it becomes a project, in 03 Ideas & Notes",
+    "learning": "Notes from a book, course or article, in 04 Learning",
+    "reference": "A saved source (web clip, quote, link)",
+    "person": "A person you work or live with",
+    "process": "How something is done, step by step",
+    "architecture": "How your system or tools fit together, in 05 AI System",
+    "integration": "A tool connection or a skill hub, in 05 AI System",
+    "moc": "A Map of Content: a hub that links a theme together, in 09 MOCs",
+    "door": "The front door of a project: current state in one screen, in 09 MOCs",
+    "checkpoint": "The rolling state of a long working session, in 06 Session Logs",
+    "health": "The monthly brain health history",
+    "note": "Anything that fits nowhere else yet"
+  }
+}

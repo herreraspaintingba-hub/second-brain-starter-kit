@@ -36,7 +36,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - Right-click a backlink to "Open in new pane" or "Open in new tab"
 - Toggle backlinks in document footer (gear icon in panel) to show/hide the panel
 - Unlinked mentions are valuable for finding references you forgot to link
-- Use to identify orphaned notes (notes with no backlinks) — good candidates for archiving or relinking
+- Use to identify orphaned notes (notes with no backlinks), good candidates for archiving or relinking
 
 ---
 
@@ -72,7 +72,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 **Key tips:**
 - Drag notes or files onto the canvas from File Explorer
 - Add text blocks, images, and links directly on the canvas
-- Organize spatially — layout reflects your thinking process
+- Organize spatially, layout reflects your thinking process
 - **See `canvas.md`** in this reference for full Canvas usage details
 - Use for literature maps, zettelkasten visualization, or sprint planning boards
 
@@ -134,7 +134,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - **Drag and drop:** Drag notes between folders, or drag external files into the vault
 - **Reveal in system file manager:** Right-click note → Reveal in system explorer (opens OS file manager)
 - **Sort options:** Click three-dot menu in File Explorer header:
-  - Name (A–Z)
+  - Name (A-Z)
   - Modified (newest first)
   - Created (newest first)
   - Custom (manual reordering)
@@ -156,7 +156,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
   - Snapshots are stored in `.obsidian/plugins/obsidian-file-recovery/data/`
 
 **Key tips:**
-- **How it works:** Each time you pause editing, a snapshot is created. No action needed — automatic.
+- **How it works:** Each time you pause editing, a snapshot is created. No action needed; it's automatic.
 - **Recover a note:** Command Palette → "Open file recovery" or right-click a note → "Restore from snapshot"
 - **View snapshots:** Shows a timeline of versions with timestamps; click to preview or restore
 - **Deleted notes:** If you permanently delete a note, snapshots may still exist if recovery was enabled
@@ -205,9 +205,9 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 
 **Advanced Settings:**
 - **Filters:** Syntax examples:
-  - `tag:#project` — show only nodes tagged #project
-  - `path:archive` — exclude archived notes
-  - `file:Daily` — show only daily notes
+  - `tag:#project`: show only nodes tagged #project
+  - `path:archive`: exclude archived notes
+  - `file:Daily`: show only daily notes
   - Combine with AND/OR: `tag:#work AND path:projects`
 - **Groups with color coding:** Settings → Graph View → Colors (assign colors to tags, file types, or paths for visual organization)
 - **Forces (physics simulation):**
@@ -217,7 +217,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 
 **Key tips:**
 - **Global graph:** Shows entire vault structure
-- **Local graph:** Shows current note and 1–2 hops of linked neighbors (more focused)
+- **Local graph:** Shows current note and 1-2 hops of linked neighbors (more focused)
 - **Click and drag nodes:** Rearrange layout manually; physics re-balances
 - **Zoom:** Scroll or pinch to zoom
 - **Search within graph:** Text box at top filters displayed nodes in real-time
@@ -268,7 +268,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - **Click a link** to jump to that note
 - **Right-click for options:** "Open in new pane," "Open in new tab," etc.
 - **Unlinked mentions:** Useful for discovering informal references or typos in note names
-- **Paired with Backlinks:** Backlinks show who links to you; Outgoing Links show who you link to — together they map your network
+- **Paired with Backlinks:** Backlinks show who links to you; Outgoing Links show who you link to, together they map your network
 - **Use for:**
   - Auditing sources and references in a note
   - Finding orphaned external URLs (links to deleted notes)
@@ -287,7 +287,7 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 **Key tips:**
 - **Heading hierarchy:** Outline reflects your markdown heading structure (`# H1`, `## H2`, etc.)
 - **Click to jump:** Click any heading in the outline to instantly scroll to that section
-- **Sticky outline:** Keep outline open while you edit — stays synchronized as you scroll
+- **Sticky outline:** Keep outline open while you edit, stays synchronized as you scroll
 - **Filter headings:** Type in the outline search box to filter by heading name
 - **Keyboard shortcut:** Use arrow keys to navigate between headings if outline is focused
 - **Nested structure:** Visually shows how deep your heading hierarchy is (good for spotting unbalanced structure)
@@ -389,15 +389,15 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - Search panel appears in left sidebar
 
 **Search Operators:**
-- **`path:folder`** — Limit search to a specific folder (e.g., `path:projects`)
-- **`tag:#work`** — Search only notes with a specific tag
-- **`file:name`** — Search only in filenames, not content
-- **`line:text`** — Find exact lines of text
-- **`block:id`** — Search for block references
-- **`section:heading`** — Search within a specific heading section
-- **`content:text`** — Explicit content search (default if no operator)
-- **`match-case`** — Case-sensitive search
-- **`ignore-case`** — Case-insensitive (default)
+- **`path:folder`**: Limit search to a specific folder (e.g., `path:projects`)
+- **`tag:#work`**: Search only notes with a specific tag
+- **`file:name`**: Search only in filenames, not content
+- **`line:text`**: Find exact lines of text
+- **`block:id`**: Search for block references
+- **`section:heading`**: Search within a specific heading section
+- **`content:text`**: Explicit content search (default if no operator)
+- **`match-case`**: Case-sensitive search
+- **`ignore-case`**: Case-insensitive (default)
 
 **Regex Search:**
 - Prefix pattern with `/` and suffix with `/`: `/\bword\b/` finds whole words only
@@ -405,9 +405,9 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - Combine with operators: `path:projects /deadline:\d{4}-\d{2}-\d{2}/`
 
 **Boolean Operators:**
-- **`AND`** — Both terms required (default): `apple AND orange`
-- **`OR`** — Either term: `apple OR orange`
-- **`NOT`** — Exclude term: `apple NOT orange`
+- **`AND`**: Both terms required (default): `apple AND orange`
+- **`OR`**: Either term: `apple OR orange`
+- **`NOT`**: Exclude term: `apple NOT orange`
 - Combine: `(apple OR orange) AND garden`
 
 **Grouping & Sorting:**
@@ -437,12 +437,12 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
 - Trigger by typing `/` anywhere in edit mode
 
 **Available Commands:**
-- **`/date`** — Insert current date (format depends on settings)
-- **`/time`** — Insert current time
-- **`/template`** — Insert a template from your templates folder
-- **`/heading`** — Insert a heading
-- **`/link`** — Insert a wikilink with quick note selector
-- **`/codeblock`** — Insert a code block with language selector
+- **`/date`**: Insert current date (format depends on settings)
+- **`/time`**: Insert current time
+- **`/template`**: Insert a template from your templates folder
+- **`/heading`**: Insert a heading
+- **`/link`**: Insert a wikilink with quick note selector
+- **`/codeblock`**: Insert a code block with language selector
 - Custom commands can be added via Community Plugins and Templater
 
 **Key tips:**
@@ -536,10 +536,10 @@ Complete guide to every Obsidian core plugin: what it does, how to enable/config
   - **Template folder path:** Where template notes are stored (e.g., `_templates/`)
 
 **Available Tokens (Core Templates):**
-- **`{{title}}`** — Inserted note's filename
-- **`{{date}}`** — Current date (format from Daily Notes settings)
-- **`{{time}}`** — Current time (HH:mm format)
-- **`{{date:format}}`** — Custom date format (e.g., `{{date:YYYY-MM-DD ddd}}`)
+- **`{{title}}`**: Inserted note's filename
+- **`{{date}}`**: Current date (format from Daily Notes settings)
+- **`{{time}}`**: Current time (HH:mm format)
+- **`{{date:format}}`**: Custom date format (e.g., `{{date:YYYY-MM-DD ddd}}`)
 
 **How to Create and Use:**
 1. Create a note in your template folder (e.g., `_templates/Meeting Notes.md`)

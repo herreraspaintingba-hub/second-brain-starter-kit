@@ -10,7 +10,7 @@ Canvas files are saved as `.canvas` files using an **open JSON format**, making 
 - **Core feature**: Part of Obsidian core, not a community plugin
 - **File format**: `.canvas` extension, valid JSON structure
 - **Location**: Stored in your vault root or any folder
-- **Infinite canvas**: No size limits — pan and zoom freely
+- **Infinite canvas**: No size limits, pan and zoom freely
 - **Cross-linking**: Seamlessly link to vault notes, external URLs, and text cards
 - **Visual organization**: Color coding, grouping, edge labeling
 

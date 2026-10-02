@@ -1,62 +1,45 @@
-# Second Brain Starter Kit — Skills
+# Second Brain Starter Kit v2.0: Skills
 
-Four skills that turn any LLM (Claude, Codex, Gemini, OpenCloud, etc.) into a
-"second brain" — a knowledge system that captures what you learn, organizes it
-into an Obsidian vault, and helps you decide which projects are worth your time.
+Nine skills that turn any LLM (Claude, Codex, Gemini, and others) into a second brain:
+a knowledge system that captures what you learn, files it in an Obsidian vault, finds it
+again before asking you, keeps every project's current state on one page, and checks its
+own health every month.
 
-## The 4 skills
+## The nine skills
 
 | Skill | Role | When it runs |
 |-------|------|--------------|
-| **`second-brain-init`** | Sets up your vault and installs the other 3 skills | Once, on first install |
-| **`obsidian-power-user`** | Master Obsidian skill — formatting, linking, templates, canvas, base, Dataview | Loaded automatically whenever the brain writes to your vault |
-| **`save-to-obsidian`** | Captures knowledge from any conversation into your vault, plus writes a session log | When you say "save to my brain" / "guárdalo en mi cerebro" |
-| **`project-advisor`** | Evaluates new project ideas with a 4-dimension scorecard before you commit time | When you say "should I do this?" / "¿vale la pena este proyecto?" |
+| **`second-brain-init`** | Builds the vault, puts the tools in it, writes CLAUDE.md, upgrades v1 | Once, at install (or to upgrade) |
+| **`obsidian-power-user`** | Obsidian expert: formatting, links, templates, canvas, bases, Dataview | Behind the others whenever they write |
+| **`save-to-obsidian`** | Saves knowledge and a session log, links it, checks the frontmatter | "save to my brain" / "guárdalo en mi cerebro" |
+| **`brain-search`** | Searches the vault (local full-text index) before answering or asking | "what did we decide about X?" / "¿qué decidimos sobre X?" |
+| **`project-door`** | One "Door" note per project: current state, numbers, next steps | "where are we with X?" / "¿en qué quedamos con X?" |
+| **`session-checkpoint`** | Rolling save point per project during long sessions | Every 15 to 20 exchanges, and after a compression |
+| **`close-session`** | Checkpoint, Door, save, reindex, optional git commit | "close the session" / "blindemos" |
+| **`brain-health`** | Monthly checkup with a traffic light and a history; manages the schedule | "brain health" / "salud del cerebro", and the 1st of each month |
+| **`project-advisor`** | Scores a new idea on 4 weighted dimensions before you commit time | "should I do this?" / "¿vale la pena?" |
 
-All four skills are **bilingual (EN + ES)** at the same level.
+All nine are **bilingual (EN + ES)** at the same level.
 
 ---
 
 ## How to install
 
-The kit is distributed as a folder, not a plugin. It works in any LLM that
-supports the SKILL.md convention.
+Easiest: `bash install.sh` from the repo root (or the `curl` one-liner in the main
+README). It copies the nine folders into your host's skills folder and moves any older
+copy aside instead of deleting it.
 
-### Cowork / Claude Code
+By hand:
 
-```bash
-# Copy each skill folder into your skills directory
-cp -r skills/* ~/.claude/skills/
-```
+| Host | Command |
+|------|---------|
+| Cowork / Claude Code | `cp -r skills/*/ ~/.claude/skills/` |
+| Codex | `cp -r skills/*/ ~/.codex/skills/` |
+| Gemini CLI | `cp -r skills/*/ ~/.gemini/skills/` |
+| Other | Copy the nine folders wherever your LLM loads skills from |
 
-Then in a new conversation, say:
-
-> "Set up my second brain" / "Configura mi segundo cerebro"
-
-`second-brain-init` will detect the install, ask 6 setup questions, build your
-vault, and verify everything works.
-
-### Codex
-
-```bash
-cp -r skills/* ~/.codex/skills/
-```
-
-Same trigger phrase to start setup.
-
-### Gemini CLI
-
-```bash
-cp -r skills/* ~/.gemini/skills/
-```
-
-Same trigger phrase to start setup.
-
-### Other hosts
-
-Find your LLM's skills directory (check its docs for "skills," "agents," or
-"custom commands"). Drop all four folders into that directory. Then start a
-conversation with the setup trigger.
+Then start a conversation with: **"Set up my second brain"** / **"Configura mi segundo
+cerebro"** (or **"Upgrade my brain to v2"** if you had v1).
 
 ---
 
@@ -64,22 +47,46 @@ conversation with the setup trigger.
 
 ```mermaid
 graph TD
-    Init[second-brain-init<br/>One-time setup] --> Vault[Vault created]
-    Init --> Install[3 skills installed]
-    Init --> Config[CLAUDE.md written]
+    Init[second-brain-init<br/>setup and upgrade] --> Vault[Vault 00 to 09]
+    Init --> Tools[.brain tools and index]
+    Init --> Config[CLAUDE.md]
+    Init --> Health[brain-health<br/>monthly schedule]
 
-    User[Daily use] --> Save[save-to-obsidian<br/>Captures knowledge]
-    User --> Advisor[project-advisor<br/>Evaluates ideas]
+    Start[Start of a session] --> Door[project-door<br/>front page]
+    Start --> Search[brain-search<br/>look before asking]
+    Work[Long session] --> Check[session-checkpoint]
+    End[End of a session] --> Close[close-session]
+    Close --> Check
+    Close --> Door
+    Close --> Save[save-to-obsidian]
+    Close --> Tools
 
-    Save -.uses formatting from.-> Power[obsidian-power-user]
-    Advisor -.writes verdicts via.-> Save
-    Advisor -.uses formatting from.-> Power
+    Advisor[project-advisor] --> Save
+    Save -. formatting .-> Power[obsidian-power-user]
+    Health -. reads .-> Vault
+    Search -. reads .-> Tools
 ```
 
-You will rarely call `obsidian-power-user` directly. The other skills load it
-automatically when they need to write to the vault, so the output is always
-proper Obsidian-native formatting (wikilinks, callouts, frontmatter, block
-references).
+---
+
+## The tools
+
+`second-brain-init/tools/` holds the standard-library Python tools and one shell script.
+Setup copies them to `<vault>/.brain/tools/`; every skill calls them from there.
+
+| Tool | Job |
+|------|-----|
+| `brainlib.py` | Shared helpers: finds the vault, reads frontmatter, reads links |
+| `brain_index.py` | Builds the full-text index (`.brain/brain.sqlite`, SQLite FTS5) |
+| `brain_search.py` | Searches it, ranked by relevance, with filters |
+| `check_frontmatter.py` | Checks notes against the contract in `.brain/vocabulary.json` |
+| `door.py` | Reads a project Door by sections, creates new Doors |
+| `brain_health.py` | Measures the vault and writes the health history |
+| `schedule_health.sh` | Turns the monthly health check on or off (launchd, cron, schtasks) |
+| `vocabulary.json` | The closed lists: types, statuses, projects. Yours to edit |
+
+Python is optional. Without it, the skills fall back to plain text search and manual
+checks.
 
 ---
 
@@ -87,83 +94,53 @@ references).
 
 ```
 {{VAULT_NAME}}/
-├── 00 Inbox/                <- "Doesn't fit anywhere else yet"
-├── 01 Personal Knowledge/
-│   ├── People/
-│   ├── Places/
-│   ├── Routines/
-│   └── Lessons Learned/
-├── 02 Strategy/
-│   ├── Vision/
-│   ├── Goals/
-│   ├── Decision Log/
-│   └── North Star/
-├── 03 Ideas & Notes/        <- Where ideas land before they become projects
-├── 04 Learning/
-│   ├── Books/
-│   ├── Courses/
-│   ├── AI & Tech/
-│   └── Business/
-├── 05 AI System/
-│   ├── Skills/
-│   ├── Integrations/
-│   └── Architecture/
-├── 06 Session Logs/         <- Full conversation history
+├── 00 Inbox/
+├── 01 Personal Knowledge/   People/ Places/ Routines/ Lessons Learned/
+├── 02 Strategy/             Vision/ Goals/ Decision Log/ North Star/
+├── 03 Ideas & Notes/        References/
+├── 04 Learning/             Books/ Courses/ AI & Tech/ Business/
+├── 05 AI System/            Skills/ Integrations/ Architecture/
+├── 06 Session Logs/
+├── 07 Assets/
+├── 08 Projects/
+├── 09 MOCs/
+├── Archives/
+├── Templates/
 ├── Excalidraw/
-└── Templates/
+└── .brain/                  tools/ vocabulary.json brain.sqlite health.log
 ```
 
-Section names use number prefixes (`01`, `02`, etc.). If you rename a section
-(e.g., "01 Personal Knowledge" → "01 Company Knowledge"), the skills still find
-it because they route by prefix, not by full name.
+Sections are routed by number prefix, not by full name.
 
 ---
 
-## What this kit does NOT do
+## Customizing
 
-- It does not require Obsidian.app to be installed — the files are plain markdown
-  and work in any editor. Obsidian just gives you the graph view and linking UX.
-- It does not depend on Notion. There's an **optional** Notion mirror in
-  `project-advisor` — if you don't use Notion, leave it disabled.
-- It does not include AI memory, account integrations, or third-party connectors.
-  Those depend on your host LLM. This kit is the **brain** layer.
-- It does not migrate your existing notes. It builds the structure; you decide
-  what to import.
-- It does not run on a schedule or in the background. Every action is triggered
-  by you, in a conversation.
+`CLAUDE.md` (written by setup) holds your answers:
 
----
-
-## Customizing the kit
-
-Almost everything is configured in `CLAUDE.md` (written by `second-brain-init`):
-
-| Placeholder | What it controls |
-|-------------|------------------|
-| `{{USER_NAME}}` | How the brain refers to you |
-| `{{BUSINESS_NAME}}` | Your role/business context (optional) |
-| `{{VAULT_NAME}}` | What to call your brain |
-| `{{VAULT_PATH}}` | Where it lives |
-| `{{NORTH_STAR_NAME}}` | What you call your long-term vision |
-| `{{TRIGGER_PHRASE_SAVE}}` | The phrase that triggers `save-to-obsidian` |
-| `{{PRIMARY_LANGUAGE}}` | Default language for outputs |
+| Placeholder | Controls |
+|-------------|----------|
+| `{{USER_NAME}}` | How the brain calls you |
+| `{{BUSINESS_NAME}}` | Your role or business (optional) |
+| `{{VAULT_NAME}}` / `{{VAULT_PATH}}` | Your brain's name and folder |
+| `{{PRIMARY_LANGUAGE}}` | Default language of headings and summaries |
 | `{{NOTION_ENABLED}}` | Whether `project-advisor` mirrors to Notion |
+| `{{HEALTH_SCHEDULED}}` | Whether the monthly health check runs by itself |
+| `{{TRIGGER_PHRASE_SAVE}}` | Your phrase for saving |
 
-Edit `CLAUDE.md` any time. The skills re-read it at the start of every conversation.
-
----
-
-## License & sharing
-
-This kit is meant to be **shared freely with family and friends**. Use it,
-remix it, extend it, build vertical packs on top of it (Painters / Real Estate /
-Consulting / Restaurant — whatever shape your work takes). The point is to give
-someone a working brain on day one and let them grow it from there.
+`.brain/vocabulary.json` holds the closed lists of note types, statuses and projects.
+Add to it as your brain grows; every tool follows.
 
 ---
 
-## Credits
+## What this kit does not do
 
-Built as part of the Second Brain Starter Kit project. See the project's
-top-level `README.md` for the broader vision and the PDF manual for the
-zero-technical user walkthrough.
+- It does not require Obsidian.app: the notes are plain Markdown.
+- It does not depend on Notion or any account.
+- It does not migrate your old notes; `obsidian-power-user` has the import guides.
+- It runs nothing in the background except the monthly health check, and only if you
+  say yes.
+
+## License and sharing
+
+MIT. Share it freely, remix it, build vertical packs on top of it.

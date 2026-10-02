@@ -249,7 +249,7 @@ mindmap
 
 ---
 
-## Obsidian Flavored Markdown — Callouts
+## Obsidian Flavored Markdown: Callouts
 
 ### All Callout Types
 
@@ -429,15 +429,15 @@ topics:
 ```
 
 ### Standard Built-in Properties
-- `title` — Document title
-- `aliases` — Alternative names (list)
-- `tags` — Tags for the note (list)
-- `date` — Creation or reference date
-- `created` — Creation timestamp
-- `modified` — Last modification timestamp
-- `status` — Status of the note (draft, in-progress, completed, etc.)
-- `type` — Type classification (note, reference, guide, etc.)
-- `cssclasses` — Custom CSS classes for styling
+- `title`: Document title
+- `aliases`: Alternative names (list)
+- `tags`: Tags for the note (list)
+- `date`: Creation or reference date
+- `created`: Creation timestamp
+- `modified`: Last modification timestamp
+- `status`: Status of the note (draft, in-progress, completed, etc.)
+- `type`: Type classification (note, reference, guide, etc.)
+- `cssclasses`: Custom CSS classes for styling
 
 ---
 

@@ -2,617 +2,390 @@
 name: save-to-obsidian
 description: >
   Saves knowledge AND a full session log to the user's Obsidian vault in one shot.
-  Extracts knowledge nuggets (lessons, decisions, ideas, insights) routed to vault
-  sections 01-05, plus creates a session summary in 06 Session Logs/ with outputs,
-  reasoning, tools used, and lessons learned. Trigger on: "save to my brain,"
-  "save to obsidian," "save it," "save the session," "session summary," "log this,"
-  "save the chat," "save to the vault," "guárdalo en mi cerebro," "guarda el
-  contexto," "resumen de sesión," "guárdalo," or ANY variation of saving
-  conversation knowledge or logging a session. Works in any session — project,
-  experimental, or research. This is how the knowledge base grows. Bilingual EN+ES.
+  Extracts knowledge nuggets (lessons, decisions, ideas, insights, references) and
+  routes each to its vault section (00 to 09), writes a session summary in
+  06 Session Logs/, links everything into the graph with zero broken links, and
+  checks every note against the frontmatter contract before calling it saved.
+  Trigger on: "save to my brain," "save to obsidian," "save it," "save the session,"
+  "session summary," "log this," "save the chat," "save to the vault," "guárdalo en
+  mi cerebro," "guárdalo," "guarda la sesión," "guarda el contexto," "resumen de
+  sesión," or ANY variation of saving conversation knowledge or logging a session.
+  Bilingual EN+ES.
 kit: Second Brain Starter Kit
-version: 1.0.0
+version: 2.0.0
 language: en+es
 ---
 
-# Save to Obsidian — Unified Knowledge Router + Session Logger
+# Save to Obsidian: Knowledge Router + Session Logger
 
-This skill does two things every time the user says "save to my brain":
+Every time the user says "save to my brain", this skill does two things in one shot:
 
-1. **Knowledge Extraction** — Pulls out reusable knowledge nuggets (lessons, decisions,
-   ideas, insights) and routes each to the correct vault section (01–05).
-2. **Session Summary** — Creates a full-log record of the session in `06 Session Logs/`
-   with what was accomplished, the reasoning, tools used, and lessons learned.
+1. **Knowledge extraction.** Pulls out the knowledge worth keeping (lessons, decisions,
+   ideas, insights) and files each piece in the right vault section.
+2. **Session log.** Writes a record of the session in `06 Session Logs/`: what was
+   done, why, with which tools, and what is still open.
 
-Both happen in one shot. The user says "save it" once, the vault gets smarter AND the
-session is permanently recorded.
+The user says it once. The vault gets smarter and the session is on record.
 
-**The goal is zero-friction, total capture.** The user shouldn't have to summarize,
-categorize, or run two commands. They just say the trigger phrase and everything worth
-keeping is captured.
+---
 
-This works in ANY session — project work, experiments, research, skill building. If
-the user likes what was created in a non-project session, this skill captures it and
-brings it into the vault.
+## When to save (the save signal)
+
+Saving is **not automatic**. Finishing a task does not trigger a save. Save when:
+
+- **The user asks.** "Save it", "guárdalo", "log this", "save the session".
+- **You offer it once, at the end of a session that produced something real**, and the
+  user says yes. Real means: a decision with reasons, a lesson learned the hard way, a
+  new process, a new piece of the system, a pattern that repeated, or a strategy.
+
+Never save in the middle of a session "just in case", and never offer more than once.
+If the same kind of work has happened 3 or more times, offer to turn it into a skill
+instead of saving it again.
 
 ---
 
 ## Triggers / Activadores
 
-**English:**
-- "save to my brain"
-- "save it"
-- "save the session"
-- "save this conversation"
-- "log this"
-- "session summary"
-- "save to the vault"
+**English:** "save to my brain" · "save it" · "save the session" · "save this
+conversation" · "log this" · "session summary" · "save to the vault"
 
-**Español:**
-- "guárdalo en mi cerebro"
-- "guárdalo"
-- "guarda la sesión"
-- "guarda esta conversación"
-- "registra esto"
-- "resumen de sesión"
-- "guarda en la bóveda"
+**Español:** "guárdalo en mi cerebro" · "guárdalo" · "guarda la sesión" · "guarda esta
+conversación" · "registra esto" · "resumen de sesión" · "guarda en la bóveda"
 
-The trigger phrase is configurable in `CLAUDE.md` as `{{TRIGGER_PHRASE_SAVE}}`.
-Defaults to "save to my brain" / "guárdalo en mi cerebro".
+The main phrase is configurable in `CLAUDE.md` as `{{TRIGGER_PHRASE_SAVE}}`.
 
 ---
 
-## REQUIRED: Load the Obsidian Power User Skill
+## Load order (every time)
 
-**Before writing ANY file to the vault, you MUST load the `obsidian-power-user` skill.**
-
-This is non-negotiable. The `obsidian-power-user` skill contains the formatting rules
-and Obsidian-native conventions that make the vault function as a connected knowledge
-system, not just a folder of markdown files. Without it, notes will be missing the
-structure that makes Obsidian powerful.
-
-**What `obsidian-power-user` provides that this skill needs:**
-
-| Feature | Why It Matters |
-|---------|---------------|
-| **YAML frontmatter** | Proper `title`, `date`, `tags`, `aliases`, `type`, `status` properties that power Dataview queries and graph filters |
-| **Wikilinks `[[]]`** | Internal linking that builds the graph — the brain's nervous system |
-| **Block references `^block-id`** | Lets other notes link to specific paragraphs, not just entire files |
-| **Callouts `> [!type]`** | Visual formatting for tips, warnings, examples, quotes inside notes |
-| **Tags** | Filterable metadata in both frontmatter and inline |
-| **Aliases** | Multiple names for the same note so it's findable by any term |
-| **Embeds `![[]]`** | Pulling content from one note into another without duplicating |
-| **Backlinks** | Every `[[link]]` creates a backlink in the target note — bidirectional connections |
-| **Map of Content (MOC)** | Index notes that organize topics — the vault's table of contents |
-| **Graph view optimization** | Proper linking density, no orphan nodes, meaningful clusters |
-| **Canvas files** | `.canvas` JSON for visual maps and diagrams |
-| **Base files** | `.base` YAML for database views of vault content |
-| **Mermaid diagrams** | Flowcharts, sequence diagrams, mind maps inside notes |
-| **Templater syntax** | Dynamic templates with `<% %>` for reusable note structures |
-
-**Load order every time:**
-1. Load `save-to-obsidian` (this skill) — for routing, extraction, and session logging
-2. Load `obsidian-power-user` — for formatting, linking, and Obsidian conventions
-3. Verify vault path (see next section)
-4. Then proceed with knowledge extraction and session logging
+1. This skill: routing, extraction, session log.
+2. `obsidian-power-user`: formatting, linking, Obsidian conventions. The link rules
+   below override anything there that conflicts.
+3. Verify the vault path (next section).
+4. Get the real date and time from the clock: `date "+%Y-%m-%d %H:%M"`. Never guess it.
+5. Work.
 
 ---
 
-## Vault Location
+## Vault location
 
-The user's Obsidian vault path is configured in `CLAUDE.md` as `{{VAULT_PATH}}`.
-The vault name is `{{VAULT_NAME}}`.
+The vault path is in `CLAUDE.md` as `{{VAULT_PATH}}`; its name is `{{VAULT_NAME}}`.
 
-### CRITICAL: Vault Path Verification
-
-**Before writing ANY file, verify the correct vault is mounted.** Run:
+**Verify before writing anything:**
 
 ```bash
 ls "{{VAULT_PATH}}/00 Inbox" 2>/dev/null
 ```
 
-If the path exists and shows the expected folder structure (00-06), proceed.
-
-If the path does NOT exist:
-1. Ask the user to confirm the vault location
-2. If they're in Cowork or a similar tool, ask them to mount or grant access to the vault folder
-3. Never create files outside the vault as a workaround
-4. Never silently create files in the working directory and call it done
-
-If the user has the Second Brain Starter Kit but hasn't run `second-brain-init` yet,
-suggest that as the first step rather than improvising.
+If it does not exist: ask the user to confirm the location or grant access to the
+folder. Never write somewhere else as a workaround, and never leave files in the
+working directory and call it done. If the user has the kit but never ran
+`second-brain-init`, suggest that first.
 
 ---
 
-## Vault Structure
+## Vault structure (00 to 09)
 
-The starter kit vault uses this structure. Sections referenced by number prefix
-(`01`, `02`, etc.) so users who rename them keep the routing working.
+Sections are found by their **number prefix**, so a user who renames
+"01 Personal Knowledge" to "01 Company Knowledge" keeps everything working.
 
 ```
 {{VAULT_NAME}}/
-├── 00 Inbox/                <- Only if nothing else fits
-├── 01 Personal Knowledge/   <- Or "01 Company Knowledge" if user is business-focused
-│   ├── People/              <- Clients, team, collaborators
-│   ├── Places/              <- Locations, neighborhoods, venues
-│   ├── Routines/            <- Habits, workflows, procedures
-│   └── Lessons Learned/     <- What went wrong/right and why
-├── 02 Strategy/
-│   ├── Vision/              <- Long-term aspiration
-│   ├── Goals/               <- Time-bound objectives
-│   ├── Decision Log/        <- Decisions made and the reasoning behind them
-│   └── North Star/          <- The {{NORTH_STAR_NAME}} — the user's guiding vision
-├── 03 Ideas & Notes/        <- Raw ideas, sparks, things to explore later
-├── 04 Learning/
-│   ├── Books/               <- Book takeaways
-│   ├── Courses/             <- Course notes and frameworks
-│   ├── AI & Tech/           <- Tech knowledge, tool learnings
-│   └── Business/            <- Business concepts, frameworks
-├── 05 AI System/
-│   ├── Skills/              <- What each skill does, dependencies
-│   ├── Integrations/        <- How tools connect (any MCP, API, connector)
-│   └── Architecture/        <- System design, data flows
-├── 06 Session Logs/         <- Full session summaries (this skill creates these)
-├── Excalidraw/              <- Visual diagrams and drawings
-└── Templates/               <- User-managed; this skill does NOT write here
+├── 00 Inbox/                <- Only when nothing else fits yet
+├── 01 Personal Knowledge/   <- People/, Places/, Routines/, Lessons Learned/
+├── 02 Strategy/             <- Vision/, Goals/, Decision Log/, North Star/
+├── 03 Ideas & Notes/        <- Ideas, plus References/ (saved sources and web clips)
+├── 04 Learning/             <- Books/, Courses/, AI & Tech/, Business/
+├── 05 AI System/            <- Skills/, Integrations/, Architecture/
+├── 06 Session Logs/         <- Session logs and project checkpoints
+├── 07 Assets/               <- Finished outputs: reports, dashboards, documents
+├── 08 Projects/             <- Working notes of active projects, one folder each
+├── 09 MOCs/                 <- Maps of Content and project Doors
+├── Archives/                <- Old or replaced notes. Nothing is ever deleted
+├── Excalidraw/              <- Drawings
+└── Templates/               <- The user's templates. This skill never writes here
 ```
-
-Users who rename sections (e.g., "01 Personal Knowledge" → "01 Company Knowledge") keep
-the routing working as long as the number prefix stays the same.
 
 ---
 
-## PART 1: Knowledge Extraction
+## THE LINK RULES (non-negotiable)
 
-### Step 1 — Review the Current Conversation
+Broken links are the most common way a vault rots. These rules exist so it never does.
 
-You already have the full conversation in your context window — that's your source
-material. Read back through the entire conversation from the beginning and identify
-knowledge worth keeping.
+1. **Forbidden characters in file names: `# ^ [ ] | :`** Obsidian cannot link a note
+   whose name has one of them. Write `No.1` instead of `#1`, `(Draft)` instead of
+   `[Draft]`, and a comma or a hyphen instead of a colon.
+2. **Every link must resolve.** Before writing `[[Target]]`, check that a note with that
+   name exists (search the vault by file name). A link to nothing is a broken promise.
+3. **No placeholder links.** If the related note does not exist yet, either create it as
+   a short stub (frontmatter plus two lines, `status: stub`) so the link resolves, or do
+   not write the link. Never leave red links on purpose.
+4. **Link by name, never by path.** Write `[[Note Name]]`, never `[[../folder/note]]`.
+5. **Every new note enters the graph connected.** At least 2 outgoing links that resolve,
+   and at least 1 incoming link: add it to the matching MOC in `09 MOCs/`, or to the
+   `*See also:*` line of a related note.
 
-If the user pointed to something specific ("save the part about pricing"), focus on
-that. If they said something general ("save to my brain"), scan everything.
+---
 
-### Step 2 — Extract Knowledge Nuggets
+## The frontmatter contract
 
-Read through the transcript and identify knowledge worth keeping. Not everything
-in a conversation is knowledge — filter aggressively. Ask yourself for each piece:
-**"Would this be useful context in a future conversation 3 months from now?"**
+Every note this skill writes carries the same properties, so search, filters and the
+health check can trust them:
 
-### CRITICAL RULE: Content Type Overrides Topic
-
-**Before using the topic-based routing table below, check content type FIRST.**
-A skill about marketing is still a SKILL — it goes in `05 AI System/Skills/`,
-NOT in `04 Learning/Marketing/`. A skill about SEO goes in `05 AI System/Skills/`,
-NOT in `04 Learning/AI & Tech/`. The content type (what it IS) always beats the
-topic (what it's ABOUT).
-
-| Content type | Always routes to | Examples |
-|-------------|-----------------|----------|
-| **Skill** (any SKILL.md, skill documentation, skill changelog, skill architecture note, skill dependency map) | **05 AI System/Skills/** | A new SEO skill, an updated brand-voice skill, a skill dependency map |
-| **Integration** (how tools connect, API configs, MCP setups) | **05 AI System/Integrations/** | A new MCP connector setup, an API data flow |
-| **Architecture** (system design, data flows, routing rules) | **05 AI System/Architecture/** | Skill routing diagram, briefing data flow |
-
-**If the content IS one of the above types, route it there — period. Do NOT
-re-route based on the skill's topic.** Only use the topic-based table below for
-content that is NOT a skill, integration, or architecture note.
-
-### Topic-Based Routing (for non-skill content only)
-
-| Type | What to look for | Vault section |
-|------|-----------------|---------------|
-| **Lesson Learned** | Something that went wrong/right, with a takeaway | `01 Personal Knowledge/Lessons Learned/` |
-| **Decision** | A choice the user made, with reasoning | `02 Strategy/Decision Log/` |
-| **Idea** | Something to explore later, an opportunity, a hunch | `03 Ideas & Notes/` |
-| **Person Insight** | Pattern about a client, collaborator, or team member | `01 Personal Knowledge/People/` |
-| **Place Intel** | Location-specific info (neighborhood, venue, region) | `01 Personal Knowledge/Places/` |
-| **Routine / Process** | Workflow, habit, procedure, repeatable system | `01 Personal Knowledge/Routines/` |
-| **Vision / Strategy** | Long-term thinking, growth plans, aspirations | `02 Strategy/` (subfolder varies — Vision, Goals, or North Star) |
-| **Book / Course Takeaway** | Insight from a book or course | `04 Learning/Books/` or `04 Learning/Courses/` |
-| **Tech Learning** | Tool knowledge, workflow discovery | `04 Learning/AI & Tech/` |
-| **Business Concept** | Framework or concept discussed | `04 Learning/Business/` |
-
-**What NOT to save as knowledge nuggets:**
-- Troubleshooting steps that only matter for this session (these go in the session log)
-- File paths or technical debugging details (session log territory)
-- Instructions already captured in a skill's SKILL.md
-- Anything that duplicates what's already in the vault (check first!)
-- The conversation itself verbatim — extract the knowledge, not the transcript
-
-### Step 3 — Check for Duplicates
-
-Before creating any note, check if the vault already has a note on the same topic.
-Use `Grep` or `Glob` to search the relevant vault section.
-
-- If a related note exists, **update it** rather than creating a new one
-- If the existing note covers the same ground, skip it entirely
-- Never create "v2" copies — one note per topic, kept current
-
-This is the vault's #1 hygiene rule: no duplicates.
-
-### Step 4 — Write the Knowledge Notes (Obsidian-Native Format)
-
-For each piece of knowledge, create a markdown note in the correct vault section.
-**Follow the `obsidian-power-user` formatting standards** — every note must use proper
-Obsidian conventions.
-
-**File naming convention:**
-```
-YYYY-MM-DD [Type] — [Short Title].md
+```yaml
+---
+title: "Decision, Raised Beds"
+type: decision          # from the closed list in .brain/vocabulary.json
+project: garden         # optional; when used, it must be in the project list
+date: 2026-10-02        # YYYY-MM-DD, real date
+time: "14:35"           # HH:MM, real time from the clock, never guessed
+description: "One line that says what this note is and when to read it."
+tags: [garden, decisions]   # lowercase, no spaces, no accents, no #
+status: active          # active | done | superseded | parked | stub | draft
+aliases:
+  - "Raised bed decision"
+source: "Conversation, 2026-10-02"
+---
 ```
 
-Examples:
-- `2026-05-28 Lesson — Don't Commit to a Project Before Defining Success.md`
-- `2026-05-28 Decision — Migrate Tasks from Apple Notes to Obsidian.md`
-- `2026-05-28 Idea — Weekly Reflection Template in Daily Note.md`
+**The closed lists live in `{{VAULT_PATH}}/.brain/vocabulary.json`.** Types:
+session, decision, lesson, idea, learning, reference, person, process, architecture,
+integration, moc, door, checkpoint, health, note. If a note needs a new type, status or
+project, add it to that file first (tell the user), then use it.
 
-For ongoing reference notes that don't fit the dated pattern (like people or places),
-use descriptive names without dates:
+**Validate before calling it saved.** If `python3` is available, run:
+
+```bash
+python3 "{{VAULT_PATH}}/.brain/tools/check_frontmatter.py" "<the note>.md"
+```
+
+It must print `0 with problems`. If it lists a problem, fix the note and run it again.
+Without Python, check the required keys, the lists and the date and time format by
+reading the note back.
+
+The `description` is the most valuable line in the note: the search ranks it high and
+the AI reads it to decide whether to open the note. Write it for a stranger.
+
+---
+
+## PART 1: Knowledge extraction
+
+### Step 1. Review the conversation
+
+The whole conversation is the source. If the user pointed at something ("save the part
+about pricing"), focus there. Otherwise scan everything.
+
+### Step 2. Extract the nuggets
+
+Filter hard. For each piece ask: **"Would this be useful in a conversation three months
+from now?"**
+
+**Content type beats topic.** A skill about marketing is still a skill, so it goes to
+`05 AI System/Skills/`, not to `04 Learning/`. What it IS beats what it is ABOUT.
+
+| Content type | Always goes to |
+|---|---|
+| Skill (a SKILL.md, its docs, its changelog) | `05 AI System/Skills/` |
+| Integration (how tools connect, an API or connector setup) | `05 AI System/Integrations/` |
+| Architecture (system design, data flows, routing rules) | `05 AI System/Architecture/` |
+| Doctrine (a named principle that cuts across many notes) | `05 AI System/Architecture/` |
+| MOC (a hub that maps a theme) | `09 MOCs/` |
+| Finished output (report, dashboard, document) | `07 Assets/` |
+
+For everything else, route by topic:
+
+| Type | What to look for | Section |
+|---|---|---|
+| Lesson | Something that went wrong or right, with a takeaway | `01 .../Lessons Learned/` |
+| Decision | A choice the user made, with reasons | `02 Strategy/Decision Log/` |
+| Idea | Something to explore later | `03 Ideas & Notes/` |
+| Reference | A source worth keeping (article, clip, quote) | `03 Ideas & Notes/References/` |
+| Person | A pattern about a person they work or live with | `01 .../People/` |
+| Place | Knowledge about a location | `01 .../Places/` |
+| Routine or process | A repeatable way of doing something | `01 .../Routines/` |
+| Vision or strategy | Long-term thinking, goals | `02 Strategy/` (Vision, Goals or North Star) |
+| Book or course | A takeaway from something they studied | `04 Learning/Books/` or `Courses/` |
+| Tech or business learning | A tool discovery, a framework | `04 Learning/AI & Tech/` or `Business/` |
+| Project working note | Detail that belongs to one active project | `08 Projects/<Project>/` |
+
+**Do not save as nuggets:** troubleshooting that only mattered today (session log),
+file paths and debugging detail (session log), what a skill file already says,
+anything already in the vault, or the conversation verbatim.
+
+### Step 3. Search before you write
+
+Look for an existing note on the same topic first. If `python3` and the index exist:
+
+```bash
+python3 "{{VAULT_PATH}}/.brain/tools/brain_search.py" "<topic words>"
+```
+
+Otherwise search file names and text in the relevant section.
+
+- A related note exists: **update it.** Add the new knowledge and the date.
+- It already says the same: skip it.
+- Never create "v2" copies, never leave `.bak` copies next to a note. One note per
+  topic, kept current.
+
+### Step 4. Write the notes
+
+**File names:** `YYYY-MM-DD Type, Short Title.md` for dated notes, a plain descriptive
+name for evergreen notes. No forbidden characters.
+
+- `2026-10-02 Lesson, Define Success Before Starting.md`
+- `2026-10-02 Decision, Move Tasks to Obsidian.md`
 - `What My Best Clients Have in Common.md`
-- `Downtown — Local Knowledge.md`
 
-**Required note format (Obsidian-native):**
+**Body:**
 
 ```markdown
----
-title: "[Title]"
-aliases:
-  - [Alternative name 1]
-  - [Alternative name 2]
-date: YYYY-MM-DD
-type: [lesson | decision | idea | person | place | routine | strategy | learning]
-status: active
-tags:
-  - [relevant-tag-1]
-  - [relevant-tag-2]
-source: "Conversation, YYYY-MM-DD"
-related:
-  - "[[Related Note 1]]"
-  - "[[Related Note 2]]"
----
-
 # [Title]
 
 > [!info] Context / Contexto
-> [1-2 sentence setup of why this came up]
+> One or two sentences on why this came up.
 
----
+[The knowledge itself, specific, with numbers and names, in the user's voice.
+[[Wikilinks]] inline wherever a concept, person or decision has its own note.]
 
-[The actual knowledge — written clearly, in the user's voice where appropriate.
-Include the "why" behind decisions. Include specific numbers, names, or details
-that make this actionable rather than generic.
-
-Use [[wikilinks]] inline whenever referencing concepts, people, places, or
-decisions that have (or should have) their own note in the vault.
-
-Use > [!tip], > [!warning], > [!example], > [!quote] callouts to visually
-structure important sections. Translate callout labels to the user's primary
-language if it isn't English.]
-
----
-
-*See also: [[Related Note 1]] | [[Related Note 2]] | [[Related Note 3]]*
+*See also: [[Related Note 1]] | [[Related Note 2]]*
 ```
 
-**Additional sections by type:**
+By type, add:
 
-For **Lessons Learned**, also include:
-> [!warning] What Happened / Qué pasó
-> [The situation]
+- **Lesson:** `> [!warning] What happened / Qué pasó` and `> [!tip] Takeaway / Aprendizaje`.
+- **Decision:** `> [!quote] Decision / Decisión`, then **Why**, then **Considered and
+  rejected**.
+- **Idea:** `> [!note] The idea / La idea`, then **Why it could work**, then **Open
+  questions**.
 
-> [!tip] Takeaway / Aprendizaje
-> [What we learned + what to do differently]
+### Step 5. Link it into the graph
 
-For **Decisions**, also include:
-> [!quote] Decision / Decisión
-> [What was decided]
-
-**Why:** [The reasoning]
-**Considered but rejected:** [Alternatives]
-
-For **Ideas**, also include:
-> [!note] The Idea / La idea
-> [Description]
-
-**Why it could work:** [Reasoning]
-**Open questions:** [What needs to be figured out]
+1. Link forward to existing notes (each target verified, rule 2).
+2. Link backward: add the new note to the `*See also:*` line or `related:` property of
+   the notes it relates to.
+3. Register it in the matching MOC in `09 MOCs/`. If a section passes about 7 notes on
+   one theme and has no MOC, propose one to the user.
+4. Notes created in the same save link to each other.
+5. Use `[[Note#Heading]]` or `[[Note^block-id]]` to point at a precise spot, and
+   `[[Note|natural words]]` when the title reads badly inline.
 
 ---
 
-### Linking Strategy — Building the Graph
+## Promotion: how knowledge moves up
 
-The Obsidian graph is the brain's nervous system. Every note must connect to the
-network. This is NOT optional — isolated notes are dead notes.
+The brain compounds by promoting what repeats, not by piling up notes.
 
-**Rule: Every note gets at least 2 `[[wikilinks]]` to other notes in the vault.**
-
-How to find links:
-
-1. **Before writing any note,** scan the vault for existing notes on related topics.
-   Use `Glob` to browse vault sections and `Grep` to search for keywords.
-2. **Link forward:** Connect the new note to existing notes it references or builds on.
-3. **Link backward:** After creating the new note, go back and ADD a link to it from
-   the related existing notes. This is what makes the graph bidirectional.
-4. **Link within the same session:** If you're creating multiple notes in one save,
-   link them to each other where relevant.
-
-**Where to place links:**
-- In YAML frontmatter `related:` field (for Dataview queries)
-- In the `*See also:*` line at the bottom of every note (for quick visual reference)
-- Inline within the body text where a concept is mentioned
-- In session logs, link to every knowledge nugget that was created in the same session
-
-**Types of links to create:**
-
-| Link type | Example | When to use |
-|-----------|---------|-------------|
-| **Topic link** | `[[What My Best Clients Have in Common]]` | When the note relates to an ongoing topic |
-| **Decision link** | `[[2026-05-15 Decision — Switched Note Apps]]` | When referencing a past decision |
-| **Session link** | `[[2026-05-28 — Built First Custom Skill]]` | When referencing the session where something happened |
-| **Skill link** | `[[save-to-obsidian Skill Architecture]]` | When referencing AI system components |
-| **Person/team link** | `[[Alex — Frequent Collaborator]]` | When referencing a person with a vault note |
-| **Aliased link** | `[[North Star\|my long-term vision]]` | When the display text should be more natural than the note title |
-
-**Block references for precision linking:**
-
-When linking to a specific section of a long note, use block references:
-```markdown
-See the relevant section in [[Brand Notes#Pillar 2: Clear Pricing]]
-```
-
-Or with block IDs:
-```markdown
-This follows the rule from [[Personal Rules^always-never]]
-```
-
-**When you can't find related notes:**
-If the vault is still small and there aren't related notes yet, note what SHOULD
-exist with a placeholder: `[[Downtown — Local Knowledge]]`. This creates
-a red link in Obsidian that shows up in graph view as an unresolved node —
-breadcrumbs for future knowledge to fill in.
-
-**Updating old notes with new links:**
-When creating a new note that relates to an existing note, ALWAYS go back and add
-a link to the new note from the existing one. Use the `Edit` tool to append to
-the existing note's `*See also:*` line or `related:` frontmatter. This is what
-turns a folder of files into an interconnected brain.
+- **A reference graduates.** When a saved clip in `References/` gets the user's own
+  thoughts, their links, or is cited by other notes, move it to its real home
+  (01, 02 or 04) and fix the links that pointed to it.
+- **Many connections become a doctrine.** When about five notes keep circling the same
+  principle, write one canonical note for it in `05 AI System/Architecture/` and link
+  it from a MOC, so the next session reads the principle instead of rediscovering it.
+- **A growing theme gets a MOC.** Propose it first; never invent a new top-level
+  section on your own.
 
 ---
 
-## PART 2: Session Summary Log
+## PART 2: Session log
 
-This runs AFTER Part 1 (knowledge extraction). Every session gets a log file — even
-if no knowledge nuggets were extracted. The session log captures the full story of
-what happened so the user can go back to it later for context.
-
-### Step 5 — Build the Session Summary
-
-Create a single markdown file in `{{VAULT_PATH}}/06 Session Logs/` using this template.
-Every section is required unless the session was too short to justify it.
+Every save gets a session log in `06 Session Logs/`, even when no nuggets were
+extracted. Name: `YYYY-MM-DD Session, Short Title.md` (add `(2)`, `(3)` for more
+sessions the same day).
 
 ```markdown
 ---
-title: "Session — [Short Title]"
-aliases:
-  - "[Short Title]"
+title: "Session, [Short Title]"
+type: session
 date: YYYY-MM-DD
-type: session-log
-tags:
-  - session
-  - [topic-tags]
+time: "HH:MM"
+description: "One line: what this session did and why it matters."
+tags: [session, topic-tag]
+status: done
 ---
 
-# Session Summary — [Short Title of What We Did]
+# Session, [Short Title]
 
-> [!info] Session Details
-> **Date:** YYYY-MM-DD
-> **Duration:** [Approximate — e.g., "~45 min" or "long session"]
-> **Triggered by:** [What kicked off the session — the user's opening request or goal]
+> [!info] Session details
+> **Date:** YYYY-MM-DD HH:MM · **Length:** about 45 min · **Started by:** the user's opening request
 
----
+## What we accomplished / Lo que logramos
+A short narrative (2 to 4 paragraphs) with [[links]] to the notes, tools and people involved.
 
-## What We Accomplished / Lo que logramos
+## Key decisions / Decisiones clave
+> [!quote] [Decision]
+> **Decision:** ... **Why:** ... **Alternatives:** ...
 
-[2-4 paragraph narrative of what was done, in chronological order. Write it like
-a story — "The user wanted X, so we started by doing Y, which led to Z." Keep it
-readable, not a bullet dump. Use [[wikilinks]] to reference vault notes, skills,
-tools, and people throughout.]
+## Outputs
+- **[Output]**: what it is and where it lives
 
----
+## Tools and sources used
+- **[Tool]**: what it was used for
 
-## Key Decisions & Reasoning / Decisiones clave
-
-[For each significant decision made during the session:]
-
-> [!quote] [Decision Title]
-> **Decision:** [What was decided]
-> **Why:** [The reasoning — what factors drove this choice]
-> **Alternatives considered:** [What else was on the table, if anything]
-
-[Repeat for each decision. Skip if the session was pure execution with no choices.]
-
----
-
-## Outputs & Deliverables
-
-[List everything that was created, modified, or delivered:]
-
-- **[Output name]** — [What it is, where it lives]
-  - Path: `[file path or location]`
-
----
-
-## Tools & Data Sources Used
-
-[List every tool, MCP, skill, API, or data source that was part of the work:]
-
-- **[Tool/Source name]** — [What it was used for]
-
----
-
-## Reasoning Log
-
-[For each major step, briefly explain the thinking:]
-
-1. **[Step/Action]** — [Why we did it this way]
-2. **[Step/Action]** — [Why we did it this way]
-
-[Keep each entry to 1-2 sentences. Capture the "why" chain.]
-
----
-
-## Lessons Learned / Aprendizajes
-
+## Lessons / Aprendizajes
 > [!tip] Takeaways
-> [Anything surprising, wrong, or better than expected. If nothing stands out,
-> write "Clean session — no notable surprises."]
+> What surprised us. If nothing: "Clean session, nothing notable."
 
----
+## Open items / Pendientes
+- [ ] Item with enough context to act on later
 
-## Open Items / Next Steps — Pendientes
-
-- [ ] [Open item with enough context to act on later]
-
-[If everything wrapped cleanly: "All tasks completed. No open items."]
-
----
-
-## Knowledge Saved to Vault
-
-[List what was saved in Part 1, using wikilinks:]
-
-- [[Note Title]] → [vault section]
-- [[Updated: Note Title]] → [vault section]
-
-[If no knowledge nuggets were extracted: "Session was task execution only —
-no new knowledge nuggets extracted."]
-
----
-
-*Related sessions: [[YYYY-MM-DD — Previous Related Session Title]]*
-*Related vault notes: [[Any existing note this session built on or connects to]]*
+## Knowledge saved
+- [[Note Title]] → section
 ```
 
-**Session log file naming:**
-```
-YYYY-MM-DD — [Short Title].md
-```
+Scale the detail to the session: a 15-minute task gets a short log. Quote the user's
+memorable lines. Keep their mix of English and Spanish as they said it.
 
-Examples:
-- `2026-05-28 — Set Up My Second Brain.md`
-- `2026-05-28 — First Project Advisor Run.md`
-
-If multiple sessions on the same day:
-- `2026-05-28 (2) — Afternoon Follow-Up.md`
+If the session belongs to a project with a Door (`09 MOCs/Door, <Project>.md`), link the
+Door from the log. Updating the Door itself is the job of `close-session`.
 
 ---
 
-## Step 6 — Summarize What Was Saved
-
-After creating everything, give the user a clear summary:
+## Step 6. Tell the user what was saved
 
 ```
 Saved to {{VAULT_NAME}}:
-
-Knowledge nuggets:
-- [Note title] → 01 Personal Knowledge / Lessons Learned
-- [Note title] → 02 Strategy / Decision Log
-
-Session log:
-- [Session title] → 06 Session Logs
-
-[Links to each file]
+- [Note] → 02 Strategy / Decision Log
+- [Note] (updated) → 01 Personal Knowledge / Lessons Learned
+- Session log → 06 Session Logs
+All notes pass the frontmatter check.
 ```
 
-If the user's primary language is Spanish, give the summary in Spanish:
-
-```
-Guardado en {{VAULT_NAME}}:
-
-Conocimiento extraído:
-- [Título de nota] → 01 Personal Knowledge / Lessons Learned
-- [Título de nota] → 02 Strategy / Decision Log
-
-Log de sesión:
-- [Título de sesión] → 06 Session Logs
-```
-
-If the conversation had no knowledge worth extracting but was still a productive
-session, say so: "No standalone knowledge nuggets this session, but the full session
-log is saved so you can reference what we did."
+In Spanish when that is the user's language ("Guardado en ...", "Todas las notas pasan
+la revisión del frontmatter"). If nothing was worth extracting, say so and save only the
+log. If the search index exists, end by refreshing it:
+`python3 "{{VAULT_PATH}}/.brain/tools/brain_index.py" --quiet`.
 
 ---
 
-## Quality Standards
+## Edge cases
 
-- **Be specific, not generic.** "We fixed 3 broken canonical tag errors in the SEO
-  audit" beats "We did some SEO work."
-- **Include real numbers.** If the session involved data, include the key figures.
-- **Capture the user's voice.** If they said something memorable or made a strong
-  statement about direction, quote it using `> [!quote]` callouts.
-- **Don't pad.** A 15-minute quick task doesn't need a 3-page log. Scale the
-  detail to the session's complexity.
-- **Preserve language.** If the user mixes English and Spanish, preserve their
-  phrasing — don't sanitize bilingual voice into one language.
-- **Use Obsidian features.** Every note should use callouts, wikilinks, block
-  references, proper frontmatter, and tags. Notes that look like plain markdown
-  are not acceptable — they must be Obsidian-native.
+- **Short session:** skip extraction if there is nothing, and write a condensed log.
+- **Sensitive data:** the vault is private, so include it, unless the user asks not to.
+- **Several unrelated tasks:** one sub-heading per task in the log.
+- **Vault not reachable:** say so and ask for access. Never write elsewhere.
+- **Long conversation:** if the start fell out of context, use the host's transcript
+  tools to recover it before extracting.
+- **Spanish-speaking user:** headings, callouts and prose in Spanish; property names
+  and tags stay in English, because the tools read them.
 
----
+## Vault hygiene (non-negotiable)
 
-## Edge Cases
+1. Knowledge and session records only. No temp files, no drafts for elsewhere.
+2. No duplicates and no "v2" files. Update the original.
+3. **Never delete.** Old or replaced notes move to `Archives/`, with `status: superseded`.
+4. No `.bak` copies inside the vault. A manual backup goes to `Archives/Backups/<date>/`.
+5. No orphans: 2 or more resolving links out, 1 or more in.
+6. `Templates/` is read-only for this skill; `Excalidraw/` is only for drawings.
+7. Session logs complement knowledge notes; they never replace them.
+8. Real date and time on every note, validated frontmatter on every note.
+9. **The link rules above override everything else.**
 
-**Very short session (quick Q&A or one small task):**
-Skip knowledge extraction if there's nothing to extract. For the session log, use
-a condensed format — collapse Decisions, Reasoning Log, and Lessons into a single
-"Notes" section.
+## Changelog
 
-**Session with sensitive data (financials, client names, private info):**
-Include the data. The vault is the user's private knowledge base.
-
-**Multiple unrelated tasks in one session:**
-Use sub-headers under "What We Accomplished" for each task, and organize the
-Decisions/Reasoning sections by task.
-
-**Non-project experimental session:**
-This skill works in any session. If the user was experimenting outside their
-project ecosystem and liked what was created (a skill, research, an approach),
-save it. The vault is the single source of truth for everything.
-
-**User points to something specific:**
-If they say "save THAT part about the pricing," focus the knowledge extraction on
-what they're pointing to. Still create the full session log.
-
-**The vault isn't mounted:**
-Tell the user. Ask them to grant access to the vault folder or mount it in their
-tool. Never write files to the working directory as a workaround.
-
-**Very long conversations:**
-If early parts have scrolled out of context, use whatever transcript-retrieval
-capability the host LLM provides (e.g., `read_transcript`, `list_sessions`) to
-recover the full conversation before extracting knowledge.
-
-**User is primarily Spanish-speaking:**
-Write callouts, headings, and prose in Spanish. Keep YAML keys and inline tags
-in English (they're parsed by tooling). Frontmatter property values can be in
-Spanish.
-
----
-
-## Vault Hygiene Rules (Non-Negotiable)
-
-1. **Knowledge only.** Every file must be permanent knowledge or a session record.
-   No temp files, no staging, no drafts-for-elsewhere.
-2. **No duplicates.** Check before writing. Update existing notes, never create
-   copies alongside them.
-3. **No v2 files.** Edit the original or replace it entirely.
-4. **Don't pollute the graph.** Every note should connect to the vault's purpose.
-   Every note must have at least 2 wikilinks. No orphan nodes.
-5. **Templates stay in `Templates/`.** Don't write to that folder.
-6. **Excalidraw stays in `Excalidraw/`.** Visual diagrams go there.
-7. **Session logs are standalone records.** They don't replace knowledge notes —
-   they complement them. A decision captured in `02 Strategy/Decision Log/` is the
-   permanent reference; the session log in `06 Session Logs/` is the full context
-   of when and how that decision was made.
-8. **Obsidian-native formatting only.** Every note must use YAML frontmatter, wikilinks,
-   callouts, tags, and block references. Plain markdown is not acceptable.
+- **2.0.0 (2026-10-02):** The link rules (forbidden characters, no broken or placeholder
+  links, link by name, MOC registration). The frontmatter contract with closed lists in
+  `.brain/vocabulary.json`, real time on every note, and validation with
+  `check_frontmatter.py`. The save signal. Search before writing with `brain_search.py`.
+  Promotion (references, doctrines, MOCs). Never delete, no `.bak` files. Sections 07 to
+  09 and Archives. File names without dashes.
+- **1.0.0 (2026-05-29):** First public version.

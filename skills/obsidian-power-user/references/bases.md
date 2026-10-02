@@ -1,4 +1,4 @@
-# Obsidian Bases — Complete Reference
+# Obsidian Bases: Complete Reference
 
 ## What Obsidian Bases Is
 
@@ -107,7 +107,7 @@ views:
 
 ---
 
-## Filters — Complete Reference
+## Filters: Complete Reference
 
 Filters determine which notes appear in your base. All filter conditions are strings that Bases evaluates.
 
@@ -243,7 +243,7 @@ or:
 
 ---
 
-## Formulas — Complete Reference
+## Formulas: Complete Reference
 
 Formulas are computed properties that you can display, filter, or sort by. They are defined once and referenced throughout your base.
 
@@ -712,7 +712,7 @@ views:
 **Filter returns no results?**
 - Test each filter condition individually to isolate the problem.
 - Remember that `and` requires ALL conditions to be true; use `or` if you need ANY to be true.
-- Check folder paths—use `file.inFolder("exact/path", true)` to be explicit.
+- Check folder paths, use `file.inFolder("exact/path", true)` to be explicit.
 
 **Column showing raw data?**
 - Ensure the `type` field in your column definition matches the property type (string, number, date, boolean).

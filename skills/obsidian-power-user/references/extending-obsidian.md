@@ -15,7 +15,7 @@
 **Updating plugins:** In Community plugins list, check for an **Update** button next to each plugin. Obsidian also shows a notification when updates are available.
 
 **Restricted Mode**
-- By default, Obsidian runs in **Restricted Mode** — third-party plugins are disabled
+- By default, Obsidian runs in **Restricted Mode**, third-party plugins are disabled
 - When you enable your first plugin, Obsidian asks if you want to exit Restricted Mode
 - **What it does:** Restricted Mode prevents any third-party plugins from running, isolating you from potential security risks
 - **When to use it:** Use if you're concerned about plugin security or want to troubleshoot issues caused by plugin conflicts
@@ -33,9 +33,9 @@
 ### Light and Dark Variants
 
 Most Obsidian themes include both light and dark color schemes:
-- **Settings → Appearance → Color scheme** — choose **Light**, **Dark**, or **System** (follows OS settings)
+- **Settings → Appearance → Color scheme**: choose **Light**, **Dark**, or **System** (follows OS settings)
 - A well-designed theme has distinct palettes for each variant
-- Not all themes support both — check the community plugin directory listing
+- Not all themes support both, check the community plugin directory listing
 
 ### Popular Themes Worth Exploring
 
@@ -57,7 +57,7 @@ Most Obsidian themes include both light and dark color schemes:
 5. In Obsidian: **Settings → Appearance → CSS Snippets** → click the refresh icon
 6. Toggle each snippet **On** to enable it
 
-**Snippets are loaded automatically** once enabled — no restart needed.
+**Snippets are loaded automatically** once enabled, no restart needed.
 
 ### Common CSS Snippet Examples
 
@@ -180,13 +180,13 @@ Depending on their code, community plugins *could* theoretically:
 
 ### Best Practices for Plugin Security
 
-1. **Install only plugins you trust** — check ratings, reviews, and GitHub repos
+1. **Install only plugins you trust**: check ratings, reviews, and GitHub repos
 2. **Review plugin source code** on GitHub before installing if possible
-3. **Keep plugins updated** — security patches are released regularly
-4. **Audit inactive plugins** — regularly uninstall plugins you no longer use
-5. **Use Restricted Mode for sensitive vaults** — if you have a vault with highly sensitive data, keep it in Restricted Mode
-6. **Check permissions in plugin descriptions** — a good plugin author documents what their plugin accesses
-7. **Disable plugins if you notice strange behavior** — test if a plugin is causing issues by toggling it off
+3. **Keep plugins updated**: security patches are released regularly
+4. **Audit inactive plugins**: regularly uninstall plugins you no longer use
+5. **Use Restricted Mode for sensitive vaults**: if you have a vault with highly sensitive data, keep it in Restricted Mode
+6. **Check permissions in plugin descriptions**: a good plugin author documents what their plugin accesses
+7. **Disable plugins if you notice strange behavior**: test if a plugin is causing issues by toggling it off
 
 ## Obsidian URI Protocol
 
@@ -218,11 +218,11 @@ Good: obsidian://new?vault=My%20Vault&name=Meeting%20Notes
 
 ### Use Cases
 
-- **Deep links from other apps** — Create a link in Notion, Todoist, or email that opens a specific Obsidian note
-- **Automation triggers** — Use Zapier or IFTTT to create Obsidian notes from external events
-- **iOS Shortcuts** — Build automation on iPhone that creates or opens Obsidian notes
-- **Alfred workflows** — Create custom Alfred searches that open Obsidian files
-- **Browser bookmarklets** — Save a web page URL as a new Obsidian note with a click
+- **Deep links from other apps**: Create a link in Notion, Todoist, or email that opens a specific Obsidian note
+- **Automation triggers**: Use Zapier or IFTTT to create Obsidian notes from external events
+- **iOS Shortcuts**: Build automation on iPhone that creates or opens Obsidian notes
+- **Alfred workflows**: Create custom Alfred searches that open Obsidian files
+- **Browser bookmarklets**: Save a web page URL as a new Obsidian note with a click
 
 **Example browser bookmarklet:**
 ```javascript
@@ -264,11 +264,11 @@ obsidian delete "vault-name" "Path/To/Note"
 
 ### Integration with External Tools
 
-- **Bash scripts** — Automate vault operations in shell scripts
-- **cron jobs** — Schedule periodic note creation or archival
-- **Git hooks** — Trigger Obsidian actions on code commits
-- **CI/CD pipelines** — Create release notes or build documentation automatically
-- **Python scripts** — Call Obsidian CLI from Python automation
+- **Bash scripts**: Automate vault operations in shell scripts
+- **cron jobs**: Schedule periodic note creation or archival
+- **Git hooks**: Trigger Obsidian actions on code commits
+- **CI/CD pipelines**: Create release notes or build documentation automatically
+- **Python scripts**: Call Obsidian CLI from Python automation
 
 **Example: Bash script that creates daily notes**
 ```bash
@@ -291,11 +291,11 @@ obsidian create "MyVault" "Daily/$DATE" "## $DATE
 
 ### Use Cases
 
-- **Automated backup** — Sync vault from server on a schedule
-- **Server-side sync** — Keep vaults synchronized across multiple servers
-- **CI/CD pipelines** — Generate documentation or release notes automatically
-- **Scheduled exports** — Export vault to PDF or HTML on a schedule
-- **Webhook integrations** — Receive data from external services and create notes
+- **Automated backup**: Sync vault from server on a schedule
+- **Server-side sync**: Keep vaults synchronized across multiple servers
+- **CI/CD pipelines**: Generate documentation or release notes automatically
+- **Scheduled exports**: Export vault to PDF or HTML on a schedule
+- **Webhook integrations**: Receive data from external services and create notes
 
 ### Installation and Setup
 

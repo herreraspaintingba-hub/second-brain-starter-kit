@@ -1,14 +1,20 @@
 # 🧠 Second Brain Starter Kit
 
-> **Turn any AI into a second brain** — one that remembers what you learn, organizes it
-> for you, and helps you decide what's worth your time. In plain language, in **English or Spanish**.
+> **Turn any AI into a second brain** that remembers what you learn, organizes it for
+> you, finds it again when you need it, and keeps itself healthy. In plain language,
+> in **English or Spanish**.
 
-A plug-and-play kit of **four skills** that teach your AI assistant (Claude, Cowork, Codex,
-Gemini, or any host that reads `SKILL.md` files) to capture knowledge, file it into an
-organized **Obsidian vault**, and run new ideas through an honest decision filter.
+A plug-and-play kit of **nine skills** that teach your AI assistant (Claude, Cowork,
+Codex, Gemini, or any host that reads `SKILL.md` files) to capture knowledge into an
+organized **Obsidian vault**, search it before asking you, keep one current page per
+project, close every session without losing anything, and check its own health every
+month.
 
-**Built for people who are _not_ technical.** No code, no subscription, no server.
-If you can copy a folder and type a sentence, you can run it.
+**Built for people who are not technical.** No subscription, no server. If you can copy
+a folder and type a sentence, you can run it.
+
+**New in v2.0:** search, project Doors, checkpoints, a closing ritual, a monthly health
+check, and rules that keep the vault from rotting. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -18,49 +24,56 @@ If you can copy a folder and type a sentence, you can run it.
 curl -fsSL https://raw.githubusercontent.com/herreraspaintingba-hub/second-brain-starter-kit/main/install.sh | bash
 ```
 
-This downloads the kit and copies the four skills into your assistant's skills folder
-(auto-detects Claude / Codex / Gemini). Then open your AI and say:
+It downloads the kit and copies the nine skills into your assistant's skills folder
+(it detects Claude, Codex or Gemini). Then open your AI and say:
 
-> **"Set up my second brain"**  ·  **"Configura mi segundo cerebro"**
+> **"Set up my second brain"** · **"Configura mi segundo cerebro"**
 
-It asks 6 quick questions and builds your vault in ~10 minutes.
+It asks 7 quick questions and builds your vault in about 10 minutes.
 
-> Want a specific host? `HOST=codex bash install.sh` (options: `claude`, `codex`, `gemini`).
+**Already on v1?** Run the same command, then say **"Upgrade my brain to v2"** ·
+**"Actualiza mi cerebro a la v2"**. Nothing is moved or deleted.
 
-### Manual install (no script)
+> A specific host: `HOST=codex bash install.sh` (options: `claude`, `codex`, `gemini`).
+
+### Manual install
 
 ```bash
 git clone https://github.com/herreraspaintingba-hub/second-brain-starter-kit.git
 cd second-brain-starter-kit
-cp -r skills/* ~/.claude/skills/      # or ~/.codex/skills/  ·  ~/.gemini/skills/
+bash install.sh            # or copy skills/* into ~/.claude/skills/ yourself
 ```
 
 ---
 
-## 📖 The manual — two full editions
+## 📖 The manual, in two editions
 
 | Edition | File |
 |--------|------|
 | 🇺🇸 English | `Second Brain Starter Kit - User Manual (English).pdf` |
 | 🇲🇽 Español | `Second Brain Starter Kit - Manual del Usuario (Español).pdf` |
 
-Each is a complete, standalone, zero-technical walkthrough (setup → daily use →
-maintenance → troubleshooting), with diagrams and worked examples. The skills themselves
-are bilingual, so you can talk to your brain in either language regardless of which
-manual you read.
+Each one is a complete walkthrough with no technical background needed: setup, daily
+use, projects, maintenance and troubleshooting, with diagrams and worked examples.
 
 ---
 
-## 🧩 The four skills
+## 🧩 The nine skills
 
 | Skill | What it does | How you trigger it |
 |-------|--------------|--------------------|
-| **`second-brain-init`** | One-time setup: builds your vault, installs the other three, writes your settings. | "Set up my second brain" / "Configura mi segundo cerebro" |
-| **`save-to-obsidian`** | Captures the lasting lessons from any conversation **and** writes a full session log. | "Save to my brain" / "Guárdalo en mi cerebro" |
-| **`project-advisor`** | Scores a new idea on 4 weighted dimensions → 🟢 GREEN / 🟡 YELLOW / 🔴 RED, with the math shown. | "Should I do this?" / "¿Vale la pena este proyecto?" |
-| **`obsidian-power-user`** | Runs automatically behind the others so every note is clean, linked, and well-formatted. | (loads in the background) |
+| **`second-brain-init`** | One-time setup (or v1 upgrade): vault, tools, settings | "Set up my second brain" · "Configura mi segundo cerebro" |
+| **`save-to-obsidian`** | Saves the lasting lessons of a conversation and a session log, with clean links | "Save to my brain" · "Guárdalo en mi cerebro" |
+| **`brain-search`** | Searches your notes before answering or asking you | "What did we decide about...?" · "¿Qué decidimos sobre...?" |
+| **`project-door`** | One page per project with where it stands today, read first | "Where are we with...?" · "¿En qué quedamos con...?" |
+| **`session-checkpoint`** | A save point during long sessions | Runs by itself; or "checkpoint" |
+| **`close-session`** | Closes a session: checkpoint, project page, save, index | "Close the session" · "Blindemos" |
+| **`brain-health`** | Monthly checkup with a traffic light and a history | "Brain health" · "Salud del cerebro" |
+| **`project-advisor`** | Scores a new idea on 4 dimensions: 🟢 / 🟡 / 🔴, math shown | "Should I do this?" · "¿Vale la pena?" |
+| **`obsidian-power-user`** | Runs behind the others so every note is clean and well linked | (loads in the background) |
 
-In daily life you only ever use **two** phrases: *"save to my brain"* and *"should I do this?"*
+Day to day you mostly use four phrases: *"save to my brain"*, *"where are we with X?"*,
+*"should I do this?"* and *"close the session"*.
 
 ---
 
@@ -70,15 +83,16 @@ In daily life you only ever use **two** phrases: *"save to my brain"* and *"shou
 You (plain language, EN/ES)
         │
         ▼
-Your AI assistant ──► 4 skills ──► Your vault (organized, linked notes)
-                                          │
-                                          ▼
-                                   Future you finds it instantly
+Your AI assistant ──► 9 skills ──► Your vault (organized, linked notes)
+        ▲                               │
+        │                               ▼
+        └──── brain-search ◄──── search index (.brain/)
 ```
 
-- **You talk.** In your language.
-- **The skills act.** Each has one job and a trigger phrase.
-- **The vault remembers.** Everything lands in a labeled folder, connected to what came before.
+- **You talk**, in your language.
+- **The skills act.** Each has one job and a phrase that triggers it.
+- **The vault remembers**, and the AI **looks there first** before asking you again.
+- **Once a month the brain checks itself** and tells you what to fix.
 
 ---
 
@@ -86,71 +100,86 @@ Your AI assistant ──► 4 skills ──► Your vault (organized, linked not
 
 ```
 Your Brain/
-├── 00 Inbox/                 ← when it doesn't fit anywhere else yet
+├── 00 Inbox/                 ← when it does not fit anywhere yet
 ├── 01 Personal Knowledge/    ← people, places, routines, lessons
-├── 02 Strategy/              ← vision, goals, decisions, your "North Star"
-├── 03 Ideas & Notes/         ← ideas before they become projects
+├── 02 Strategy/              ← vision, goals, decisions, your North Star
+├── 03 Ideas & Notes/         ← ideas, and saved references
 ├── 04 Learning/              ← books, courses, tech, business
-├── 05 AI System/             ← how your tools and skills fit together
-├── 06 Session Logs/          ← a record of every working session
+├── 05 AI System/             ← how your tools fit together, health history
+├── 06 Session Logs/          ← a record of every session, and checkpoints
+├── 07 Assets/                ← finished reports and documents
+├── 08 Projects/              ← working notes of active projects
+├── 09 MOCs/                  ← maps of your themes, and one Door per project
+├── Archives/                 ← old notes; nothing is ever deleted
 ├── Templates/
-└── Excalidraw/
+└── .brain/                   ← the tools and the search index (hidden in Obsidian)
 ```
 
-Skills find a section by its **number prefix** (`01`, `02`…), so you can rename
-"01 Personal Knowledge" → "01 Company Knowledge" and everything still works.
+Sections are found by their **number**, so you can rename "01 Personal Knowledge" to
+"01 Company Knowledge" and everything keeps working.
 
 ---
 
-## 📦 What's in this repo
+## 🛡️ The rules that keep a brain healthy
 
-```
-.
-├── install.sh                                         ← one-command installer
-├── README.md
-├── Second Brain Starter Kit - User Manual (English).pdf
-├── Second Brain Starter Kit - Manual del Usuario (Español).pdf
-└── skills/
-    ├── README.md                  ← per-host install details
-    ├── second-brain-init/
-    ├── save-to-obsidian/
-    ├── project-advisor/
-    └── obsidian-power-user/
-        └── references/            ← 12 Obsidian feature guides
-```
+Learned over months of real daily use:
+
+1. **Search before asking.** If the answer is in your notes, the AI finds it.
+2. **Every link works.** No broken links, no names Obsidian cannot link.
+3. **Every note has the same properties** (type, date, real time, description, status),
+   checked by a script, so search and filters can trust them.
+4. **Save on purpose.** The brain saves when you ask, or offers once at the end.
+5. **Never delete.** Old notes go to `Archives/`.
+6. **Compare with last month, not with perfection.**
 
 ---
 
-## ✅ What it does NOT require
+## ✅ What it needs, and what it does not
 
-- **Obsidian** is optional — notes are plain Markdown, readable in any editor. Install it
-  later for the graph view and clickable links.
-- **Notion** is optional — only `project-advisor` can mirror to it, if you turn it on.
-- **No** background jobs, **no** connectors, **no** account integrations. Every action is
-  something you trigger in a conversation. Your notes stay on your own computer or cloud drive.
+- **Obsidian** is optional: notes are plain Markdown, readable anywhere. Install it for
+  the graph view and clickable links.
+- **Python 3** is optional: with it you get the search index, the frontmatter check and
+  the health check (macOS and Linux usually have it; python.org for Windows). Without
+  it, everything still works with plain text search.
+- **Notion** is optional: only `project-advisor` can mirror to it.
+- **No accounts, no connectors.** The only thing that runs on its own is the monthly
+  health check, and only if you say yes at setup. Your notes stay on your computer or
+  your cloud drive.
+
+---
+
+## 🧪 For tinkerers
+
+```bash
+bash tests/run_tests.sh     # end-to-end test of the tools on an example vault
+```
+
+The tools live in `skills/second-brain-init/tools/` (standard-library Python and one
+shell script) and are copied into `<vault>/.brain/tools/` at setup.
 
 ---
 
 ## ❓ Quick FAQ
 
-- **Do I need to be technical?** No. You copy a folder and talk to your AI.
-- **Will it work on my phone?** Your notes sync to your phone if you pick iCloud/Dropbox at setup; the skills run wherever you use your assistant.
-- **Is my data private?** Yes — everything stays in your own vault. Nothing is locked in a special format.
-- **What if I stop using it?** You keep every note. They're plain Markdown, yours forever.
+- **Do I need to be technical?** No. You run one command and talk to your AI.
+- **Will it work on my phone?** Your notes sync if the vault is in iCloud, Dropbox or
+  OneDrive; the skills run wherever you use your assistant.
+- **Is my data private?** Yes. Everything stays in your own vault, in plain files.
+- **What if I stop using it?** You keep every note, forever.
 
 ---
 
 ## 🤝 Share it
 
-This kit was built to be **shared freely with family and friends**. Use it, remix it, and
-build *vertical packs* on the same foundation (Painters, Real Estate, Consulting,
-Restaurant — whatever shape your work takes). Hand someone the link, they run one command,
-and they have a working brain the same day.
+Built to be **shared freely with family and friends**. Use it, remix it, and build
+*vertical packs* on the same base (Painters, Real Estate, Consulting, Restaurants,
+whatever shape your work takes). Hand someone the link; they run one command and have a
+working brain the same day.
 
 ## 📄 License
 
-[MIT](LICENSE) — free to use, copy, modify, and share.
+[MIT](LICENSE): free to use, copy, modify and share.
 
 ---
 
-*Version 1.0 · Built to be shared.*
+*Version 2.0 · Built to be shared.*

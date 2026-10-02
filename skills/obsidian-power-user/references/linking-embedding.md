@@ -16,7 +16,7 @@
 [[Architecture#Database Layer]]  Links to nested heading
 ```
 
-**Note:** Heading must exactly match (case-sensitive). Use `#` for H1, `##` for H2, etc. in the link syntax—Obsidian normalizes it.
+**Note:** Heading must exactly match (case-sensitive). Use `#` for H1, `##` for H2, etc. in the link syntax, Obsidian normalizes it.
 
 ### Link to Block
 ```
@@ -274,7 +274,7 @@ Backlinks:
 
 **Click any backlink** → opens that note and jumps to the link context.
 
-**Use case:** See what's connected to this note — dependencies, related projects, cross-references.
+**Use case:** See what's connected to this note, dependencies, related projects, cross-references.
 
 ### Outgoing Links Pane
 

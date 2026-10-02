@@ -114,9 +114,9 @@ h1 { font-size: 2.5em; color: #333; }
 
 **Options:**
 
-1. **Default hierarchy** — Uses folder structure and backlinks
-2. **Custom navigation** — Create `_nav.md` file to manually order notes
-3. **No navigation** — Hide sidebar completely
+1. **Default hierarchy**: Uses folder structure and backlinks
+2. **Custom navigation**: Create `_nav.md` file to manually order notes
+3. **No navigation**: Hide sidebar completely
 
 **To create custom navigation (_nav.md):**
 
@@ -219,8 +219,8 @@ Or publish with related notes:
 2. Click **Add collaborator**
 3. Enter Obsidian username or email
 4. Choose permission level:
-   - **Editor** — can publish, unpublish, and modify settings
-   - **Viewer** — can view published content only
+   - **Editor**: can publish, unpublish, and modify settings
+   - **Viewer**: can view published content only
 5. Send invite link
 
 **For collaborators to accept:**
@@ -274,7 +274,7 @@ Your note content here...
 **Best practices:**
 - `description`: 120-160 characters, actionable insight, no markdown
 - `image`: Direct URL (external or published image from your site), 1200x630px ideal
-- Keep description concise — most platforms truncate at 160 chars
+- Keep description concise, most platforms truncate at 160 chars
 - Test on [ogp.me](https://ogp.me) or [Social Media Preview](https://www.socialmediatoday.com/tools/open-graph-preview-tool/)
 
 ### Social Card Behavior
@@ -489,7 +489,7 @@ canonical: "https://mysite.obsidian.md/second-brain-obsidian"
 Your note content starting with a strong opening paragraph that expands on the title...
 ```
 
-### `description` — SEO Optimization
+### `description`: SEO Optimization
 
 - **Length:** 150-160 characters (Google truncates beyond ~160)
 - **Content:** Answer the "what is this note about" question

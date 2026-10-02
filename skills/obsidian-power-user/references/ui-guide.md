@@ -104,7 +104,7 @@ A complete guide to navigating and customizing Obsidian's interface.
 | Toggle left sidebar | `Ctrl+J` | `Cmd+J` |
 | Toggle right sidebar | `Ctrl+I` | `Cmd+I` |
 | Cycle through open tabs | `Ctrl+Tab` | `Cmd+Tab` |
-| Toggle focus mode (reading view) | — | — |
+| Toggle focus mode (reading view) | n/a | n/a |
 | Follow link | `Ctrl+Click` | `Cmd+Click` |
 
 ---
@@ -387,7 +387,7 @@ A complete guide to navigating and customizing Obsidian's interface.
 
 ## Quick Tips
 
-- **Command Palette (Ctrl+P / Cmd+P)** is the fastest way to do anything — learn it first
+- **Command Palette (Ctrl+P / Cmd+P)** is the fastest way to do anything; learn it first
 - **Quick Switcher (Ctrl+O / Cmd+O)** for rapid note switching by typing filename
 - Create custom hotkeys for actions you use frequently
 - Use workspaces to separate your work modes (writing vs. research vs. admin)
